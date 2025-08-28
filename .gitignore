@@ -7,7 +7,6 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
 dist
 dist-ssr
 *.local
@@ -23,3 +22,41 @@ dist-ssr
 *.sln
 *.sw?
 .env
+
+# dev folders
+/residue.md
+
+
+node_modules
+/node_modules
+
+# Secret files
+.env
+.env*.local
+
+# Hardhat files
+/cache
+/artifacts
+
+# TypeChain files
+/typechain
+/typechain-types
+
+# Large deployment files
+/deployments
+deployments
+/dist
+
+# solidity-coverage files
+/coverage
+/coverage.json
+
+# dev doc
+/residue.md
+
+# Hardhat Ignition default folder for deployments against a local node
+ignition/deployments/chain-31337
+
+# Ignore IDE files
+.bolt
+/bolt
