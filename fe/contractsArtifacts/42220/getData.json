@@ -1,0 +1,111 @@
+{
+  "contractAddress": "0x152941d858eF9d82308d356f55Dd311Bb2C5c52d",
+  "functionName": "getData",
+  "inputCount": 0,
+  "requireArgUpdate": true,
+  "abi": [
+    {
+      "inputs": [],
+      "name": "getData",
+      "outputs": [
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "unit",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "pool",
+                  "type": "uint256"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "addr",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "bal",
+                      "type": "uint256"
+                    }
+                  ],
+                  "internalType": "struct IRandoFutures.Player[]",
+                  "name": "players",
+                  "type": "tuple[]"
+                }
+              ],
+              "internalType": "struct IRandoFutures.Spin",
+              "name": "spin",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "epoches",
+                  "type": "uint256"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "playerFee",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "feeTo",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint64",
+                      "name": "lastDraw",
+                      "type": "uint64"
+                    },
+                    {
+                      "internalType": "uint64",
+                      "name": "drawInterval",
+                      "type": "uint64"
+                    }
+                  ],
+                  "internalType": "struct IRandoFutures.DataStruct",
+                  "name": "data",
+                  "type": "tuple"
+                }
+              ],
+              "internalType": "struct IRandoFutures.RandoState",
+              "name": "state",
+              "type": "tuple"
+            },
+            {
+              "internalType": "uint256",
+              "name": "currentEpochBet",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "nextEpochBet",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadEpoch",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct IRandoFutures.GetData",
+          "name": "_data",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ]
+}

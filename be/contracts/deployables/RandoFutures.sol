@@ -77,7 +77,7 @@ contract RandoFutures is DrawData, VRFSetUp, ReentrancyGuard {
         return true;
     }
 
-    function getTriggerReward(address recipient, address target) 
+    function claimTriggerReward(address recipient, address target) 
         public 
         onlyApproved
         nonReentrant
@@ -214,15 +214,8 @@ contract RandoFutures is DrawData, VRFSetUp, ReentrancyGuard {
             });
     }
 
-    function getData() public view returns (GetData memory _data) {
-        uint epoches = _getEpoch();
-        _data.deadEpoch = deadEpoch;
-        uint bet = betList[epoches]; 
-        _data.state = state;
-        _data.currentEpochBet = bet;
-        _data.nextEpochBet = betList[epoches + 1];
-        _data.spin = spinBoard[epoches][bet];
-        return _data;
+    function getData() external view returns (GetData memory _data) {
+        return getDataByEpoch(_getEpoch());
     }
 
     function getDataByEpoch(uint epoch) public view returns (GetData memory _data) {
@@ -242,15 +235,40 @@ contract RandoFutures is DrawData, VRFSetUp, ReentrancyGuard {
       return drawNeeded;
     }
 
-    function checkBalance(uint bet, uint epoch) external view returns(uint256) {
-        require(isPlayer[_msgSender()][epoch][bet], "Not a player");
-        uint spot = _getSpotId(_msgSender(), bet, epoch);
-        return spinBoard[epoch][bet].players[spot].bal;
+    /**@dev Get the balance of target address in a pool from a specific epoch
+     */
+    function checkBalance(uint bet, uint epoch, address target) external view returns(uint256 bal) {
+        if(isPlayer[target][epoch][bet]){
+            uint spot = _getSpotId(_msgSender(), bet, epoch);
+            bal = spinBoard[epoch][bet].players[spot].bal;
+        }
+        return bal;
+    }
+
+    /**@dev Get the balance of target address in a pool from a specific epoch
+     */
+    function checkBalance(uint bet, uint epoch, address target) external view returns(uint256 bal) {
+        if(isPlayer[target][epoch][bet]){
+            uint spot = _getSpotId(_msgSender(), bet, epoch);
+            bal = spinBoard[epoch][bet].players[spot].bal;
+        }
+        return bal;
+    }
+
+    function _checkEpochBalance(uint bet, uint epoch) internal view returns(uint256 bal) {
+        if(bet >= betList[epoch]) bal = spinBoard[epoch][bet].pool;
+        return bal;
     }
 
     function checkEpochBalance(uint bet, uint epoch) external view returns(uint256) {
-        require(bet >= betList[epoch], "Invalid bet");
-        return spinBoard[epoch][bet].pool;
+        return _checkEpochBalance(bet, epoch);
+    }
+
+    // Return total bet balances in the pool at current epoch
+    function getBalanceFromCurrentEpoch() external view returns(uint256) {
+        uint epoch = state.epoches;
+        uint bet = betList[epoch];
+        return  _checkEpochBalance(bet, epoch);
     }
 
     function _setBetListUpfront(uint bet) internal {

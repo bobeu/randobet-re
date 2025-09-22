@@ -43,14 +43,14 @@ export default function BettingInterface() {
 
   const handleBet = () => {
     setIsSpinning(true)
-    setBetPlaced(true)
-    setTotalPool(prev => prev + nextBetAmount)
-    setPlayersCount(prev => prev + 1)
+    // setBetPlaced(true)
+    // setTotalPool(prev => prev + nextBetAmount)
+    // setPlayersCount(prev => prev + 1)
     
-    setTimeout(() => {
-      setIsSpinning(false)
-      setBetPlaced(false)
-    }, 3000)
+    // setTimeout(() => {
+    //   setIsSpinning(false)
+    //   setBetPlaced(false)
+    // }, 3000)
   }
 
   const progressValue = ((60 - timeLeft) / 60) * 100

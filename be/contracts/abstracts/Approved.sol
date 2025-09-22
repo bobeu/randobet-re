@@ -64,7 +64,7 @@ abstract contract Approved is Ownable, Pausable {
      * @dev Set approval for target
      * @param target : Account to set approval for
      */
-    function disApprove(address target) public onlyOwner {
+    function removePermission(address target) public onlyOwner {
         _setPermission(target, false);
         emit UnApproval(target);
     }

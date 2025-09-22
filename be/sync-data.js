@@ -7,8 +7,8 @@ const path = require('path');
 const HARDHAT_ARTIFACTS_PATH = './deployments/';
 const REACT_DATA_PATH = '../fe/contractsArtifacts';
 const GLOBAL_OUTPUT_PATH = '../fe/contractsArtifacts/global.json';
-const approvedFunctions = ['setBetListUpfront', 'checkEpochBalance', 'checkBalance', 'isDrawNeeded', 'getDataByEpoch', 'getData', 'runDraw', 'placeBet', 'getTriggerReward','withdraw', 'setFee','setVerification', 'setVerificationByOwner', 'toggleUseWalletVerification', 'isVerified'];
-const readFunctions = ['checkBalance', 'checkEpochBalance', 'isDrawNeeded',, 'getDataByEpoch', 'getData', 'getTriggerReward', 'isVerified'];
+const approvedFunctions = ['setBetListUpfront', 'checkEpochBalance', 'checkBalance', 'isDrawNeeded', 'getDataByEpoch', 'getData', 'runDraw', 'placeBet', 'claimTriggerReward','withdraw', 'setFee','setVerification', 'setVerificationByOwner', 'toggleUseWalletVerification', 'isVerified', 'setPermission', 'removePermission', 'isPermitted', 'getBalanceFromCurrentEpoch'];
+const readFunctions = ['checkBalance', 'checkEpochBalance', 'isDrawNeeded', 'getDataByEpoch', 'getData', 'claimTriggerReward', 'isVerified', 'isPermitted', 'getBalanceFromCurrentEpoch'];
 const functionsRequireArgUpdate = approvedFunctions;
 const chainName = {11142220: 'sepolia', 42220: 'celo'};
 const chainIds = [11142220, 42220]
@@ -24,7 +24,6 @@ let globalOutput = {
     paths: workBuild,
     contractAddresses: [{"stablecoin": "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1"}, {"stablecoin": '0x765de816845861e75a25fca122bb6898b8b1282a'}],
 };
-
 
 let itemOutput = {
     contractAddress: '',
