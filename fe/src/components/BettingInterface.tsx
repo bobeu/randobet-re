@@ -6,26 +6,42 @@ import { Timer, Users, DollarSign, TrendingUp, Zap, Sparkles } from 'lucide-reac
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
+import { ConnectButton } from '@rainbow-me/rainbowkit'
 import AnimatedOrb from '@/components/AnimatedOrb'
 import ParticleField from '@/components/ParticleField'
 import StatsCard from '@/components/StatsCard'
 import RecentBets from '@/components/RecentBets'
+import PlaceBet from './transactions/PlaceBet'
+import UserFunctions from '@/components/UserFunctions'
+import AdminDashboard from '@/components/AdminDashboard'
+import useData from '@/hooks/useData'
 
 export default function BettingInterface() {
+  const { 
+    data: { 
+      currentEpochBet, 
+      nextEpochBet, 
+      deadEpoch,
+      state: {
+        data,
+        epoches: currentEpoch
+      },
+      spin: {
+        players,
+        pool: totalBet,
+      }
+    },
+    isDrawNeeded
+  } = useData();
   const [timeLeft, setTimeLeft] = useState(45)
-  const [totalPool, setTotalPool] = useState(12.847)
-  const [playersCount, setPlayersCount] = useState(127)
-  const [nextBetAmount, setNextBetAmount] = useState(0.1)
-  const [isSpinning, setIsSpinning] = useState(true)
-  const [betPlaced, setBetPlaced] = useState(false)
+  const [loading, setLoading] = useState<boolean>(false);
+  // const [betPlaced, setBetPlaced] = useState(false)
 
-  // Countdown timer
+  // Countdown timer - using real blockchain data
   useEffect(() => {
     const timer = setInterval(() => {
       setTimeLeft(prev => {
         if (prev <= 1) {
-          setTotalPool(prev => prev + Math.random() * 2)
-          setPlayersCount(prev => prev + Math.floor(Math.random() * 5))
           return 60
         }
         return prev - 1
@@ -33,24 +49,21 @@ export default function BettingInterface() {
     }, 1000)
 
     return () => clearInterval(timer)
-  }, [])
+  }, []);
+
+  // Calculate real-time data from blockchain
+  const totalPool = Number(totalBet) / 1e18; // Convert from wei to ETH
+  const playersCount = players.length;
+  const nextBetAmount = Number(currentEpochBet) / 1e18; // Convert from wei to ETH
+
+  const setIsLoading = (arg: boolean) => {
+    setLoading(arg);
+  } 
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60)
     const secs = seconds % 60
     return `${mins}:${secs.toString().padStart(2, '0')}`
-  }
-
-  const handleBet = () => {
-    setIsSpinning(true)
-    // setBetPlaced(true)
-    // setTotalPool(prev => prev + nextBetAmount)
-    // setPlayersCount(prev => prev + 1)
-    
-    // setTimeout(() => {
-    //   setIsSpinning(false)
-    //   setBetPlaced(false)
-    // }, 3000)
   }
 
   const progressValue = ((60 - timeLeft) / 60) * 100
@@ -77,6 +90,27 @@ export default function BettingInterface() {
         </motion.div>
       </div>
 
+      {/* Connect Button - Top Right */}
+      <div className="absolute top-4 right-4 z-10">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1, delay: 0.7 }}
+        >
+          <ConnectButton 
+            chainStatus="icon"
+            accountStatus={{
+              smallScreen: 'avatar',
+              largeScreen: 'full',
+            }}
+            showBalance={{
+              smallScreen: false,
+              largeScreen: true,
+            }}
+          />
+        </motion.div>
+      </div>
+
       {/* Mystical elements - positioned to not interfere */}
       <div className="absolute top-20 right-20 hidden md:block z-10">
         <motion.div
@@ -98,94 +132,16 @@ export default function BettingInterface() {
         {/* Mobile: AnimatedOrb at top */}
         <div className="md:hidden flex flex-col items-center justify-center p-4 pt-8">
           <div className="relative w-full max-w-sm">
-            <AnimatedOrb isSpinning={isSpinning} />
-
-            {/* Bet Button */}
-            <motion.div 
-              className="absolute -bottom-16 left-1/2 transform -translate-x-1/2"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Button
-                onClick={handleBet}
-                size="lg"
-                className="bg-gradient-to-r from-orange-400 to-purple-500 hover:from-orange-300 hover:to-purple-400 text-white font-bold py-3 px-6 rounded-full shadow-2xl hover:shadow-orange-500/25 transition-all duration-300 glow-orange text-sm"
-                disabled={betPlaced}
-              >
-                <AnimatePresence mode="wait">
-                  {betPlaced ? (
-                    <motion.span
-                      key="placing"
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.8 }}
-                      className="flex items-center gap-2"
-                    >
-                      <Sparkles className="w-4 h-4 animate-spin" />
-                      PLACING...
-                    </motion.span>
-                  ) : (
-                    <motion.span
-                      key="place"
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.8 }}
-                      className="flex items-center gap-2"
-                    >
-                      <Zap className="w-4 h-4" />
-                      PLACE BET
-                    </motion.span>
-                  )}
-                </AnimatePresence>
-              </Button>
-            </motion.div>
+            <AnimatedOrb isSpinning={loading} playerCount={playersCount} />
+            <PlaceBet setIsLoading={setIsLoading} loading={loading} /> {/* Bet Button */}
           </div>
         </div>
 
         {/* Desktop: Betting Area - 40% width */}
         <div className="hidden md:flex w-2/5 items-center justify-center p-4 md:p-8">
           <div className="relative w-full max-w-sm md:max-w-md lg:max-w-lg">
-            <AnimatedOrb isSpinning={isSpinning} />
-
-            {/* Bet Button */}
-            <motion.div 
-              className="absolute -bottom-16 md:-bottom-20 left-1/2 transform -translate-x-1/2"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Button
-                onClick={handleBet}
-                size="lg"
-                className="bg-gradient-to-r from-orange-400 to-purple-500 hover:from-orange-300 hover:to-purple-400 text-white font-bold py-3 md:py-4 px-6 md:px-8 rounded-full shadow-2xl hover:shadow-orange-500/25 transition-all duration-300 glow-orange text-sm md:text-base"
-                disabled={betPlaced}
-              >
-                <AnimatePresence mode="wait">
-                  {betPlaced ? (
-                    <motion.span
-                      key="placing"
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.8 }}
-                      className="flex items-center gap-2"
-                    >
-                      <Sparkles className="w-4 h-4 md:w-5 md:h-5 animate-spin" />
-                      PLACING...
-                    </motion.span>
-                  ) : (
-                    <motion.span
-                      key="place"
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.8 }}
-                      className="flex items-center gap-2"
-                    >
-                      <Zap className="w-4 h-4 md:w-5 md:h-5" />
-                      PLACE BET
-                    </motion.span>
-                  )}
-                </AnimatePresence>
-              </Button>
-            </motion.div>
+            <AnimatedOrb isSpinning={loading} playerCount={playersCount} />
+            <PlaceBet setIsLoading={setIsLoading} loading={loading} /> {/* Bet Button */}
           </div>
         </div>
 
@@ -200,7 +156,7 @@ export default function BettingInterface() {
               transition={{ duration: 0.6 }}
             >
               <h1 className="text-xl md:text-2xl lg:text-3xl font-bold spooky-text">
-                SPOOKY RANDOBET
+                RANDOBET
               </h1>
               <p className="text-purple-200 text-xs md:text-sm mt-2">On-Chain Betting Protocol</p>
             </motion.div>
@@ -230,6 +186,26 @@ export default function BettingInterface() {
               </Card>
             </motion.div>
 
+            {/* Draw Ready Status */}
+            {isDrawNeeded && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+              >
+                <Card className="bg-gradient-to-br from-red-900/40 to-orange-900/40 border-red-500/20 spooky-glass">
+                  <CardContent className="p-4 text-center">
+                    <div className="text-2xl md:text-3xl font-bold text-red-400 mb-2">
+                      🎯 DRAW READY!
+                    </div>
+                    <p className="text-red-200 text-sm">
+                      The draw can be triggered by anyone
+                    </p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            )}
+
             {/* Stats Grid */}
             <div className="grid grid-cols-1 gap-3 md:gap-4">
               <StatsCard
@@ -254,19 +230,20 @@ export default function BettingInterface() {
 
               <StatsCard
                 icon={TrendingUp}
-                label="Min Bet"
-                value={`${nextBetAmount} ETH`}
+                label="Current Bet Amount"
+                value={`${nextBetAmount.toFixed(4)} ETH`}
                 gradient="from-violet-900/50 to-orange-900/30"
                 borderColor="border-violet-500/20"
                 textColor="text-violet-200"
                 delay={0.4}
+                isBold={true}
               />
             </div>
 
             {/* Recent Activity */}
             <RecentBets />
 
-            {/* Connection Status */}
+            {/* Network Status */}
             <motion.div 
               className="text-center text-xs text-purple-400"
               initial={{ opacity: 0 }}
@@ -279,12 +256,18 @@ export default function BettingInterface() {
                   animate={{ scale: [1, 1.2, 1] }}
                   transition={{ duration: 2, repeat: Infinity }}
                 />
-                Connected to Ethereum Mainnet
+                Celo Network Ready
               </div>
             </motion.div>
           </div>
         </div>
       </div>
+
+      {/* User Functions Panel */}
+      <UserFunctions setIsLoading={setIsLoading} loading={loading} />
+      
+      {/* Admin Dashboard */}
+      <AdminDashboard />
     </div>
   )
 }

@@ -2,6 +2,18 @@ import { zeroAddress } from "viem";
 
 export type Address = `0x${string}`;
 export type FunctionName = 'placebet' | 'checkBalance' | 'checkEpochBalance' | 'getData' | 'getDataByEpoch' | 'claimTriggerReward' | 'isDrawNeeded' | 'isVerified' | 'runDraw' | 'setBetListUpfront' | 'setFee' | 'setVerification' | 'setverificationByOwner' | 'withdraw' | 'getBalanceFromCurrentEpoch';
+export const adminFunctions : FunctionName[] = [
+    "setBetListUpfront",
+    "setFee",
+    "setverificationByOwner"
+];
+
+export const userFunctions : FunctionName[] = [
+    "placebet",
+    "runDraw",
+    "withdraw",
+    "setVerification",
+];
 
 export interface Player {
     bal: bigint;

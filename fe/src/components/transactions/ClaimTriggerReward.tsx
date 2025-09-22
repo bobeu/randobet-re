@@ -36,7 +36,7 @@ function ClaimTriggerReward() {
             ...data
         }] : [];
 
-    }, [chainId]);
+    }, [chainId, isConnected, account]);
 
     const handleCreateCampaign = () => {
         if (trxnSteps.length === 0) {
@@ -58,14 +58,20 @@ function ClaimTriggerReward() {
 
     return (
         <div>
-            <p>Complete the implementation</p>
+            <button
+                onClick={handleCreateCampaign}
+                className="bg-gradient-to-r from-orange-400 to-purple-500 hover:from-orange-300 hover:to-purple-400 text-white font-bold py-2 px-4 rounded-lg shadow-lg hover:shadow-orange-500/25 transition-all duration-300 glow-orange"
+                disabled={trxnSteps.length === 0}
+            >
+                🎯 Trigger Draw & Claim Reward
+            </button>
             <TransactionModal 
                 title="Claim Trigger Reward"
                 getSteps={() => trxnSteps}
                 isOpen={showTransactionModal}
                 onClose={() => setShowTransactionModal(false)}
                 onSuccess={handleTransactionSuccess}
-                description='Claiming trigger reward'
+                description='Triggering draw and claiming reward'
                 onError={handleTransactionError}
             />
         </div>

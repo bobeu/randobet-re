@@ -13,6 +13,7 @@ interface StatsCardProps {
   textColor: string
   delay: number
   className?: string
+  isBold?: boolean
 }
 
 export default function StatsCard({
@@ -23,7 +24,8 @@ export default function StatsCard({
   borderColor,
   textColor,
   delay,
-  className = ""
+  className = "",
+  isBold = false
 }: StatsCardProps) {
   return (
     <motion.div
@@ -39,7 +41,7 @@ export default function StatsCard({
             <span className="text-stone-300 text-sm">{label}</span>
           </div>
           <motion.div 
-            className={`text-lg lg:text-xl font-bold ${textColor}`}
+            className={`${isBold ? 'text-xl lg:text-2xl xl:text-3xl' : 'text-lg lg:text-xl'} font-bold ${textColor}`}
             key={value}
             initial={{ scale: 1.1 }}
             animate={{ scale: 1 }}

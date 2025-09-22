@@ -5,11 +5,16 @@ import { useEffect } from 'react'
 
 interface AnimatedOrbProps {
   isSpinning: boolean
+  playerCount?: number
 }
 
-export default function AnimatedOrb({ isSpinning }: AnimatedOrbProps) {
+export default function AnimatedOrb({ isSpinning, playerCount = 0 }: AnimatedOrbProps) {
   const rotation = useMotionValue(0)
   const scale = useMotionValue(1)
+  
+  // Calculate dynamic sparkle count and size based on player count
+  const sparkleCount = Math.min(Math.max(playerCount, 3), 12); // Min 3, max 12 sparkles
+  const baseSize = playerCount > 0 ? Math.max(0.5, 2 - (playerCount / 20)) : 1; // Smaller when more players
   
   // Smooth rotation that doesn't reset
   useEffect(() => {
@@ -26,66 +31,80 @@ export default function AnimatedOrb({ isSpinning }: AnimatedOrbProps) {
 
   return (
     <div className="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 mx-auto">
-      {/* Outer Ring - SpookySwap colors */}
+      {/* Outer Glow Ring */}
       <motion.div 
-        className="absolute inset-0 rounded-full orb-gradient"
+        className="absolute inset-0 rounded-full bg-gradient-to-r from-orange-400/20 via-purple-500/20 to-orange-400/20"
         style={{ 
           rotate: isSpinning ? rotate : 0,
           scale: scaleValue
         }}
         animate={{ 
-          scale: isSpinning ? [1, 1.05, 1] : 1
+          scale: isSpinning ? [1, 1.1, 1] : [1, 1.05, 1],
+          opacity: [0.3, 0.7, 0.3]
         }}
         transition={{ 
-          scale: { duration: 2, repeat: Infinity, ease: "easeInOut" }
+          scale: { duration: 3, repeat: Infinity, ease: "easeInOut" },
+          opacity: { duration: 2, repeat: Infinity, ease: "easeInOut" }
         }}
-      >
-        <div className="w-full h-full rounded-full bg-gradient-to-r from-transparent via-orange-300/30 to-transparent" />
-      </motion.div>
+      />
       
-      {/* Middle Ring - Purple/Orange gradient */}
+      {/* Main Orb Ring */}
       <motion.div 
-        className="absolute inset-4 rounded-full bg-gradient-to-br from-purple-500 via-orange-400 to-violet-800 shadow-2xl glow-purple"
+        className="absolute inset-2 rounded-full bg-gradient-to-br from-purple-600 via-orange-500 to-violet-700 shadow-2xl"
         style={{ 
-          rotate: isSpinning ? useTransform(rotation, (value) => -value) : 0
+          rotate: isSpinning ? useTransform(rotation, (value) => -value * 0.5) : 0
         }}
         animate={{ 
           boxShadow: [
-            "0 0 30px rgba(139, 92, 246, 0.6)",
-            "0 0 50px rgba(251, 191, 36, 0.8)",
-            "0 0 30px rgba(139, 92, 246, 0.6)"
+            "0 0 40px rgba(139, 92, 246, 0.8)",
+            "0 0 60px rgba(251, 191, 36, 1)",
+            "0 0 40px rgba(139, 92, 246, 0.8)"
           ]
         }}
         transition={{ 
-          boxShadow: { duration: 3, repeat: Infinity, ease: "easeInOut" }
+          boxShadow: { duration: 4, repeat: Infinity, ease: "easeInOut" }
         }}
       >
+        {/* Inner Pattern */}
         <motion.div 
-          className="w-full h-full rounded-full bg-gradient-to-tr from-orange-500/50 to-transparent"
-          animate={{ opacity: [0.5, 1, 0.5] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          className="w-full h-full rounded-full bg-gradient-to-tr from-orange-400/60 via-transparent to-purple-400/60"
+          animate={{ 
+            opacity: [0.4, 0.8, 0.4],
+            rotate: [0, 180, 360]
+          }}
+          transition={{ 
+            opacity: { duration: 3, repeat: Infinity, ease: "easeInOut" },
+            rotate: { duration: 8, repeat: Infinity, ease: "linear" }
+          }}
         />
       </motion.div>
       
-      {/* Inner Core - Stable center */}
+      {/* Central Core */}
       <motion.div 
-        className="absolute inset-1/4 rounded-full bg-gradient-to-br from-orange-600 to-purple-900 flex items-center justify-center"
+        className="absolute inset-1/3 rounded-full bg-gradient-to-br from-orange-500 to-purple-600 flex items-center justify-center shadow-xl"
         animate={{ 
-          scale: isSpinning ? [1, 1.1, 1] : [1, 1.05, 1]
+          scale: isSpinning ? [1, 1.15, 1] : [1, 1.08, 1],
+          boxShadow: [
+            "0 0 20px rgba(251, 191, 36, 0.6)",
+            "0 0 30px rgba(139, 92, 246, 0.8)",
+            "0 0 20px rgba(251, 191, 36, 0.6)"
+          ]
         }}
         transition={{ 
-          duration: isSpinning ? 1.5 : 3, 
-          repeat: Infinity,
-          ease: "easeInOut"
+          scale: { duration: isSpinning ? 2 : 4, repeat: Infinity, ease: "easeInOut" },
+          boxShadow: { duration: 3, repeat: Infinity, ease: "easeInOut" }
         }}
       >
+        {/* Inner Core with Pulsing Effect */}
         <motion.div 
-          className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-orange-400 to-purple-500 rounded-full shadow-lg glow-orange"
+          className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-orange-300 to-purple-400 rounded-full shadow-lg"
           animate={{ 
-            y: isSpinning ? [0, -10, 0] : [0, -5, 0]
+            y: isSpinning ? [0, -8, 0] : [0, -3, 0],
+            scale: [1, 1.1, 1]
           }}
           transition={{ 
-            y: { duration: 2, repeat: Infinity, ease: "easeInOut" }
+            y: { duration: 2.5, repeat: Infinity, ease: "easeInOut" },
+            scale: { duration: 3, repeat: Infinity, ease: "easeInOut" }
           }}
         />
       </motion.div>
@@ -118,23 +137,25 @@ export default function AnimatedOrb({ isSpinning }: AnimatedOrbProps) {
         />
       ))}
       
-      {/* Floating Sparkles - Orange/Purple */}
-      {[...Array(8)].map((_, i) => (
+      {/* Dynamic Floating Sparkles - Orange/Purple */}
+      {[...Array(sparkleCount)].map((_, i) => (
         <motion.div
           key={`sparkle-${i}`}
-          className="absolute w-1 h-1 bg-orange-300 rounded-full"
+          className="absolute bg-gradient-to-r from-orange-300 to-purple-300 rounded-full"
           style={{
-            top: `${50 + 35 * Math.sin(i * Math.PI / 4)}%`,
-            left: `${50 + 35 * Math.cos(i * Math.PI / 4)}%`,
+            width: `${baseSize * 4}px`,
+            height: `${baseSize * 4}px`,
+            top: `${50 + 35 * Math.sin(i * Math.PI / (sparkleCount / 2))}%`,
+            left: `${50 + 35 * Math.cos(i * Math.PI / (sparkleCount / 2))}%`,
           }}
           animate={{
             opacity: [0, 1, 0],
-            scale: [0, 1, 0],
+            scale: [0, baseSize, 0],
           }}
           transition={{
             duration: 3,
             repeat: Infinity,
-            delay: i * 0.4,
+            delay: i * (0.4 / sparkleCount),
             ease: "easeInOut"
           }}
         />

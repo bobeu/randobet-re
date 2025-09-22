@@ -5,7 +5,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, CheckCircle, XCircle, ExternalLink } from "lucide-react";
+import { Loader2, CheckCircle, XCircle, ExternalLink, Zap, Wallet, Shuffle, Shield, Settings, DollarSign, ShieldCheck } from "lucide-react";
 import { useConfig, useWriteContract } from "wagmi";
 import { waitForTransactionReceipt } from "wagmi/actions";
 import { Address, FunctionName } from "@/types";
@@ -117,6 +117,29 @@ export default function TransactionModal({
     return "pending";
   };
 
+  const getFunctionIcon = (functionName: string) => {
+    switch (functionName) {
+      case "placebet":
+        return <Zap className="w-4 h-4 text-orange-400" />;
+      case "withdraw":
+        return <Wallet className="w-4 h-4 text-green-400" />;
+      case "runDraw":
+        return <Shuffle className="w-4 h-4 text-purple-400" />;
+      case "setVerification":
+        return <Shield className="w-4 h-4 text-blue-400" />;
+      case "claimTriggerReward":
+        return <Zap className="w-4 h-4 text-yellow-400" />;
+      case "setBetListUpfront":
+        return <Settings className="w-4 h-4 text-red-400" />;
+      case "setFee":
+        return <DollarSign className="w-4 h-4 text-yellow-400" />;
+      case "setverificationByOwner":
+        return <ShieldCheck className="w-4 h-4 text-indigo-400" />;
+      default:
+        return <Zap className="w-4 h-4 text-orange-400" />;
+    }
+  };
+
   const getStatusIcon = (status: string) => {
     switch (status) {
       case "completed":
@@ -124,9 +147,9 @@ export default function TransactionModal({
       case "failed":
         return <XCircle className="w-5 h-5 text-red-500" />;
       case "current":
-        return <Loader2 className="w-5 h-5 text-primary-500 animate-spin" />;
+        return <Loader2 className="w-5 h-5 text-orange-500 animate-spin" />;
       default:
-        return <div className="w-5 h-5 rounded-full border-2 border-gray-300" />;
+        return <div className="w-5 h-5 rounded-full border-2 border-purple-300" />;
     }
   };
 
@@ -145,13 +168,13 @@ export default function TransactionModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="max-w-2xl bg-white dark:bg-surface">
+      <DialogContent className="max-w-2xl bg-gradient-to-br from-purple-900/40 to-orange-900/40 border-orange-500/20 spooky-glass">
         <DialogHeader>
-          <DialogTitle className="text-xl font-bold text-gray-900 dark:text-white">
+          <DialogTitle className="text-xl font-bold text-orange-400 spooky-text">
             {title}
           </DialogTitle>
           {description && (
-            <p className="text-sm text-gray-600 dark:text-gray-300">
+            <p className="text-sm text-purple-200">
               {description}
             </p>
           )}
@@ -164,20 +187,23 @@ export default function TransactionModal({
               const status = getStepStatus(step.id, index);
               return (
                 <Card key={step.id} className={`border ${
-                  status === "current" ? "border-primary-500 bg-primary-50 dark:bg-primary-900/20" : 
-                  status === "completed" ? "border-green-500 bg-green-50 dark:bg-green-900/20" :
-                  status === "failed" ? "border-red-500 bg-red-50 dark:bg-red-900/20" :
-                  "border-gray-200 dark:border-gray-700"
-                }`}>
+                  status === "current" ? "border-orange-500 bg-orange-900/20" : 
+                  status === "completed" ? "border-green-500 bg-green-900/20" :
+                  status === "failed" ? "border-red-500 bg-red-900/20" :
+                  "border-purple-500/20 bg-purple-900/10"
+                } spooky-glass`}>
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        {getStatusIcon(status)}
+                        <div className="flex items-center gap-2">
+                          {getFunctionIcon(step.functionName)}
+                          {getStatusIcon(status)}
+                        </div>
                         <div>
-                          <h4 className="font-medium text-gray-900 dark:text-white">
+                          <h4 className="font-medium text-orange-200">
                             {step.title}
                           </h4>
-                          <p className="text-sm text-gray-600 dark:text-gray-300">
+                          <p className="text-sm text-purple-300">
                             {step.description}
                           </p>
                         </div>
@@ -209,7 +235,7 @@ export default function TransactionModal({
               variant="outline"
               onClick={handleClose}
               disabled={isProcessing}
-              className="border-neutral-700 text-gray-900 dark:text-white dark:border-gray-600"
+              className="border-purple-500/20 text-purple-200 hover:bg-purple-900/20"
             >
               {isCompleted ? "Close" : "Cancel"}
             </Button>
@@ -217,7 +243,7 @@ export default function TransactionModal({
               <Button
                 onClick={() => executeStep(currentStep)}
                 disabled={isProcessing}
-                className="bg-primary-500 text-black hover:bg-primary-400"
+                className="bg-gradient-to-r from-orange-400 to-purple-500 hover:from-orange-300 hover:to-purple-400 text-white font-bold glow-orange"
               >
                 {isProcessing ? (
                   <>
@@ -239,7 +265,7 @@ export default function TransactionModal({
                   });
                   executeStep(currentStep);
                 }}
-                className="bg-primary-500 text-black hover:bg-primary-400"
+                className="bg-gradient-to-r from-red-400 to-orange-500 hover:from-red-300 hover:to-orange-400 text-white font-bold glow-red"
               >
                 Retry
               </Button>
