@@ -9,26 +9,25 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import useData from '@/hooks/useData';
 import { useToast } from '../ui/Toast';
-import { parseUnits } from 'viem';
 
-function SetBetListUpfront() {
+function SetIntervalAndFeeTo() {
     const { chainId, address, isConnected } = useAccount();
     const[ showTransactionModal, setShowTransactionModal ] = React.useState<boolean>(false);
-    const [newBet, setNewBet] = React.useState<string>('');
-    const { data: { currentEpochBet, nextEpochBet } } = useData();
+    const [newInterval, setNewInterval] = React.useState<string>('');
+    const { data: { state: { data : { drawInterval }} } } = useData();
     const { showToast } = useToast();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
         const value = e.target.value;
-        setNewBet(value);
+        setNewInterval(value);
     };
 
     const trxnSteps = React.useMemo(() => {
-        const { transactionData: td, } = filterTransactionData({
+        const { transactionData: td, contractAddresses: ca} = filterTransactionData({
             chainId,
             filter: true,
-            functionNames: ['setBetListUpfront'],
+            functionNames: ['setDataStruct'],
         });
 
         // const parsedBetList = newBet.split(',').map(s => BigInt(s.trim()));
@@ -36,18 +35,18 @@ function SetBetListUpfront() {
             abi: td[0].abi,
             functionName: td[0].functionName as FunctionName,
             contractAddress: td[0].contractAddress as Address,
-            args: [parseUnits(newBet, 18)],
+            args: [Number(newInterval), ca.FeeReceiver, 0n],
             value: undefined
         }
 
         return [{
-            id: 'set-bet-list-upfront',
-            title: 'Setting Bet List Upfront',
-            description: `Setting bet list with ${newBet} amounts`,
+            id: 'set-data-struct',
+            title: 'Setting interval and feeTo',
+            description: `Setting new draw interval to ${newInterval}`,
             ...data
         }];
 
-    }, [chainId, newBet]);
+    }, [chainId, newInterval]);
 
     const handleSetBetListUpfront = () => {
         if (!isConnected || !address) {
@@ -63,7 +62,7 @@ function SetBetListUpfront() {
             showToast({
                 type: 'error',
                 title: 'Invalid Input',
-                message: 'Cannot set bet list upfront. Please check your input.'
+                message: 'Cannot update data struct. Please check your input.'
             });
             return;
         }
@@ -71,52 +70,51 @@ function SetBetListUpfront() {
     };
     
     const handleTransactionSuccess = (txHash: string) => {
-        console.log('Bet list upfront set:', txHash);
         showToast({
             type: 'success',
-            title: 'Bet List Set Successfully',
+            title: 'Data updated Successfully',
             message: `Transaction hash: ${txHash.slice(0, 10)}...`
         });
         setShowTransactionModal(false);
     };
 
     const handleTransactionError = (error: Error) => {
-        console.error('Failed to set bet list upfront:', error);
+        console.error('Failed to update interval:', error);
         showToast({
             type: 'error',
-            title: 'Bet List Setting Failed',
-            message: error.message || 'Failed to set bet list upfront. Please try again.'
+            title: 'Updating Draw Interval Failed',
+            message: error.message || 'Failed to update draw interval and feeTo. Please try again.'
         });
     };
     
     return (
         <div className="space-y-4 p-4 border rounded-lg bg-purple-900/10 border-purple-500/20">
-            <h3 className="text-lg font-bold text-orange-400">Set Bet List Upfront</h3>
+            <h3 className="text-lg font-bold text-orange-400">Set Interval And FeeTo</h3>
             <div className="space-y-2">
                 <div className="bg-purple-800/30 border border-purple-500/30 rounded-lg p-3">
                     <div className="space-y-1 text-sm">
                         <div className="flex justify-between">
-                            <span className="text-purple-200">Current Bet:</span>
-                            <span className="text-orange-400 font-mono">{(Number(currentEpochBet) / 1e18).toFixed(4)} CELO</span>
+                            <span className="text-purple-200">Current Interval (In Minute):</span>
+                            <span className="text-orange-400 font-mono">{Number(drawInterval) / 60} {Number(drawInterval) > 24? 'Min' : 'Hrs'}</span>
                         </div>
-                        <div className="flex justify-between">
+                        {/* <div className="flex justify-between">
                             <span className="text-purple-200">Next Bet:</span>
                             <span className="text-green-400 font-mono">{(Number(nextEpochBet) / 1e18).toFixed(4)} CELO</span>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                 <div className="space-y-2">
-                    <Label htmlFor="newBet" className="text-purple-200">Bet List (comma-separated BigInts)</Label>
+                    <Label htmlFor="interval" className="text-purple-200">New Interval (In minutes)</Label>
                     <Input
-                        id="newBet"
-                        type="text"
-                        value={newBet}
+                        id="interval"
+                        type="number"
+                        value={newInterval}
                         onChange={(e) => handleChange(e)}
                         className="bg-purple-800/30 border-purple-500/30 text-white"
-                        placeholder="e.g., 10000000000000000, 20000000000000000"
+                        placeholder="In minutes, e.g., 1440 (24hrs), 720 (6hrs)"
                     />
                     <p className="text-xs text-purple-300">
-                        Enter bet amounts
+                        Enter new interval 
                     </p>
                 </div>
             </div>
@@ -126,19 +124,29 @@ function SetBetListUpfront() {
                 disabled={trxnSteps.length === 0}
             >
                 <Settings className="w-4 h-4 mr-2" />
-                SET NEW BET
+                SET VALUES
             </Button>
             <TransactionModal 
-                title="Set New Bet Upfront"
+                title="Set Up Interval and FeeTo"
                 getSteps={() => trxnSteps}
                 isOpen={showTransactionModal}
                 onClose={() => setShowTransactionModal(false)}
                 onSuccess={handleTransactionSuccess}
-                description='Setting bet list upfront'
+                description='Setting new value for interval and fee receiver'
                 onError={handleTransactionError}
             />
         </div>
     );
 }
 
-export default SetBetListUpfront;
+export default SetIntervalAndFeeTo;
+
+
+
+// setDataStruct(
+//         uint24 drawIntervalInMin, 
+//         address feeTo, 
+//         uint playerFee
+//     )
+
+    

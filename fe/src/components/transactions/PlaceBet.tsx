@@ -29,13 +29,14 @@ function PlaceBet({setIsLoading, loading, playerFee, onPlaceBetClick}: {loading:
         const totalBetAmount = currentEpochBet + BigInt(Math.floor(playerFee * 1e18));
 
         const data = {
-            abi: td[0].abi,
-            functionName: td[0].functionName as FunctionName,
-            contractAddress: td[0].contractAddress as Address,
-            args: [],
-            value: totalBetAmount
+          abi: td[0].abi,
+          functionName: td[0].functionName as FunctionName,
+          contractAddress: td[0].contractAddress as Address,
+          args: [],
+          value: totalBetAmount
         }
-
+        console.log("data", data);
+        
         return[{
             id: 'place-bet',
             title: 'Placing bet',

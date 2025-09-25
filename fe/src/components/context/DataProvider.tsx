@@ -26,7 +26,7 @@ export default function DataProvider({children} : {children: React.ReactNode}) {
         });
         const readArgs = [[], [], [], [account], [account]];
         const readTxObject = td.map((item, i) => {
-            return{
+            return {
                 abi: item.abi,
                 functionName: item.functionName,
                 address: item.contractAddress as Address,
@@ -71,13 +71,13 @@ export default function DataProvider({children} : {children: React.ReactNode}) {
             epochPoolBal_ = contractData[2].result as bigint;
             setEpochPoolBal(epochPoolBal_);
         }
-        if(contractData && contractData[3].status === 'success' && contractData[2].result !== undefined) {
+        if(contractData && contractData[3].status === 'success' && contractData[3].result !== undefined) {
             isApproved_ = contractData[3].result as boolean;
             setIsApproved(isApproved_);
         }
-        if(contractData && contractData[4].status === 'success' && contractData[2].result !== undefined) {
-            isApproved_ = contractData[3].result as boolean;
-            setIsApproved(isApproved_);
+        if(contractData && contractData[4].status === 'success' && contractData[4].result !== undefined) {
+            isVerified_ = contractData[4].result as boolean;
+            setIsVerified(isVerified_);
         }
     }, [contractData]);
 

@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from "@/components/ui/input"
 import { Label } from '@/components/ui/label'
 import { useToast } from '../ui/Toast';
+import { parseUnits, zeroAddress } from 'viem';
 
 function SetFee({ currentPlayerFee }: { currentPlayerFee: number }) {
     const { chainId, address, isConnected } = useAccount();
@@ -15,18 +16,24 @@ function SetFee({ currentPlayerFee }: { currentPlayerFee: number }) {
     const [fee, setFee] = React.useState<string>('');
     const { showToast } = useToast();
 
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        e.preventDefault();
+        const value = e.target.value;
+        setFee(value);
+    };
+
     const trxnSteps = React.useMemo(() => {
         const { transactionData: td, } = filterTransactionData({
             chainId,
             filter: true,
-            functionNames: ['setFee'],
+            functionNames: ['setDataStruct'],
         });
 
         const data = {
             abi: td[0].abi,
             functionName: td[0].functionName as FunctionName,
             contractAddress: td[0].contractAddress as Address,
-            args: [BigInt(fee)],
+            args: [0, zeroAddress, parseUnits(fee, 18)],
             value: undefined
         }
 
@@ -90,14 +97,14 @@ function SetFee({ currentPlayerFee }: { currentPlayerFee: number }) {
                     <Label htmlFor="fee" className="text-purple-200">New Fee (in wei)</Label>
                     <Input
                         id="fee"
-                        type="number"
+                        type="text"
                         value={fee}
-                        onChange={(e) => setFee(e.target.value)}
+                        onChange={(e) => handleChange(e)}
                         className="bg-purple-800/30 border-purple-500/30 text-white"
                         placeholder="e.g., 10000000000000000"
                     />
                     <p className="text-xs text-purple-300">
-                        {fee ? `≈ ${Number(fee) / 1e18} CELO` : 'Enter fee in wei'}
+                        {fee ? `≈ ${fee} CELO` : 'Enter new fee in wei'}
                     </p>
                 </div>
             </div>

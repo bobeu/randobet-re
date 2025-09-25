@@ -1,7 +1,7 @@
 {
   "contractAddress": "0x3C9B2A59F5ED44d1e1bD43020d1349C7E21Ff1cf",
-  "functionName": "setFee",
-  "inputCount": 2,
+  "functionName": "setDataStruct",
+  "inputCount": 3,
   "requireArgUpdate": true,
   "abi": [
     {

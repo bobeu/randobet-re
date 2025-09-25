@@ -80,7 +80,7 @@ const nextConfig = {
   },
 
   // Enable SWC minification for better performance
-  swcMinify: true,
+  // swcMinify: true,
   
   // Optimize images
   images: {

@@ -60,13 +60,12 @@ function RunDraw() {
             }
 
             const result = await response.json();
-            const receipt: TransactionReceipt = result.receipt;
-            console.log('Draw triggered:', receipt.transactionHash);
+            console.log('Draw triggered:', result.transactionHash);
             
             showToast({
                 type: 'success',
                 title: 'Draw Executed Successfully',
-                message: `Transaction hash: ${receipt.transactionHash.slice(0, 10)}...`
+                message: `Transaction with hash: ${result.transactionHash.slice(0, 10)}... was ${result.status}`
             });
             
             setShowRunDrawModal(false);

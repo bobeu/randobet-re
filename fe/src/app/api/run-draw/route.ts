@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
     // Create account from private key
     const account = privateKeyToAccount(privateKey as Address);
     const { contractAddresses: ca, transactionData: td} = filterTransactionData({chainId, filter:true, functionNames: ['runDraw']});
-
+    
     // Create wallet client
     const walletClient = createWalletClient({
       account,
@@ -31,23 +31,6 @@ export async function POST(request: NextRequest) {
       chain,
       transport: http(),
     });
-
-    // Contract address (you'll need to replace this with the actual contract address)
-    // const contractAddress = '0x...'; // Replace with actual contract address
-
-    // ABI for the runDraw function
-    // const abi = [
-    //   {
-    //     name: 'runDraw',
-    //     type: 'function',
-    //     stateMutability: 'nonpayable',
-    //     inputs: [
-    //       { name: 'randoPults', type: 'bytes32[]' },
-    //       { name: 'trigger', type: 'address' }
-    //     ],
-    //     outputs: []
-    //   }
-    // ];
 
     // Execute the runDraw transaction
     const hash = await walletClient.writeContract({
@@ -62,8 +45,8 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ 
       success: true, 
-      transactionHash: hash,
-      receipt 
+      transactionHash: receipt.transactionHash,
+      status: receipt.status
     });
 
   } catch (error) {

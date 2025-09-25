@@ -1,7 +1,7 @@
 {
-  "contractAddress": "0x0d884659F92eEffF161cAea52d1fBAB375F7fEE6",
+  "contractAddress": "0x3C9B2A59F5ED44d1e1bD43020d1349C7E21Ff1cf",
   "functionName": "runDraw",
-  "inputCount": 3,
+  "inputCount": 2,
   "requireArgUpdate": true,
   "abi": [
     {
@@ -124,6 +124,16 @@
                   "internalType": "uint256",
                   "name": "bal",
                   "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "bet",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "timePlaced",
+                  "type": "uint256"
                 }
               ],
               "internalType": "struct IRandoFutures.Player[]",
@@ -177,6 +187,16 @@
                 {
                   "internalType": "uint256",
                   "name": "bal",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "bet",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "timePlaced",
                   "type": "uint256"
                 }
               ],
@@ -445,6 +465,16 @@
                       "internalType": "uint256",
                       "name": "bal",
                       "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "bet",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "timePlaced",
+                      "type": "uint256"
                     }
                   ],
                   "internalType": "struct IRandoFutures.Player[]",
@@ -553,6 +583,16 @@
                     {
                       "internalType": "uint256",
                       "name": "bal",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "bet",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "timePlaced",
                       "type": "uint256"
                     }
                   ],
@@ -758,14 +798,9 @@
     {
       "inputs": [
         {
-          "internalType": "uint256[]",
+          "internalType": "bytes32[]",
           "name": "randomPults",
-          "type": "uint256[]"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_nextBet",
-          "type": "uint256"
+          "type": "bytes32[]"
         },
         {
           "internalType": "address",

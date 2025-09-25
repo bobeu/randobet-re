@@ -22,6 +22,8 @@ import SetFee from './admin/SetFee';
 import DisclaimerModal from './DisclaimerModal';
 import VerificationSection from './VerificationSection';
 import useData from '@/hooks/useData';
+import SetIntervalAndFeeTo from './admin/SetDataStruct'
+import SetApproval from './admin/SetApproval'
 
 export default function BettingInterface() {
   const { 
@@ -42,7 +44,7 @@ export default function BettingInterface() {
     isVerified,
     isApproved
   } = useData();
-  // const [timeLeft, setTimeLeft] = useState(45)
+  // const [timeLeft, setTimeLeft] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [activePanel, setActivePanel] = useState<'main' | 'admin' | 'betting'>('main');
   const [showDisclaimer, setShowDisclaimer] = useState(false);
@@ -109,7 +111,7 @@ export default function BettingInterface() {
   //       if (prev <= 1) {
   //         return Math.max(1, timeUntilNextDraw)
   //       }
-  //       return prev - 1
+  //       return prev - 1 
   //     })
   //   }, 1000)
 
@@ -574,6 +576,8 @@ export default function BettingInterface() {
                     
                     <SetBetListUpfront />
                     <SetFee currentPlayerFee={playerFeeAmount} />
+                    <SetIntervalAndFeeTo />
+                    <SetApproval />
                   </CardContent>
                 </Card>
               </motion.div>

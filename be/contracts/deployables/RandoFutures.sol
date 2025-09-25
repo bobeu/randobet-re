@@ -25,6 +25,7 @@ contract RandoFutures is DrawData, VRFSetUp, ReentrancyGuard {
     constructor(uint bet, uint8 flatFee, uint8 otherFee) {
         require(bet > 0, "Invalid bet in detected");
         betList[0] = bet;
+        state.data.lastDraw = uint64(_now());
         _setFee(Fee({other: otherFee, flat: flatFee}));
     }
 
