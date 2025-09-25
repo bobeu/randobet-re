@@ -8,7 +8,7 @@
     "getData",
     "runDraw",
     "placeBet",
-    "getTriggerReward",
+    "claimTriggerReward",
     "withdraw",
     "setFee",
     "setVerification",
@@ -18,7 +18,8 @@
     "setPermission",
     "removePermission",
     "isPermitted",
-    "getBalanceFromCurrentEpoch"
+    "getBalanceFromCurrentEpoch",
+    "setDataStruct"
   ],
   "chainName": {
     "42220": "celo",
@@ -40,7 +41,7 @@
     {
       "stablecoin": "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1",
       "FeeReceiver": "0x002804Be479Fe20c1dFd7C2105197b350EF76958",
-      "RandoFutures": "0x152941d858eF9d82308d356f55Dd311Bb2C5c52d",
+      "RandoFutures": "0x3C9B2A59F5ED44d1e1bD43020d1349C7E21Ff1cf",
       "Verifier": "0x4AEb54c74Befd483B44C5639d6025258fC7e050e"
     },
     {

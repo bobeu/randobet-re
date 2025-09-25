@@ -7,7 +7,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RainbowKitProvider, getDefaultConfig, lightTheme, } from "@rainbow-me/rainbowkit";
 import { celo, celoSepolia } from "wagmi/chains";
 import { createPublicClient } from "viem";
-// import { privateKeyToAccount } from "viem/accounts";
 import DataProvider from "./DataProvider";
 
 // Your walletconnect project Id
@@ -76,43 +75,46 @@ const queryClient = new QueryClient({
     queries: {
       staleTime: 1000 * 60 * 5, // 5 minutes
       gcTime: 1000 * 60 * 10, // 10 minutes
+      refetchOnWindowFocus: false, // Disable refetch on window focus for better performance
+      retry: 1, // Reduce retry attempts
+    },
+    mutations: {
+      retry: 1, // Reduce mutation retry attempts
     },
   },
 });
 
-export default function Provider({ children }: { children: React.ReactNode }) {
-  // Load the default config from RainbowKit
-  const config = getDefaultConfig({
-    appName: 'Learna',
-    projectId,
-    appIcon: 'https://learna.vercel.app/learna-logo.png',
-    appDescription: '',
-    appUrl: '/project/image',
-    chains: [celoSepolia, celo],
-    ssr: true,
-    multiInjectedProviderDiscovery: true,
-    // pollingInterval: 10_000,
-    // syncConnectedChain: true,
-    transports: {
-      [celoSepolia.id]: http(),
-      [celo.id]: http(),
-    },
-  });
-  // [celoSepolia.id]: http(alchemy_celosepolia_api),
-  // [celoAlfajores.id]: http(alchemy_alfajores_api),
+// Create config outside component to prevent multiple initializations
+const config = getDefaultConfig({
+  appName: 'RandoBet',
+  projectId,
+  appIcon: '/icon.png',
+  appDescription: '',
+  appUrl: '/favicon.svg',
+  chains: [celoSepolia, celo],
+  ssr: true,
+  multiInjectedProviderDiscovery: true,
+  // pollingInterval: 10_000,
+  // syncConnectedChain: true,
+  transports: {
+    [celoSepolia.id]: http(),
+    [celo.id]: http(),
+  },
+});
 
-  // Light theme configuration for RainbowKit wallet set up
-  const theme = lightTheme(
-    {
-      ...lightTheme.accentColors.purple,
-      accentColorForeground: '#0f1113',
-      borderRadius: 'large',
-      fontStack: 'system',
-      overlayBlur: 'small',
-      accentColor: '#fff'
-    }
-  );
-  
+// Create theme outside component to prevent recreation
+const theme = lightTheme(
+  {
+    ...lightTheme.accentColors.purple,
+    accentColorForeground: '#0f1113',
+    borderRadius: 'large',
+    fontStack: 'system',
+    overlayBlur: 'small',
+    accentColor: '#fff'
+  }
+);
+
+export default function Provider({ children }: { children: React.ReactNode }) {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
@@ -123,13 +125,15 @@ export default function Provider({ children }: { children: React.ReactNode }) {
           initialChain={celoSepolia.id} 
           showRecentTransactions={true}
           appInfo={{
-            appName: "Learna",
-            learnMoreUrl: 'https://learna.vercel.app'
+            appName: "RandoBet",
+            learnMoreUrl: ''
           }}
         >
           <CoinbaseWalletAutoConnect>
             <DataProvider>
-              { children }
+              <main>
+                { children }
+              </main>
             </DataProvider>
           </CoinbaseWalletAutoConnect>
         </RainbowKitProvider>

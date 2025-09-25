@@ -52,7 +52,7 @@ function BalanceCheck({bet, epoch, target} : BalanceProps) {
             balance = formatValue(data[0].result as bigint).toStr;
         }
         return { balance };
-    }, [data]);
+    }, [data, isPending]);
 
     return (
         <div>{balance}</div>

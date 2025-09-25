@@ -25,6 +25,7 @@ contract RandoFutures is DrawData, VRFSetUp, ReentrancyGuard {
     constructor(uint bet, uint8 flatFee, uint8 otherFee) {
         require(bet > 0, "Invalid bet in detected");
         betList[0] = bet;
+        state.data.lastDraw = uint64(_now());
         _setFee(Fee({other: otherFee, flat: flatFee}));
     }
 
@@ -119,14 +120,17 @@ contract RandoFutures is DrawData, VRFSetUp, ReentrancyGuard {
         _setSpotId(player, bet, epoch, spotId);
         spinBoard[epoch][bet].players.push(Player(
             player,
-            0
+            0,
+            bet,
+            _now()
         ));
+
         emit BetPlaced(player, bet, epoch, spinBoard[epoch][bet]);
 
         return true;
     }
 
-    function runDraw(uint256[] memory randomPults, uint _nextBet, address trigger)
+    function runDraw(bytes32[] memory randomPults, address trigger)
         external
         whenNotPaused
         onlyApproved
@@ -152,9 +156,9 @@ contract RandoFutures is DrawData, VRFSetUp, ReentrancyGuard {
                     spinBoard[epoch][bet].pool = 0;
                 } else {
                     for(uint i = 0; i < players.length; i++) {
-                        bytes32 pult = _fulfillRandomPults(randomPults[i]);
+                        uint256 pult = _fulfillRandomPults(randomPults[i]);
                         if(pult > 0) {
-                            found = uint256(pult) % _md.pool;
+                            found = pult % _md.pool;
                             if(found == _md.pool) { // If player is lucky to find all the pool amt
                                 // spinBoard[epoch][bet].pool = 0;
                                 found = _md.pool - (found / _md.fee.flat);
@@ -176,7 +180,6 @@ contract RandoFutures is DrawData, VRFSetUp, ReentrancyGuard {
                                 }
                                 
                             }
-                            // _runDraw(bet, fulfilledPult, epoch, trigger, players[i].addr);
                         }
 
                         if(found > 0) {
@@ -195,7 +198,7 @@ contract RandoFutures is DrawData, VRFSetUp, ReentrancyGuard {
 
             }
             if(epoch >= 2 && ((epoch % 2) == 0)) deadEpoch ++;
-            _setBetListUpfront(_nextBet);
+            // _setBetListUpfront(_nextBet);
             state.epoches ++;
         }
         return true;
@@ -233,16 +236,6 @@ contract RandoFutures is DrawData, VRFSetUp, ReentrancyGuard {
       uint64 interval = state.data.drawInterval;
       drawNeeded = _currentDate() >= (state.data.lastDraw + interval);
       return drawNeeded;
-    }
-
-    /**@dev Get the balance of target address in a pool from a specific epoch
-     */
-    function checkBalance(uint bet, uint epoch, address target) external view returns(uint256 bal) {
-        if(isPlayer[target][epoch][bet]){
-            uint spot = _getSpotId(_msgSender(), bet, epoch);
-            bal = spinBoard[epoch][bet].players[spot].bal;
-        }
-        return bal;
     }
 
     /**@dev Get the balance of target address in a pool from a specific epoch

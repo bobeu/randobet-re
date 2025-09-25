@@ -28,12 +28,13 @@ export default function AnimatedOrb({ isSpinning, playerCount = 0 }: AnimatedOrb
 
   const rotate = useTransform(rotation, (value) => value)
   const scaleValue = useTransform(scale, (value) => value)
+  const defValue = useTransform(rotation, (value) => -value * 0.5)
 
   return (
     <div className="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 mx-auto">
       {/* Outer Glow Ring */}
       <motion.div 
-        className="absolute inset-0 rounded-full bg-gradient-to-r from-orange-400/20 via-purple-500/20 to-orange-400/20"
+        className="absolute inset-0 rounded-full bg-gradient-to-r from-stone-400/20 via-violet-500/20 to-stone-400/20"
         style={{ 
           rotate: isSpinning ? rotate : 0,
           scale: scaleValue
@@ -50,14 +51,14 @@ export default function AnimatedOrb({ isSpinning, playerCount = 0 }: AnimatedOrb
       
       {/* Main Orb Ring */}
       <motion.div 
-        className="absolute inset-2 rounded-full bg-gradient-to-br from-purple-600 via-orange-500 to-violet-700 shadow-2xl"
+        className="absolute inset-2 rounded-full bg-gradient-to-br from-stone-600 via-stone-500 to-violet-700 shadow-2xl"
         style={{ 
-          rotate: isSpinning ? useTransform(rotation, (value) => -value * 0.5) : 0
+          rotate: isSpinning ? defValue : 0
         }}
         animate={{ 
           boxShadow: [
             "0 0 40px rgba(139, 92, 246, 0.8)",
-            "0 0 60px rgba(251, 191, 36, 1)",
+            "0 0 60px rgba(250, 204, 21, 0.6)",
             "0 0 40px rgba(139, 92, 246, 0.8)"
           ]
         }}
@@ -67,7 +68,7 @@ export default function AnimatedOrb({ isSpinning, playerCount = 0 }: AnimatedOrb
       >
         {/* Inner Pattern */}
         <motion.div 
-          className="w-full h-full rounded-full bg-gradient-to-tr from-orange-400/60 via-transparent to-purple-400/60"
+          className="w-full h-full rounded-full bg-gradient-to-tr from-stone-400/60 via-transparent to-violet-400/60"
           animate={{ 
             opacity: [0.4, 0.8, 0.4],
             rotate: [0, 180, 360]
@@ -81,13 +82,13 @@ export default function AnimatedOrb({ isSpinning, playerCount = 0 }: AnimatedOrb
       
       {/* Central Core */}
       <motion.div 
-        className="absolute inset-1/3 rounded-full bg-gradient-to-br from-orange-500 to-purple-600 flex items-center justify-center shadow-xl"
+        className="absolute inset-1/3 rounded-full bg-gradient-to-br from-stone-500 to-violet-600 flex items-center justify-center shadow-xl"
         animate={{ 
           scale: isSpinning ? [1, 1.15, 1] : [1, 1.08, 1],
           boxShadow: [
-            "0 0 20px rgba(251, 191, 36, 0.6)",
+            "0 0 20px rgba(250, 204, 21, 0.4)",
             "0 0 30px rgba(139, 92, 246, 0.8)",
-            "0 0 20px rgba(251, 191, 36, 0.6)"
+            "0 0 20px rgba(250, 204, 21, 0.4)"
           ]
         }}
         transition={{ 
@@ -97,7 +98,7 @@ export default function AnimatedOrb({ isSpinning, playerCount = 0 }: AnimatedOrb
       >
         {/* Inner Core with Pulsing Effect */}
         <motion.div 
-          className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-orange-300 to-purple-400 rounded-full shadow-lg"
+          className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-stone-300 to-violet-400 rounded-full shadow-lg"
           animate={{ 
             y: isSpinning ? [0, -8, 0] : [0, -3, 0],
             scale: [1, 1.1, 1]
@@ -109,11 +110,11 @@ export default function AnimatedOrb({ isSpinning, playerCount = 0 }: AnimatedOrb
         />
       </motion.div>
       
-      {/* Orbiting Particles - SpookySwap colors */}
+      {/* Orbiting Particles - Stone with violet accents */}
       {[...Array(6)].map((_, i) => (
         <motion.div
           key={i}
-          className="absolute w-3 h-3 bg-gradient-to-r from-orange-400 to-purple-400 rounded-full"
+          className="absolute w-3 h-3 bg-gradient-to-r from-stone-400 to-violet-400 rounded-full"
           style={{
             top: '50%',
             left: '50%',
@@ -137,11 +138,11 @@ export default function AnimatedOrb({ isSpinning, playerCount = 0 }: AnimatedOrb
         />
       ))}
       
-      {/* Dynamic Floating Sparkles - Orange/Purple */}
+      {/* Dynamic Floating Sparkles - Stone with yellow accents */}
       {[...Array(sparkleCount)].map((_, i) => (
         <motion.div
           key={`sparkle-${i}`}
-          className="absolute bg-gradient-to-r from-orange-300 to-purple-300 rounded-full"
+          className="absolute bg-gradient-to-r from-stone-300 to-yellow-300 rounded-full"
           style={{
             width: `${baseSize * 4}px`,
             height: `${baseSize * 4}px`,
@@ -163,7 +164,7 @@ export default function AnimatedOrb({ isSpinning, playerCount = 0 }: AnimatedOrb
 
       {/* Mystical glow effect */}
       <motion.div
-        className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500/10 to-orange-500/10"
+        className="absolute inset-0 rounded-full bg-gradient-to-r from-violet-500/10 to-stone-500/10"
         animate={{
           opacity: [0.3, 0.6, 0.3],
           scale: [1, 1.1, 1]

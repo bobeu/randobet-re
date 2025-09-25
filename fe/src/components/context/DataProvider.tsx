@@ -2,18 +2,15 @@
 import { DataContextProvider } from "./DataContextProvider";
 import React from 'react';
 import { useAccount, useChainId, useConfig, useReadContracts } from "wagmi";
-import { zeroAddress } from 'viem';
 import { Address, BetData, mockBetData } from "@/types";
 import { filterTransactionData, formatAddr } from "../utilities/common";
 
 export default function DataProvider({children} : {children: React.ReactNode}) {
-    // const [selectedBet, setSelectedBet] = React.useState<bigint>(0n);
-    // const [selectedEpoch, setSelectedEpoch] = React.useState<bigint>(0n);
     const [data, setBetData] = React.useState<BetData>(mockBetData);
     const [isDrawNeeded, setIsDrawNeeded] = React.useState<boolean>(false);
     const [epochPoolBal, setEpochPoolBal] = React.useState<bigint>(0n);
-    // const [verificationStatus, setVerificationStatus] = React.useState<boolean>(false);
-    // const [campaignsData, setCampaignsData] = React.useState<FormattedCampaignTemplate[]>([mockCampaignTemplateReadData]);
+    const [isVerified, setIsVerified] = React.useState<boolean>(false);
+    const [isApproved, setIsApproved] = React.useState<boolean>(false);
 
     const chainId = useChainId();
     const config = useConfig();
@@ -21,20 +18,25 @@ export default function DataProvider({children} : {children: React.ReactNode}) {
     const account = formatAddr(address);
 
     // Build read transactions data
-    const { transactionData: td, contractAddresses: ca } = filterTransactionData({
-        chainId,
-        filter: true,
-        functionNames: ['getData', 'isDrawNeeded', 'getBalanceFromCurrentEpoch'],
-    });
-    const readArgs = [[], [], []];
-    const readTxObject = td.map((item, i) => {
-        return{
-            abi: item.abi,
-            functionName: item.functionName,
-            address: item.contractAddress as Address,
-            args: readArgs[i]
-        }
-    });
+    const readTxObject = React.useMemo(() => {
+        const { transactionData: td} = filterTransactionData({
+            chainId,
+            filter: true,
+            functionNames: ['getData', 'isDrawNeeded', 'getBalanceFromCurrentEpoch', 'isPermitted', 'isVerified'],
+        });
+        const readArgs = [[], [], [], [account], [account]];
+        const readTxObject = td.map((item, i) => {
+            return {
+                abi: item.abi,
+                functionName: item.functionName,
+                address: item.contractAddress as Address,
+                args: readArgs[i]
+            }
+        });
+
+        return readTxObject;
+    }, [account]);
+   
 
     // Read data from the CampaignFactory contact 
     const { data: contractData, } = useReadContracts({
@@ -54,6 +56,8 @@ export default function DataProvider({children} : {children: React.ReactNode}) {
         let data_ : BetData = mockBetData;
         let isDrawNeeded_ : boolean = false;
         let epochPoolBal_ : bigint = 0n;
+        let isVerified_ : boolean = false;
+        let isApproved_ : boolean = false;
 
         if(contractData && contractData[0].status === 'success' && contractData[0].result !== undefined) {
             data_ = contractData[0].result as BetData;
@@ -67,6 +71,14 @@ export default function DataProvider({children} : {children: React.ReactNode}) {
             epochPoolBal_ = contractData[2].result as bigint;
             setEpochPoolBal(epochPoolBal_);
         }
+        if(contractData && contractData[3].status === 'success' && contractData[3].result !== undefined) {
+            isApproved_ = contractData[3].result as boolean;
+            setIsApproved(isApproved_);
+        }
+        if(contractData && contractData[4].status === 'success' && contractData[4].result !== undefined) {
+            isVerified_ = contractData[4].result as boolean;
+            setIsVerified(isVerified_);
+        }
     }, [contractData]);
 
     return (
@@ -75,6 +87,8 @@ export default function DataProvider({children} : {children: React.ReactNode}) {
                 data,
                 isDrawNeeded,
                 epochPoolBal,
+                isApproved,
+                isVerified
             }}
         >
             { children }

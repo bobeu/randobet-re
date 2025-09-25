@@ -20,21 +20,23 @@ import toggleUseWalletVerification42220 from "./contractsArtifacts/42220/toggleU
 
 // Celo Sepolia contract configs
 import placeBet11142220 from "./contractsArtifacts/11142220/placeBet.json";
+import setDataStruct11142220 from "./contractsArtifacts/11142220/setDataStruct.json";
 import runDraw11142220 from "./contractsArtifacts/11142220/runDraw.json";
 import checkBalance11142220 from "./contractsArtifacts/11142220/checkBalance.json";
 import checkEpochBalance11142220 from "./contractsArtifacts/11142220/checkEpochBalance.json";
 import getDataByEpoch11142220 from "./contractsArtifacts/11142220/getDataByEpoch.json";
 import getData11142220 from "./contractsArtifacts/11142220/getData.json";
 import isVerified11142220 from "./contractsArtifacts/11142220/isVerified.json";
-// import claimTriggerReward11142220 from "./contractsArtifacts/11142220/claimTriggerReward.json";
+import claimTriggerReward11142220 from "./contractsArtifacts/11142220/claimTriggerReward.json";
 import isDrawNeeded11142220 from "./contractsArtifacts/11142220/isDrawNeeded.json";
 import setBetListUpfront11142220 from "./contractsArtifacts/11142220/setBetListUpfront.json";
 import setFee11142220 from "./contractsArtifacts/11142220/setFee.json";
 import setVerification11142220 from "./contractsArtifacts/11142220/setVerification.json";
+import setVerificationByOwner11142220 from "./contractsArtifacts/11142220/setVerificationByOwner.json";
 import withdraw11142220 from "./contractsArtifacts/11142220/withdraw.json";
-// import getBalanceFromCurrentEpoch11142220 from "./contractsArtifacts/11142220/getBalanceFromCurrentEpoch.json";
+import getBalanceFromCurrentEpoch11142220 from "./contractsArtifacts/11142220/getBalanceFromCurrentEpoch.json";
 import setPermission11142220 from "./contractsArtifacts/11142220/setPermission.json";
-// import removePermission11142220 from "./contractsArtifacts/11142220/removePermission.json";
+import removePermission11142220 from "./contractsArtifacts/11142220/removePermission.json";
 import isPermitted11142220 from "./contractsArtifacts/11142220/isPermitted.json";
 import toggleUseWalletVerification11142220 from "./contractsArtifacts/11142220/toggleUseWalletVerification.json";
 
@@ -47,22 +49,23 @@ const functionData = [
         { key: 'getDataByEpoch', value: { ...getDataByEpoch11142220} },
         { key: 'getData', value: { ...getData11142220} },
         { key: 'isVerified', value: { ...isVerified11142220} },
-        // { key: 'claimTriggerReward', value: { ...claimTriggerReward11142220} },
+        { key: 'claimTriggerReward', value: { ...claimTriggerReward11142220} },
         { key: 'isDrawNeeded', value: { ...isDrawNeeded11142220} },
         { key: 'setBetListUpfront', value: { ...setBetListUpfront11142220} },
         { key: 'setVerification', value: { ...setVerification11142220} },
+        { key: 'setVerificationByOwner', value: { ...setVerificationByOwner11142220} },
         { key: 'withdraw', value: { ...withdraw11142220} },
-        { key: 'getData', value: { ...getData11142220} },
         { key: 'setPermission', value: { ...setPermission11142220} },
-        // { key: 'removePermission', value: { ...removePermission11142220} },
+        { key: 'removePermission', value: { ...removePermission11142220} },
         { key: 'isPermitted', value: { ...isPermitted11142220} },
-        // { key: 'getBalanceFromCurrentEpoch', value: { ...getBalanceFromCurrentEpoch11142220} },
+        { key: 'getBalanceFromCurrentEpoch', value: { ...getBalanceFromCurrentEpoch11142220} },
         { key: 'placeBet', value: { ...placeBet11142220} },
         { key: 'runDraw', value: { ...runDraw11142220} },
         { key: 'toggleUseWalletVerification', value: { ...toggleUseWalletVerification11142220} },
         { key: 'setFee', value: { ...setFee11142220} },
         { key: 'checkBalance', value: { ...checkBalance11142220} },
         { key: 'checkEpochBalance', value: { ...checkEpochBalance11142220} },
+        { key: 'setDataStruct', value: { ...setDataStruct11142220} },
     ],
     [
         { key: 'getDataByEpoch', value: { ...getDataByEpoch42220} },
@@ -99,7 +102,6 @@ export const getFunctionData = (functionName: string, chainId: number = chainIds
         throw new Error(`${functionName} not supported`);
     }
     const chainIndex = chainIds.indexOf(chainId);
-    // const found = functionData[0].filter(q => q.key.toLowerCase() === functionName.toLowerCase());
     const found = functionData[chainIndex].filter(q => q.key.toLowerCase() === functionName.toLowerCase());
     return found?.[0].value; 
 }

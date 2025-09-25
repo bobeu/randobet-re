@@ -1,3 +1,4 @@
 {
+  "/api/run-draw/route": "app/api/run-draw/route.js",
   "/page": "app/page.js"
 }

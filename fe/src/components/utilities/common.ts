@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { formatEther, Hex, keccak256, stringToBytes } from "viem";
 import BigNumber from "bignumber.js";
 import { ethers } from "ethers";
@@ -27,7 +26,6 @@ export function getTimeFromEpoch(onchainUnixTime: number | bigint) {
   const date = new Date(toNumber * 1000);
   return (toNumber === 0? 'Not Set' : `${date.toLocaleDateString("en-GB")} ${date.toLocaleTimeString("en-US")}`);
 }
-
 
 /**
  * @dev Converts an argument to a Big Number value

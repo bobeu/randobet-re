@@ -58,142 +58,181 @@
   }
 }
 
-/* SpookySwap Theme - Custom gradient backgrounds */
+/* Randobet Theme - Restricted color palette */
 .gradient-bg {
   background: linear-gradient(135deg, 
-    #1a0b2e 0%, 
-    #2d1b69 25%, 
-    #4c1d95 50%, 
-    #6b21a8 75%, 
-    #8b5cf6 100%
+    #2e1065 0%, /* violet-950 */
+    #4c1d95 25%, /* violet-900 */
+    #713f12 50%, /* yellow-900 */
+    #a16207 75%, /* yellow-700 */
+    #8b5cf6 100% /* violet-500 */
   );
 }
 
-.spooky-gradient {
+.gradient-orb {
   background: linear-gradient(135deg, 
-    #1a0b2e 0%, 
-    #2d1b69 35%, 
-    #4c1d95 70%, 
-    #6b21a8 100%
+    #8b5cf6 0%, /* violet-500 */
+    #facc15 50%, /* yellow-400 */
+    #8b5cf6 100% /* violet-500 */
   );
 }
 
-.orb-gradient {
-  background: radial-gradient(circle at center,
-    #fbbf24 0%,
-    #f59e0b 20%,
-    #d97706 40%,
-    #8b5cf6 60%,
-    #6b21a8 80%,
-    #4c1d95 100%
+.gradient-glow {
+  background: linear-gradient(135deg, 
+    rgba(139, 92, 246, 0.3) 0%, /* violet-500/30 */
+    rgba(250, 204, 21, 0.3) 50%, /* yellow-400/30 */
+    rgba(139, 92, 246, 0.3) 100% /* violet-500/30 */
   );
 }
 
-.glass-effect {
-  backdrop-filter: blur(16px);
-  background: rgba(139, 92, 246, 0.1);
-  border: 1px solid rgba(139, 92, 246, 0.2);
-}
-
-.spooky-glass {
-  backdrop-filter: blur(20px);
-  background: rgba(139, 92, 246, 0.15);
-  border: 1px solid rgba(139, 92, 246, 0.3);
-  box-shadow: 0 8px 32px rgba(139, 92, 246, 0.1);
-}
-
-/* Particle effects */
-.particle {
-  position: absolute;
-  border-radius: 50%;
-  pointer-events: none;
-  animation: float 6s ease-in-out infinite;
-}
-
-.particle:nth-child(odd) {
-  animation-delay: -2s;
-}
-
-.particle:nth-child(even) {
-  animation-delay: -4s;
-}
-
-/* SpookySwap Glow effects */
-.glow-yellow {
-  box-shadow: 0 0 30px rgba(251, 191, 36, 0.6);
-}
-
-.glow-violet {
-  box-shadow: 0 0 30px rgba(139, 92, 246, 0.6);
-}
-
-.glow-purple {
-  box-shadow: 0 0 40px rgba(139, 92, 246, 0.8);
-}
-
-.glow-orange {
-  box-shadow: 0 0 30px rgba(251, 191, 36, 0.8);
-}
-
-/* SpookySwap specific styles */
 .spooky-text {
-  background: linear-gradient(135deg, #fbbf24 0%, #8b5cf6 50%, #fbbf24 100%);
+  background: linear-gradient(135deg, #facc15 0%, #8b5cf6 50%, #facc15 100%); /* yellow-400, violet-500 */
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-.spooky-border {
-  border: 2px solid transparent;
-  background: linear-gradient(135deg, #1a0b2e, #8b5cf6) padding-box,
-              linear-gradient(135deg, #fbbf24, #8b5cf6) border-box;
+/* Custom animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
 }
 
-/* Remove scrollbar */
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(234, 179, 8, 0.5); }
+  50% { box-shadow: 0 0 40px rgba(234, 179, 8, 0.8); }
 }
 
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
-/* RainbowKit ConnectButton Custom Styling */
-[data-rk] {
-  --rk-fonts-body: 'Inter', system-ui, sans-serif;
-  --rk-fonts-heading: 'Inter', system-ui, sans-serif;
+@keyframes orbit {
+  0% { transform: rotate(0deg) translateX(100px) rotate(0deg); }
+  100% { transform: rotate(360deg) translateX(100px) rotate(-360deg); }
 }
 
-/* Custom ConnectButton styling to match SpookySwap theme */
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 8s linear infinite;
+}
+
+.animate-orbit {
+  animation: orbit 10s linear infinite;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1c1917; /* stone-900 */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #8b5cf6; /* violet-500 */
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #facc15; /* yellow-400 */
+}
+
+/* Custom ConnectButton styling */
 [data-rk] button {
-  background: linear-gradient(135deg, #8b5cf6 0%, #f59e0b 100%) !important;
-  border: 1px solid rgba(139, 92, 246, 0.3) !important;
-  border-radius: 12px !important;
-  color: white !important;
-  font-weight: 600 !important;
+  background: linear-gradient(135deg, #8b5cf6 0%, #facc15 100%) !important; /* violet-500, yellow-400 */
+  border: 2px solid #713f12 !important; /* yellow-900 */
+  color: #1c1917 !important; /* stone-900 */
+  font-weight: 700 !important;
+  border-radius: 8px !important;
   transition: all 0.3s ease !important;
-  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3) !important;
 }
 
 [data-rk] button:hover {
-  background: linear-gradient(135deg, #7c3aed 0%, #d97706 100%) !important;
-  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4) !important;
+  background: linear-gradient(135deg, #facc15 0%, #8b5cf6 100%) !important;
   transform: translateY(-2px) !important;
+  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3) !important;
 }
 
-[data-rk] button:active {
-  transform: translateY(0) !important;
+/* Fade in animation */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* Mobile optimizations */
-@media (max-width: 768px) {
-  .mobile-stack {
-    flex-direction: column;
-  }
-  
-  .mobile-full {
-    width: 100%;
-    height: auto;
-  }
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out;
+}
+
+/* Glow effects */
+.glow-violet {
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+}
+
+.glow-yellow {
+  box-shadow: 0 0 20px rgba(250, 204, 21, 0.5);
+}
+
+.glow-stone {
+  box-shadow: 0 0 20px rgba(113, 63, 18, 0.5);
+}
+
+/* Hover effects */
+.hover-glow:hover {
+  box-shadow: 0 0 30px rgba(139, 92, 246, 0.7);
+  transform: translateY(-2px);
+  transition: all 0.3s ease;
+}
+
+/* Text effects */
+.text-glow {
+  text-shadow: 0 0 10px rgba(250, 204, 21, 0.5);
+}
+
+/* Card effects */
+.card-hover {
+  transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(139, 92, 246, 0.2);
+}
+
+/* Button effects */
+.btn-primary {
+  background: linear-gradient(135deg, #8b5cf6 0%, #facc15 100%);
+  border: 2px solid #713f12;
+  color: #1c1917;
+  font-weight: 700;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #facc15 0%, #8b5cf6 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, #713f12 0%, #a16207 100%);
+  border: 2px solid #facc15;
+  color: #facc15;
+  font-weight: 700;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background: linear-gradient(135deg, #a16207 0%, #713f12 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(250, 204, 21, 0.3);
 }

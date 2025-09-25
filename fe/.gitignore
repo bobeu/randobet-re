@@ -24,6 +24,9 @@ dist-ssr
 
 # dev folders
 /residue.md
+.next
+.next/*
+/next
 
 
 node_modules

@@ -1,7 +1,7 @@
 {
-  "contractAddress": "0x152941d858eF9d82308d356f55Dd311Bb2C5c52d",
+  "contractAddress": "0x3C9B2A59F5ED44d1e1bD43020d1349C7E21Ff1cf",
   "functionName": "checkBalance",
-  "inputCount": 2,
+  "inputCount": 3,
   "requireArgUpdate": true,
   "abi": [
     {
@@ -15,13 +15,18 @@
           "internalType": "uint256",
           "name": "epoch",
           "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "target",
+          "type": "address"
         }
       ],
       "name": "checkBalance",
       "outputs": [
         {
           "internalType": "uint256",
-          "name": "",
+          "name": "bal",
           "type": "uint256"
         }
       ],

@@ -1,15 +1,20 @@
+/*eslint-disable */
+
 import { zeroAddress } from "viem";
+import { formatAddr } from "./components/utilities/common";
 
 export type Address = `0x${string}`;
-export type FunctionName = 'placebet' | 'checkBalance' | 'checkEpochBalance' | 'getData' | 'getDataByEpoch' | 'claimTriggerReward' | 'isDrawNeeded' | 'isVerified' | 'runDraw' | 'setBetListUpfront' | 'setFee' | 'setVerification' | 'setverificationByOwner' | 'withdraw' | 'getBalanceFromCurrentEpoch';
+export type FunctionName = 'placeBet' | 'checkBalance' | 'checkEpochBalance' | 'getData' | 'getDataByEpoch' | 'claimTriggerReward' | 'isDrawNeeded' | 'isVerified' | 'runDraw' | 'setBetListUpfront' | 'setFee' | 'setVerification' | 'setVerificationByOwner' | 'withdraw' | 'getBalanceFromCurrentEpoch' | 'isPermitted' | 'setDataStruct' | 'setPermission';
 export const adminFunctions : FunctionName[] = [
     "setBetListUpfront",
     "setFee",
-    "setverificationByOwner"
+    "setVerificationByOwner",
+    "setDataStruct",
+    "setPermission"
 ];
 
 export const userFunctions : FunctionName[] = [
-    "placebet",
+    "placeBet",
     "runDraw",
     "withdraw",
     "setVerification",
@@ -18,6 +23,8 @@ export const userFunctions : FunctionName[] = [
 export interface Player {
     bal: bigint;
     addr: Address;
+    bet: bigint;
+    timePlaced: bigint;
 }
 
 export interface Spin {
@@ -72,6 +79,8 @@ export type TransactionData = {
 };
 
 ///////////////////////// Constants  ///////////////////////////////
+export const APP_ICON_URL = "https://randobet.vercel.app";
+export const APP_NAME = "Randobet";
 
 export const mockBetData : BetData = {
     spin: {
@@ -79,8 +88,10 @@ export const mockBetData : BetData = {
         pool: 0n,
         players: [0, 1, 2, 3].map((c) => {
             return {
-                addr: `0x${'0'.repeat(42-c)}${c.toString().repeat(c)}`,
-                bal: BigInt(c)
+                addr: formatAddr(`0x${'0'.repeat(42-c)}${c.toString().repeat(c)}`),
+                bal: BigInt(c),
+                bet: BigInt(c),
+                timePlaced: BigInt(new Date().getTime() + c)
             }
         })
     },

@@ -59,8 +59,8 @@ describe("RandoFuturesTest", function () {
       let allBal : bigint = 0n;
       const epochBalance = await randoFutures.checkEpochBalance(bet, epoch);
       const contractBal = await players[0].provider.getBalance(randoFuturesAddr);
-      console.log("ContractBal: ", contractBal.toString());
-      console.log("EpochBalance:", epochBalance.toString());
+      // console.log("ContractBal: ", contractBal.toString());
+      // console.log("EpochBalance:", epochBalance.toString());
       for (let i = 0; i < players.length; i++) {
         const recipient = players[i].address;
         const epochBal = await randoFutures.connect(players[i]).checkBalance(bet, epoch);
@@ -71,10 +71,10 @@ describe("RandoFuturesTest", function () {
         await randoFutures.connect(approvedSender).withdraw(bet, epoch, recipient, recipient);
         const balance = await approvedSender.provider.getBalance(recipient);
         balancesAfter.push(balance);
-        console.log(`Bal done ${i}`);
+        // console.log(`Bal done ${i}`);
       }
       const contractBalAfter = await players[0].provider.getBalance(randoFuturesAddr);
-      console.log("contractBalAfter withdraw: ", contractBalAfter.toString());
+      // console.log("contractBalAfter withdraw: ", contractBalAfter.toString());
       return {balancesB4, balancesAfter, allBal};
     };
 
@@ -87,7 +87,7 @@ describe("RandoFuturesTest", function () {
         const exponential = base.exponentiatedBy(power);
         const randoPult = new BigNumber(Math.random().toString()).times(exponential).toString();
         // let rawRand = parseUnits(Math.random().toString(), 18);
-        console.log("randoPult: ", randoPult);
+        // console.log("randoPult: ", randoPult);
         randInputs.push(BigInt(randoPult));
       });
       console.log("randoPults", randInputs)

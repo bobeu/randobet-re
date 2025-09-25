@@ -1,11 +1,10 @@
 'use client'
-
-import { motion } from 'framer-motion'
-import { DivideIcon as LucideIcon } from 'lucide-react'
-import { Card, CardContent } from '@/components/ui/card'
+/* eslint-disable */
+import { motion } from 'framer-motion';
+import { Card, CardContent } from '@/components/ui/card';
 
 interface StatsCardProps {
-  icon: LucideIcon
+  icon: any;
   label: string
   value: string
   gradient: string
@@ -20,9 +19,9 @@ export default function StatsCard({
   icon: Icon,
   label,
   value,
-  gradient,
-  borderColor,
-  textColor,
+  // gradient,
+  // borderColor,
+  // textColor,
   delay,
   className = "",
   isBold = false
@@ -34,14 +33,14 @@ export default function StatsCard({
       transition={{ duration: 0.6, delay }}
       className={className}
     >
-      <Card className={`bg-gradient-to-br ${gradient} ${borderColor} glass-effect hover:scale-105 transition-transform duration-300`}>
+      <Card className={`bg-stone-900/80 border-stone-600/20 backdrop-blur-sm hover:scale-105 transition-transform duration-300`}>
         <CardContent className="p-4">
           <div className="flex items-center gap-2 mb-2">
-            <Icon className={`w-4 h-4 ${textColor}`} />
-            <span className="text-stone-300 text-sm">{label}</span>
+            <Icon className={`w-4 h-4 text-yellow-400`} />
+            <span className="text-yellow-200 text-sm font-medium">{label}</span>
           </div>
           <motion.div 
-            className={`${isBold ? 'text-xl lg:text-2xl xl:text-3xl' : 'text-lg lg:text-xl'} font-bold ${textColor}`}
+            className={`${isBold ? 'text-xl lg:text-2xl xl:text-3xl' : 'text-lg lg:text-xl'} font-bold text-white`}
             key={value}
             initial={{ scale: 1.1 }}
             animate={{ scale: 1 }}
