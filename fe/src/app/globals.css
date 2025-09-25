@@ -1,0 +1,199 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 60 9% 98%;
+    --foreground: 24 10% 10%;
+    --card: 60 9% 98%;
+    --card-foreground: 24 10% 10%;
+    --popover: 60 9% 98%;
+    --popover-foreground: 24 10% 10%;
+    --primary: 47 96% 53%;
+    --primary-foreground: 26 83% 14%;
+    --secondary: 60 5% 96%;
+    --secondary-foreground: 24 10% 10%;
+    --muted: 25 5% 95%;
+    --muted-foreground: 25 5% 45%;
+    --accent: 60 5% 96%;
+    --accent-foreground: 24 10% 10%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 60 9% 98%;
+    --border: 20 6% 90%;
+    --input: 20 6% 90%;
+    --ring: 47 96% 53%;
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 270 100% 5%;
+    --foreground: 270 20% 95%;
+    --card: 270 50% 8%;
+    --card-foreground: 270 20% 95%;
+    --popover: 270 50% 8%;
+    --popover-foreground: 270 20% 95%;
+    --primary: 270 100% 60%;
+    --primary-foreground: 270 20% 95%;
+    --secondary: 270 30% 15%;
+    --secondary-foreground: 270 20% 95%;
+    --muted: 270 30% 15%;
+    --muted-foreground: 270 10% 65%;
+    --accent: 270 30% 15%;
+    --accent-foreground: 270 20% 95%;
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 270 20% 95%;
+    --border: 270 30% 20%;
+    --input: 270 30% 15%;
+    --ring: 270 100% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* SpookySwap Theme - Custom gradient backgrounds */
+.gradient-bg {
+  background: linear-gradient(135deg, 
+    #1a0b2e 0%, 
+    #2d1b69 25%, 
+    #4c1d95 50%, 
+    #6b21a8 75%, 
+    #8b5cf6 100%
+  );
+}
+
+.spooky-gradient {
+  background: linear-gradient(135deg, 
+    #1a0b2e 0%, 
+    #2d1b69 35%, 
+    #4c1d95 70%, 
+    #6b21a8 100%
+  );
+}
+
+.orb-gradient {
+  background: radial-gradient(circle at center,
+    #fbbf24 0%,
+    #f59e0b 20%,
+    #d97706 40%,
+    #8b5cf6 60%,
+    #6b21a8 80%,
+    #4c1d95 100%
+  );
+}
+
+.glass-effect {
+  backdrop-filter: blur(16px);
+  background: rgba(139, 92, 246, 0.1);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+}
+
+.spooky-glass {
+  backdrop-filter: blur(20px);
+  background: rgba(139, 92, 246, 0.15);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  box-shadow: 0 8px 32px rgba(139, 92, 246, 0.1);
+}
+
+/* Particle effects */
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: float 6s ease-in-out infinite;
+}
+
+.particle:nth-child(odd) {
+  animation-delay: -2s;
+}
+
+.particle:nth-child(even) {
+  animation-delay: -4s;
+}
+
+/* SpookySwap Glow effects */
+.glow-yellow {
+  box-shadow: 0 0 30px rgba(251, 191, 36, 0.6);
+}
+
+.glow-violet {
+  box-shadow: 0 0 30px rgba(139, 92, 246, 0.6);
+}
+
+.glow-purple {
+  box-shadow: 0 0 40px rgba(139, 92, 246, 0.8);
+}
+
+.glow-orange {
+  box-shadow: 0 0 30px rgba(251, 191, 36, 0.8);
+}
+
+/* SpookySwap specific styles */
+.spooky-text {
+  background: linear-gradient(135deg, #fbbf24 0%, #8b5cf6 50%, #fbbf24 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.spooky-border {
+  border: 2px solid transparent;
+  background: linear-gradient(135deg, #1a0b2e, #8b5cf6) padding-box,
+              linear-gradient(135deg, #fbbf24, #8b5cf6) border-box;
+}
+
+/* Remove scrollbar */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* RainbowKit ConnectButton Custom Styling */
+[data-rk] {
+  --rk-fonts-body: 'Inter', system-ui, sans-serif;
+  --rk-fonts-heading: 'Inter', system-ui, sans-serif;
+}
+
+/* Custom ConnectButton styling to match SpookySwap theme */
+[data-rk] button {
+  background: linear-gradient(135deg, #8b5cf6 0%, #f59e0b 100%) !important;
+  border: 1px solid rgba(139, 92, 246, 0.3) !important;
+  border-radius: 12px !important;
+  color: white !important;
+  font-weight: 600 !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3) !important;
+}
+
+[data-rk] button:hover {
+  background: linear-gradient(135deg, #7c3aed 0%, #d97706 100%) !important;
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4) !important;
+  transform: translateY(-2px) !important;
+}
+
+[data-rk] button:active {
+  transform: translateY(0) !important;
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .mobile-stack {
+    flex-direction: column;
+  }
+  
+  .mobile-full {
+    width: 100%;
+    height: auto;
+  }
+}
