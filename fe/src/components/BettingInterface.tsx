@@ -2,26 +2,26 @@
 /* esling-disable */
 import { useState, useMemo, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Timer, Users, DollarSign, TrendingUp, Zap, Sparkles, Clock, AlertTriangle, Info, Shield, Settings } from 'lucide-react'
+import { Timer, Users, DollarSign, TrendingUp, Zap, Clock, AlertTriangle, Shield, Settings } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-import { ConnectButton } from '@rainbow-me/rainbowkit'
-import AnimatedOrb from '@/components/AnimatedOrb'
-import ParticleField from '@/components/ParticleField'
-import StatsCard from '@/components/StatsCard'
-import RecentBets from '@/components/RecentBets'
-import PlaceBet from './transactions/PlaceBet'
-import Withdraw from './transactions/Withdraw'
-import RunDraw from './transactions/RunDraw'
-import SetVerification from './transactions/SetVerification'
-import ClaimTriggerReward from './transactions/ClaimTriggerReward'
-import SetBetListUpfront from './admin/SetBetListUpfront'
-import SetFee from './admin/SetFee'
-import DisclaimerModal from './DisclaimerModal'
-import VerificationSection from './VerificationSection'
-import useData from '@/hooks/useData'
+import { ConnectButton } from '@rainbow-me/rainbowkit';
+import AnimatedOrb from '@/components/AnimatedOrb';
+import ParticleField from '@/components/ParticleField';
+import StatsCard from '@/components/StatsCard';
+import RecentBets from '@/components/RecentBets';
+import PlaceBet from './transactions/PlaceBet';
+import Withdraw from './transactions/Withdraw';
+import RunDraw from './transactions/RunDraw';
+import SetVerification from './transactions/SetVerification';
+import ClaimTriggerReward from './transactions/ClaimTriggerReward';
+import SetBetListUpfront from './admin/SetBetListUpfront';
+import SetFee from './admin/SetFee';
+import DisclaimerModal from './DisclaimerModal';
+import VerificationSection from './VerificationSection';
+import useData from '@/hooks/useData';
 
 export default function BettingInterface() {
   const { 
@@ -42,7 +42,7 @@ export default function BettingInterface() {
     isVerified,
     isApproved
   } = useData();
-  const [timeLeft, setTimeLeft] = useState(45)
+  // const [timeLeft, setTimeLeft] = useState(45)
   const [loading, setLoading] = useState<boolean>(false);
   const [activePanel, setActivePanel] = useState<'main' | 'admin' | 'betting'>('main');
   const [showDisclaimer, setShowDisclaimer] = useState(false);
@@ -103,18 +103,18 @@ export default function BettingInterface() {
   }, [totalBet, currentEpochBet, nextEpochBet, players, lastDraw, drawInterval, playerFee, currentEpoch, deadEpoch]);
 
   // Countdown timer - using real blockchain data
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft(prev => {
-        if (prev <= 1) {
-          return Math.max(1, timeUntilNextDraw)
-        }
-        return prev - 1
-      })
-    }, 1000)
+  // useEffect(() => {
+  //   const timer = setInterval(() => {
+  //     setTimeLeft(prev => {
+  //       if (prev <= 1) {
+  //         return Math.max(1, timeUntilNextDraw)
+  //       }
+  //       return prev - 1
+  //     })
+  //   }, 1000)
 
-    return () => clearInterval(timer)
-  }, [timeUntilNextDraw]);
+  //   return () => clearInterval(timer)
+  // }, [timeUntilNextDraw]);
 
   // Show disclaimer on page load
   useEffect(() => {
@@ -476,7 +476,7 @@ export default function BettingInterface() {
               <StatsCard
                 icon={DollarSign}
                 label="Total Pool"
-                value={`${totalPool.toFixed(3)} CELO`}
+                value={`${totalPool.toFixed(4)} CELO`}
                     gradient=""
                     borderColor=""
                     textColor=""

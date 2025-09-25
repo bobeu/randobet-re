@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAccount } from "wagmi";
-import { filterTransactionData, formatAddr } from '../utilities/common';
+import { filterTransactionData } from '../utilities/common';
 import { Address, FunctionName } from '@/types';
 import TransactionModal from '../modals/TransactionModal';
 import useData from '@/hooks/useData';
@@ -13,10 +13,8 @@ import { useToast } from '../ui/Toast';
 function PlaceBet({setIsLoading, loading, playerFee, onPlaceBetClick}: {loading: boolean; setIsLoading: (arg: boolean) => void; playerFee: number; onPlaceBetClick?: () => void}) {
     const { chainId, address, isConnected } = useAccount();
     const[ showTransactionModal, setShowTransactionModal ] = React.useState<boolean>(false);
-    const account = formatAddr(address);
     const { data: { currentEpochBet, }, isVerified } = useData();
     const { showToast } = useToast();
-
 
     // The claim is performed by an approved account, the recipient account should be the account to receive the reward.
     // In the context of RandoBet, since we're integrating with the Gooddollar SDK, we can temporarily use the connected 
@@ -45,7 +43,7 @@ function PlaceBet({setIsLoading, loading, playerFee, onPlaceBetClick}: {loading:
             ...data
         }];
 
-    }, [chainId, isConnected, account, currentEpochBet]);
+    }, [chainId, playerFee, currentEpochBet]);
 
     const handlePlaceBet = () => {
       if(!isConnected) {

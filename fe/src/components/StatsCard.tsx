@@ -1,8 +1,7 @@
 'use client'
 /* eslint-disable */
-import { motion } from 'framer-motion'
-import { DivideIcon as LucideIcon } from 'lucide-react'
-import { Card, CardContent } from '@/components/ui/card'
+import { motion } from 'framer-motion';
+import { Card, CardContent } from '@/components/ui/card';
 
 interface StatsCardProps {
   icon: any;
@@ -20,9 +19,9 @@ export default function StatsCard({
   icon: Icon,
   label,
   value,
-  gradient,
-  borderColor,
-  textColor,
+  // gradient,
+  // borderColor,
+  // textColor,
   delay,
   className = "",
   isBold = false

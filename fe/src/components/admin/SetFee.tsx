@@ -1,9 +1,8 @@
 import React from 'react';
 import { useAccount } from "wagmi";
-import { filterTransactionData, formatAddr } from '../utilities/common';
+import { filterTransactionData } from '../utilities/common';
 import { Address, FunctionName } from '@/types';
 import TransactionModal from '../modals/TransactionModal';
-import { motion } from 'framer-motion'
 import { DollarSign } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from "@/components/ui/input"
@@ -14,7 +13,6 @@ function SetFee({ currentPlayerFee }: { currentPlayerFee: number }) {
     const { chainId, address, isConnected } = useAccount();
     const[ showTransactionModal, setShowTransactionModal ] = React.useState<boolean>(false);
     const [fee, setFee] = React.useState<string>('');
-    const account = formatAddr(address);
     const { showToast } = useToast();
 
     const trxnSteps = React.useMemo(() => {
@@ -39,7 +37,7 @@ function SetFee({ currentPlayerFee }: { currentPlayerFee: number }) {
             ...data
         }];
 
-    }, [chainId, isConnected, account, fee]);
+    }, [chainId, fee]);
 
     const handleSetFee = () => {
         if (!isConnected || !address) {
@@ -81,7 +79,6 @@ function SetFee({ currentPlayerFee }: { currentPlayerFee: number }) {
         });
     };
     
-
     return (
         <div className="space-y-4 p-4 border rounded-lg bg-purple-900/10 border-purple-500/20">
             <h3 className="text-lg font-bold text-orange-400">Set Platform Fee</h3>

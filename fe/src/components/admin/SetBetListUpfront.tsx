@@ -1,21 +1,19 @@
 import React from 'react';
 import { useAccount } from "wagmi";
-import { filterTransactionData, formatAddr } from '../utilities/common';
+import { filterTransactionData } from '../utilities/common';
 import { Address, FunctionName } from '@/types';
 import TransactionModal from '../modals/TransactionModal';
-import { motion } from 'framer-motion'
-import { Settings } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import useData from '@/hooks/useData'
+import { Settings } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import useData from '@/hooks/useData';
 import { useToast } from '../ui/Toast';
 
 function SetBetListUpfront() {
     const { chainId, address, isConnected } = useAccount();
     const[ showTransactionModal, setShowTransactionModal ] = React.useState<boolean>(false);
     const [betList, setBetList] = React.useState<string>('');
-    const account = formatAddr(address);
     const { data: { currentEpochBet, nextEpochBet } } = useData();
     const { showToast } = useToast();
 
@@ -43,7 +41,7 @@ function SetBetListUpfront() {
             ...data
         }];
 
-    }, [chainId, isConnected, account, betList]);
+    }, [chainId, betList]);
 
     const handleSetBetListUpfront = () => {
         if (!isConnected || !address) {
@@ -85,7 +83,6 @@ function SetBetListUpfront() {
         });
     };
     
-
     return (
         <div className="space-y-4 p-4 border rounded-lg bg-purple-900/10 border-purple-500/20">
             <h3 className="text-lg font-bold text-orange-400">Set Bet List Upfront</h3>

@@ -2,8 +2,18 @@
 
 import { motion } from 'framer-motion'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import useData from '@/hooks/useData'
+import { Player } from '@/types'
+import { formatValue } from './utilities/common'
+import { useMemo } from 'react'
 
-const recentBets = [
+function getRecentBets(players: Player[]) {
+  return players.map(({addr, bet, timePlaced}) => {
+    return { address: addr, amount: formatValue(bet).toStr, time: `${Number(timePlaced)}s ago`}
+  })
+}
+
+const defaultRecentBets = [
   { address: '0x1a2b...3c4d', amount: 0.25, time: '2s ago' },
   { address: '0x5e6f...7g8h', amount: 0.15, time: '5s ago' },
   { address: '0x9i0j...1k2l', amount: 0.30, time: '8s ago' },
@@ -11,6 +21,13 @@ const recentBets = [
 ]
 
 export default function RecentBets() {
+  const { data : { spin : { players }}} = useData();
+
+  const recentBets = useMemo(() => {
+    const recentBets = getRecentBets(players);
+    return players.length > 0? recentBets : defaultRecentBets;
+  }, [players]);
+
   return (
     <motion.div
       initial={{ opacity: 0, x: 20 }}

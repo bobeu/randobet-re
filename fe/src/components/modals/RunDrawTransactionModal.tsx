@@ -1,4 +1,5 @@
 "use client";
+/*eslint-disable */
 import React, { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -27,8 +28,9 @@ export default function RunDrawTransactionModal({
     try {
       await onRunDraw();
       setRetryCount(0); // Reset retry count on success
-    } catch (error) {
+    } catch (error: any) {
       setRetryCount(prev => prev + 1);
+      console.log(error?.message || error?.data?.message || error);
     }
   };
 

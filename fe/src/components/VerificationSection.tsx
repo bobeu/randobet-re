@@ -7,22 +7,21 @@ import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Shield, QrCode, MessageSquare, CheckCircle, AlertCircle } from 'lucide-react'
 import { useAccount } from 'wagmi'
-import { filterTransactionData, formatAddr } from './utilities/common';
+import { filterTransactionData } from './utilities/common';
 import { Address, FunctionName } from '@/types'
 import TransactionModal from './modals/TransactionModal'
 import SelfQRCodeVerifier from './SelfQRCodeVerifier'
 import { useToast } from './ui/Toast'
 
 interface VerificationSectionProps {
-  onVerificationComplete?: () => void
+  onVerificationComplete?: () => void;
 }
 
 export default function VerificationSection({ onVerificationComplete }: VerificationSectionProps) {
-  const [verificationMethod, setVerificationMethod] = useState<'wallet' | 'self' | null>(null)
-  const [showTransactionModal, setShowTransactionModal] = useState(false)
-  const { chainId, address, isConnected } = useAccount()
-  const account = formatAddr(address)
-  const { showToast } = useToast()
+  const [verificationMethod, setVerificationMethod] = useState<'wallet' | 'self' | null>(null);
+  const [showTransactionModal, setShowTransactionModal] = useState(false);
+  const { chainId, address, isConnected } = useAccount();
+  const { showToast } = useToast();
 
   const trxnSteps = useMemo(() => {
     const { transactionData: td } = filterTransactionData({
@@ -45,7 +44,7 @@ export default function VerificationSection({ onVerificationComplete }: Verifica
       description: 'Signing transaction with your wallet to verify your identity on the blockchain',
       ...data
     }]
-  }, [chainId])
+  }, [chainId]);
 
   const handleWalletVerification = () => {
     if (!isConnected || !address) {
@@ -65,7 +64,7 @@ export default function VerificationSection({ onVerificationComplete }: Verifica
       });
       return;
     }
-    setShowTransactionModal(true)
+    setShowTransactionModal(true);
   }
 
   const handleTransactionSuccess = (txHash: string) => {

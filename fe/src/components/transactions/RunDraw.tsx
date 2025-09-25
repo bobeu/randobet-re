@@ -1,6 +1,5 @@
 import React from 'react';
 import { useAccount } from "wagmi";
-import { formatAddr } from '../utilities/common';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Shuffle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -24,7 +23,6 @@ function RunDraw() {
     const [showRunDrawModal, setShowRunDrawModal] = React.useState<boolean>(false);
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
     const [error, setError] = React.useState<string>('');
-    const account = formatAddr(address);
     const { data: { spin: { players } }, isDrawNeeded } = useData();
     const { showToast } = useToast();
 

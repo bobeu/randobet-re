@@ -28,6 +28,7 @@ export default function AnimatedOrb({ isSpinning, playerCount = 0 }: AnimatedOrb
 
   const rotate = useTransform(rotation, (value) => value)
   const scaleValue = useTransform(scale, (value) => value)
+  const defValue = useTransform(rotation, (value) => -value * 0.5)
 
   return (
     <div className="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 mx-auto">
@@ -52,7 +53,7 @@ export default function AnimatedOrb({ isSpinning, playerCount = 0 }: AnimatedOrb
       <motion.div 
         className="absolute inset-2 rounded-full bg-gradient-to-br from-stone-600 via-stone-500 to-violet-700 shadow-2xl"
         style={{ 
-          rotate: isSpinning ? useTransform(rotation, (value) => -value * 0.5) : 0
+          rotate: isSpinning ? defValue : 0
         }}
         animate={{ 
           boxShadow: [

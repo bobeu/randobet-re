@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAccount } from "wagmi";
-import { filterTransactionData, formatAddr } from '../utilities/common';
+import { filterTransactionData } from '../utilities/common';
 import { Address, FunctionName } from '@/types';
 import TransactionModal from '../modals/TransactionModal';
 import { motion } from 'framer-motion'
@@ -10,7 +10,6 @@ import { useToast } from '../ui/Toast';
 function SetVerification({ isVerified }: { isVerified?: boolean }) {
     const { chainId, address, isConnected } = useAccount();
     const[ showTransactionModal, setShowTransactionModal ] = React.useState<boolean>(false);
-    const account = formatAddr(address);
     const { showToast } = useToast();
 
     const trxnSteps = React.useMemo(() => {
@@ -35,7 +34,7 @@ function SetVerification({ isVerified }: { isVerified?: boolean }) {
             ...data
         }];
 
-    }, [chainId, isConnected, account]);
+    }, [chainId]);
 
     const handleSetVerification = () => {
         if (!isConnected || !address) {

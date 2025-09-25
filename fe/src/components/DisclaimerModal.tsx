@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { AlertTriangle, Shield, Zap, DollarSign, X } from 'lucide-react'
+import { AlertTriangle, Shield, Zap, DollarSign } from 'lucide-react'
 
 interface DisclaimerModalProps {
   isOpen: boolean

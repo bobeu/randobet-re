@@ -15,6 +15,9 @@
   },
   "dependencies": {
     "@divvi/referral-sdk": "^2.3.0",
+    "@farcaster/frame-wagmi-connector": "^1.0.0",
+    "@farcaster/miniapp-node": "^0.1.9",
+    "@farcaster/miniapp-sdk": "^0.1.10",
     "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-label": "^2.1.7",
     "@radix-ui/react-progress": "^1.0.3",

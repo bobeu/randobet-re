@@ -1,11 +1,9 @@
 import React from 'react';
 import { useAccount } from "wagmi";
-import { filterTransactionData, formatAddr } from '../utilities/common';
+import { filterTransactionData } from '../utilities/common';
 import { Address, FunctionName } from '@/types';
 import TransactionModal from '../modals/TransactionModal';
-import { zeroAddress } from 'viem';
 import useData from '@/hooks/useData';
-import { motion, AnimatePresence } from 'framer-motion';
 import { Wallet } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -19,7 +17,6 @@ function Withdraw() {
     const [betAmount, setBetAmount] = React.useState<string>('');
     const [epoch, setEpoch] = React.useState<string>('');
     const [customBetAmount, setCustomBetAmount] = React.useState<string>('');
-    const account = formatAddr(address);
     const { data: { currentEpochBet, nextEpochBet, deadEpoch, state: { epoches: currentEpoch } } } = useData();
     const { showToast } = useToast();
 
@@ -48,7 +45,7 @@ function Withdraw() {
             ...data
         }];
 
-    }, [chainId, isConnected, account, betAmount, epoch, customBetAmount, address]);
+    }, [chainId, betAmount, epoch, customBetAmount, address]);
 
     const handleWithdraw = () => {
         if (!isConnected || !address) {

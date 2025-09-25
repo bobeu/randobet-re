@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Shield, Settings, DollarSign, ShieldCheck } from 'lucide-react'
+import { Shield } from 'lucide-react'
 import SetBetListUpfront from './admin/SetBetListUpfront'
 import SetFee from './admin/SetFee'
 

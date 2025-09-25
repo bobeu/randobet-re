@@ -6,8 +6,6 @@ import { Address, BetData, mockBetData } from "@/types";
 import { filterTransactionData, formatAddr } from "../utilities/common";
 
 export default function DataProvider({children} : {children: React.ReactNode}) {
-    // const [selectedBet, setSelectedBet] = React.useState<bigint>(0n);
-    // const [selectedEpoch, setSelectedEpoch] = React.useState<bigint>(0n);
     const [data, setBetData] = React.useState<BetData>(mockBetData);
     const [isDrawNeeded, setIsDrawNeeded] = React.useState<boolean>(false);
     const [epochPoolBal, setEpochPoolBal] = React.useState<bigint>(0n);

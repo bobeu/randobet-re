@@ -7,7 +7,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RainbowKitProvider, getDefaultConfig, lightTheme, } from "@rainbow-me/rainbowkit";
 import { celo, celoSepolia } from "wagmi/chains";
 import { createPublicClient } from "viem";
-// import { privateKeyToAccount } from "viem/accounts";
 import DataProvider from "./DataProvider";
 
 // Your walletconnect project Id
@@ -116,7 +115,6 @@ const theme = lightTheme(
 );
 
 export default function Provider({ children }: { children: React.ReactNode }) {
-  
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
@@ -133,7 +131,6 @@ export default function Provider({ children }: { children: React.ReactNode }) {
         >
           <CoinbaseWalletAutoConnect>
             <DataProvider>
-            {/* className="h-screen overflow-hidden no-scrollbar" */}
               <main>
                 { children }
               </main>

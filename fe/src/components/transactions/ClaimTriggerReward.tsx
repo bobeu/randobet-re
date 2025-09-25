@@ -1,10 +1,8 @@
 import React from 'react';
 import { useAccount } from "wagmi";
-import { filterTransactionData, formatAddr } from '../utilities/common';
+import { filterTransactionData } from '../utilities/common';
 import { Address, FunctionName } from '@/types';
 import TransactionModal from '../modals/TransactionModal';
-import { zeroAddress } from 'viem';
-import { motion, AnimatePresence } from 'framer-motion';
 import { Target } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -15,7 +13,6 @@ function ClaimTriggerReward() {
     const { chainId, address, isConnected } = useAccount();
     const [showTransactionModal, setShowTransactionModal] = React.useState<boolean>(false);
     const [targetAddress, setTargetAddress] = React.useState<string>('');
-    const account = formatAddr(address);
     const { showToast } = useToast();
 
     const trxnSteps = React.useMemo(() => {
@@ -40,7 +37,7 @@ function ClaimTriggerReward() {
             ...data
         }];
 
-    }, [chainId, isConnected, account, address, targetAddress]);
+    }, [chainId, address, targetAddress]);
 
     const handleClaimReward = () => {
         if (!isConnected || !address) {

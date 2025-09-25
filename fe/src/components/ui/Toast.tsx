@@ -1,4 +1,6 @@
 "use client";
+/*eslint-disable */
+
 import React, { createContext, useContext, useState, useCallback, ReactNode } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, CheckCircle, XCircle, AlertTriangle, Info } from "lucide-react";

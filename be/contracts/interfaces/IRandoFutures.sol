@@ -19,10 +19,11 @@ interface IRandoFutures {
     uint boardFee;
     uint players;
   }
-
   struct Player {
     address addr;
     uint256 bal;
+    uint256 bet;
+    uint timePlaced;
   }
 
   struct OData {

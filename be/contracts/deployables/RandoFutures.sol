@@ -119,8 +119,11 @@ contract RandoFutures is DrawData, VRFSetUp, ReentrancyGuard {
         _setSpotId(player, bet, epoch, spotId);
         spinBoard[epoch][bet].players.push(Player(
             player,
-            0
+            0,
+            bet,
+            _now()
         ));
+
         emit BetPlaced(player, bet, epoch, spinBoard[epoch][bet]);
 
         return true;
@@ -176,7 +179,6 @@ contract RandoFutures is DrawData, VRFSetUp, ReentrancyGuard {
                                 }
                                 
                             }
-                            // _runDraw(bet, fulfilledPult, epoch, trigger, players[i].addr);
                         }
 
                         if(found > 0) {
