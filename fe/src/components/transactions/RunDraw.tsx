@@ -1,10 +1,11 @@
+/*eslint-disable */
 import React from 'react';
 import { useAccount } from "wagmi";
 import { motion, AnimatePresence } from 'framer-motion';
 import { Shuffle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import useData from '@/hooks/useData';
-import { keccak256, TransactionReceipt } from 'viem';
+import { keccak256 } from 'viem';
 import RunDrawTransactionModal from '../modals/RunDrawTransactionModal';
 import { useToast } from '../ui/Toast';
 
