@@ -7,9 +7,8 @@ import { Button } from '@/components/ui/button'
 import { Shield, Settings, DollarSign, ShieldCheck } from 'lucide-react'
 import SetBetListUpfront from './admin/SetBetListUpfront'
 import SetFee from './admin/SetFee'
-import SetVerificationByOwner from './admin/SetVerificationByOwner'
 
-export default function AdminDashboard() {
+export default function AdminDashboard({ playerFee, feeTo }: { playerFee: number; feeTo: string }) {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
@@ -42,9 +41,23 @@ export default function AdminDashboard() {
                 </p>
               </CardHeader>
               <CardContent className="space-y-3">
+                {/* Fee Information Display */}
+                <div className="bg-purple-900/20 border border-purple-500/20 rounded-lg p-3 mb-4">
+                  <h4 className="text-purple-300 font-semibold mb-2">Current Fee Settings</h4>
+                  <div className="space-y-1 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-purple-200">Player Fee:</span>
+                      <span className="text-orange-400 font-mono">{playerFee.toFixed(4)} CELO</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-purple-200">Fee Recipient:</span>
+                      <span className="text-blue-400 font-mono text-xs">{feeTo.slice(0, 6)}...{feeTo.slice(-4)}</span>
+                    </div>
+                  </div>
+                </div>
+                
                 <SetBetListUpfront />
-                <SetFee />
-                <SetVerificationByOwner />
+                <SetFee currentPlayerFee={playerFee} />
               </CardContent>
             </Card>
           </motion.div>

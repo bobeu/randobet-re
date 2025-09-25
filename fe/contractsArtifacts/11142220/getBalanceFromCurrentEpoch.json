@@ -1,0 +1,21 @@
+{
+  "contractAddress": "0x0d884659F92eEffF161cAea52d1fBAB375F7fEE6",
+  "functionName": "getBalanceFromCurrentEpoch",
+  "inputCount": 0,
+  "requireArgUpdate": true,
+  "abi": [
+    {
+      "inputs": [],
+      "name": "getBalanceFromCurrentEpoch",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ]
+}

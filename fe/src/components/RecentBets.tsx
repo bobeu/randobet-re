@@ -17,9 +17,9 @@ export default function RecentBets() {
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.6, delay: 0.6 }}
     >
-      <Card className="bg-gradient-to-br from-stone-900/40 to-violet-900/20 border-stone-700/50 glass-effect">
+      <Card className="bg-stone-900/80 border-stone-600/20 backdrop-blur-sm">
         <CardHeader className="pb-3">
-          <CardTitle className="text-white font-semibold flex items-center gap-2">
+          <CardTitle className="text-yellow-200 text-sm font-medium flex items-center gap-2">
             <motion.div 
               className="w-2 h-2 bg-green-400 rounded-full"
               animate={{ scale: [1, 1.3, 1] }}
@@ -36,17 +36,17 @@ export default function RecentBets() {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.4, delay: 0.7 + i * 0.1 }}
-                className="flex justify-between items-center text-sm hover:bg-white/5 p-2 rounded-lg transition-colors"
+                className="flex justify-between items-center text-sm hover:bg-stone-800/50 p-2 rounded-lg transition-colors border border-stone-700/30"
               >
-                <span className="text-stone-400 font-mono">{bet.address}</span>
+                <span className="text-stone-300 font-mono text-xs">{bet.address}</span>
                 <div className="text-right">
                   <motion.div 
-                    className="text-yellow-400 font-semibold"
+                    className="text-white font-bold"
                     whileHover={{ scale: 1.05 }}
                   >
-                    {bet.amount} ETH
+                    {bet.amount} CELO
                   </motion.div>
-                  <div className="text-stone-500 text-xs">{bet.time}</div>
+                  <div className="text-stone-400 text-xs">{bet.time}</div>
                 </div>
               </motion.div>
             ))}

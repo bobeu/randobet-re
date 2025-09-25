@@ -1,15 +1,15 @@
 import { zeroAddress } from "viem";
 
 export type Address = `0x${string}`;
-export type FunctionName = 'placebet' | 'checkBalance' | 'checkEpochBalance' | 'getData' | 'getDataByEpoch' | 'claimTriggerReward' | 'isDrawNeeded' | 'isVerified' | 'runDraw' | 'setBetListUpfront' | 'setFee' | 'setVerification' | 'setverificationByOwner' | 'withdraw' | 'getBalanceFromCurrentEpoch';
+export type FunctionName = 'placeBet' | 'checkBalance' | 'checkEpochBalance' | 'getData' | 'getDataByEpoch' | 'claimTriggerReward' | 'isDrawNeeded' | 'isVerified' | 'runDraw' | 'setBetListUpfront' | 'setFee' | 'setVerification' | 'setVerificationByOwner' | 'withdraw' | 'getBalanceFromCurrentEpoch' | 'isPermitted';
 export const adminFunctions : FunctionName[] = [
     "setBetListUpfront",
     "setFee",
-    "setverificationByOwner"
+    "setVerificationByOwner"
 ];
 
 export const userFunctions : FunctionName[] = [
-    "placebet",
+    "placeBet",
     "runDraw",
     "withdraw",
     "setVerification",
@@ -72,6 +72,8 @@ export type TransactionData = {
 };
 
 ///////////////////////// Constants  ///////////////////////////////
+export const APP_ICON_URL = "https://randobet.vercel.app";
+export const APP_NAME = "Randobet";
 
 export const mockBetData : BetData = {
     spin: {

@@ -10,12 +10,12 @@ abstract contract VRFSetUp {
 
   mapping(uint epoch => mapping(address => mapping(uint bet => uint))) internal spotIds;
 
-  function _toHash(uint arg) internal pure returns(bytes32 _hashed) {
-    _hashed = keccak256(abi.encodePacked(arg));
-  }
+  // function _toHash(uint arg) internal pure returns(bytes32 _hashed) {
+  //   _hashed = keccak256(abi.encodePacked(arg));
+  // }
 
-  function _fulfillRandomPults(uint256 randomPult) internal pure returns(bytes32 reqs) {
-    reqs = _toHash(randomPult);
+  function _fulfillRandomPults(bytes32 randomPult) internal pure returns(uint256 reqs) {
+    reqs = uint256(randomPult);
   }
 
   function _getSpotId(address player, uint bet, uint epoch) internal view returns(uint spotId) {

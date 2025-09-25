@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, CheckCircle, XCircle, ExternalLink, Zap, Wallet, Shuffle, Shield, Settings, DollarSign, ShieldCheck } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useConfig, useWriteContract } from "wagmi";
 import { waitForTransactionReceipt } from "wagmi/actions";
 import { Address, FunctionName } from "@/types";
@@ -31,16 +32,18 @@ export interface TransactionModalProps {
   getSteps: () => TransactionStep[];
   onSuccess?: (txHash: string) => void;
   onError?: (error: Error) => void;
+  showAnimation?: boolean;
 }
 
 export default function TransactionModal({
   isOpen,
   onClose,
   title,
-  description,
+  // description,
   getSteps,
   onSuccess,
   onError,
+  showAnimation = false,
 }: TransactionModalProps) {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
@@ -168,30 +171,84 @@ export default function TransactionModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="max-w-2xl bg-gradient-to-br from-purple-900/40 to-orange-900/40 border-orange-500/20 spooky-glass">
+      <DialogContent className="max-w-2xl bg-stone-900/80 backdrop-blur-sm border border-stone-600 ">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold text-orange-400 spooky-text">
             {title}
           </DialogTitle>
-          {description && (
+          {/* {description && (
             <p className="text-sm text-purple-200">
               {description}
             </p>
-          )}
+          )} */}
         </DialogHeader>
 
         <div className="space-y-6">
+          {/* Transaction Animation - Only for place bet */}
+          {isProcessing && showAnimation && (
+            <motion.div
+              className="flex justify-center items-center py-12"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <div className="relative w-80 h-32">
+                {/* Static Player Icon */}
+                <div className="absolute left-0 top-1/2 transform -translate-y-1/2">
+                  <div className="w-16 h-16 bg-stone-900 border-2 border-yellow-400 rounded-full flex items-center justify-center text-white font-bold text-2xl">
+                    👤
+                  </div>
+                </div>
+                
+                {/* Money flying animation - continuous movement */}
+                <motion.div
+                  className="absolute left-8 top-1/2 transform -translate-y-1/2"
+                  animate={{ 
+                    x: [0, 200, 0],
+                    y: [0, -30, 0, 30, 0],
+                    rotate: [0, 360, 720]
+                  }}
+                  transition={{ 
+                    duration: 3, 
+                    repeat: Infinity, 
+                    ease: "easeInOut" 
+                  }}
+                >
+                  <div className="w-10 h-10 bg-yellow-500 border-2 border-yellow-600 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg">
+                    💰
+                  </div>
+                </motion.div>
+                
+                {/* Static Blockchain Icon */}
+                <div className="absolute right-0 top-1/2 transform -translate-y-1/2">
+                  <div className="w-20 h-20 bg-violet-600 border-2 border-violet-500 rounded-lg flex items-center justify-center text-white font-bold text-3xl">
+                    ⛓️
+                  </div>
+                </div>
+                
+                {/* Connection line */}
+                <div className="absolute top-1/2 left-8 right-10 h-0.5 bg-gradient-to-r from-yellow-400 via-violet-500 to-violet-600 transform -translate-y-1/2 opacity-50" />
+              </div>
+            </motion.div>
+          )}
+
           {/* Progress Steps */}
           <div className="space-y-3">
             {steps.map((step, index) => {
               const status = getStepStatus(step.id, index);
               return (
-                <Card key={step.id} className={`border ${
-                  status === "current" ? "border-orange-500 bg-orange-900/20" : 
-                  status === "completed" ? "border-green-500 bg-green-900/20" :
-                  status === "failed" ? "border-red-500 bg-red-900/20" :
-                  "border-purple-500/20 bg-purple-900/10"
-                } spooky-glass`}>
+                <motion.div
+                  key={step.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                >
+                  <Card className={`border ${
+                    status === "current" ? "border-orange-500 bg-orange-900/20" : 
+                    status === "completed" ? "border-green-500 bg-green-900/20" :
+                    status === "failed" ? "border-red-500 bg-red-900/20" :
+                    "border-purple-500/20 bg-purple-900/10"
+                  } `}>
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
@@ -225,52 +282,73 @@ export default function TransactionModal({
                     </div>
                   </CardContent>
                 </Card>
+                </motion.div>
               );
             })}
           </div>
 
           {/* Action Buttons */}
-          <div className="flex justify-end gap-3">
-            <Button
-              variant="outline"
-              onClick={handleClose}
-              disabled={isProcessing}
-              className="border-purple-500/20 text-purple-200 hover:bg-purple-900/20"
+          <motion.div 
+            className="flex justify-end gap-3"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
-              {isCompleted ? "Close" : "Cancel"}
-            </Button>
-            {!isCompleted && !isFailed && (
               <Button
-                onClick={() => executeStep(currentStep)}
+                variant="outline"
+                onClick={handleClose}
                 disabled={isProcessing}
-                className="bg-gradient-to-r from-orange-400 to-purple-500 hover:from-orange-300 hover:to-purple-400 text-white font-bold glow-orange"
+                className="bg-stone-900/50 border-purple-500/20 text-purple-200 hover:bg-transparent hover:text-violet-600"
               >
-                {isProcessing ? (
-                  <>
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Processing...
-                  </>
-                ) : (
-                  isLastStep ? "Complete" : "Next Step"
-                )}
+                {isCompleted ? "Close" : "Cancel"}
               </Button>
+            </motion.div>
+            {!isCompleted && !isFailed && (
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Button
+                  onClick={() => executeStep(currentStep)}
+                  disabled={isProcessing}
+                  className="bg-yellow-500 font-bold"
+                >
+                  {isProcessing ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Processing...
+                    </>
+                  ) : (
+                    isLastStep ? "Complete" : "Next Step"
+                  )}
+                </Button>
+              </motion.div>
             )}
             {isFailed && (
-              <Button
-                onClick={() => {
-                  setFailedSteps(prev => {
-                    const newSet = new Set(prev);
-                    newSet.delete(currentStep.id);
-                    return newSet;
-                  });
-                  executeStep(currentStep);
-                }}
-                className="bg-gradient-to-r from-red-400 to-orange-500 hover:from-red-300 hover:to-orange-400 text-white font-bold glow-red"
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
-                Retry
-              </Button>
+                <Button
+                  onClick={() => {
+                    setFailedSteps(prev => {
+                      const newSet = new Set(prev);
+                      newSet.delete(currentStep.id);
+                      return newSet;
+                    });
+                    executeStep(currentStep);
+                  }}
+                  className="bg-yellow-500 font-bold"
+                >
+                  Retry
+                </Button>
+              </motion.div>
             )}
-          </div>
+          </motion.div>
         </div>
       </DialogContent>
     </Dialog>

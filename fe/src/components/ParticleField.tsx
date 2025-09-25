@@ -10,7 +10,7 @@ export default function ParticleField() {
     size: Math.random() * 3 + 1,
     duration: Math.random() * 12 + 8,
     delay: Math.random() * 6,
-    color: Math.random() > 0.5 ? 'purple' : 'orange',
+    color: Math.random() > 0.5 ? 'violet' : 'yellow',
   }))
 
   return (
@@ -20,9 +20,9 @@ export default function ParticleField() {
         <motion.div
           key={particle.id}
           className={`absolute rounded-full ${
-            particle.color === 'purple' 
-              ? 'bg-gradient-to-r from-purple-400/40 to-violet-500/40' 
-              : 'bg-gradient-to-r from-orange-400/40 to-yellow-500/40'
+            particle.color === 'violet' 
+              ? 'bg-gradient-to-r from-violet-400/40 to-violet-500/40' 
+              : 'bg-gradient-to-r from-yellow-400/40 to-yellow-500/40'
           }`}
           style={{
             left: `${particle.x}%`,

@@ -14,9 +14,10 @@ import ClaimTriggerReward from './transactions/ClaimTriggerReward'
 interface UserFunctionsProps {
   setIsLoading: (arg: boolean) => void
   loading: boolean
+  playerFee: number
 }
 
-export default function UserFunctions({ setIsLoading, loading }: UserFunctionsProps) {
+export default function UserFunctions({ setIsLoading, loading, playerFee }: UserFunctionsProps) {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
@@ -26,7 +27,7 @@ export default function UserFunctions({ setIsLoading, loading }: UserFunctionsPr
         className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-400 hover:to-blue-400 text-white font-bold py-2 px-4 rounded-lg shadow-lg hover:shadow-purple-500/25 transition-all duration-300 glow-purple flex items-center gap-2"
       >
         <Zap className="w-4 h-4" />
-        User Functions
+        Betting Actions
       </Button>
 
       <AnimatePresence>
@@ -42,14 +43,14 @@ export default function UserFunctions({ setIsLoading, loading }: UserFunctionsPr
               <CardHeader className="pb-3">
                 <CardTitle className="text-purple-400 text-lg flex items-center gap-2">
                   <Zap className="w-5 h-5" />
-                  User Functions
+                  Betting Actions
                 </CardTitle>
                 <p className="text-purple-200 text-sm">
                   Available betting and interaction functions
                 </p>
               </CardHeader>
               <CardContent className="space-y-3">
-                <PlaceBet setIsLoading={setIsLoading} loading={loading} />
+                <PlaceBet setIsLoading={setIsLoading} loading={loading} playerFee={playerFee} />
                 <Withdraw />
                 <RunDraw />
                 <SetVerification />

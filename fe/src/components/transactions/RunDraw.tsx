@@ -1,79 +1,127 @@
 import React from 'react';
 import { useAccount } from "wagmi";
-import { filterTransactionData, formatAddr } from '../utilities/common';
-import { Address, FunctionName } from '@/types';
-import TransactionModal from '../modals/TransactionModal';
-import { zeroAddress } from 'viem';
-import { motion } from 'framer-motion'
-import { Shuffle } from 'lucide-react'
+import { formatAddr } from '../utilities/common';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Shuffle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import useData from '@/hooks/useData';
+import { keccak256, TransactionReceipt } from 'viem';
+import RunDrawTransactionModal from '../modals/RunDrawTransactionModal';
+import { useToast } from '../ui/Toast';
+
+
+// Generate random numbers and hash them
+const generateRandomHashes = (numOfPlayers: number) => {
+    const randomNumbers = Array.from({ length: numOfPlayers === 0? 4 : numOfPlayers }, () => 
+        Math.floor(Math.random() * Number.MAX_SAFE_INTEGER)
+    );
+    // console.log("randomNumbers", randomNumbers);
+    return randomNumbers.map(num => keccak256(new Uint8Array([num])));
+};
 
 function RunDraw() {
     const { chainId, address, isConnected } = useAccount();
-    const[ showTransactionModal, setShowTransactionModal ] = React.useState<boolean>(false);
+    const [showRunDrawModal, setShowRunDrawModal] = React.useState<boolean>(false);
+    const [isLoading, setIsLoading] = React.useState<boolean>(false);
+    const [error, setError] = React.useState<string>('');
     const account = formatAddr(address);
+    const { data: { spin: { players } }, isDrawNeeded } = useData();
+    const { showToast } = useToast();
 
-    const trxnSteps = React.useMemo(() => {
-        const { transactionData: td, } = filterTransactionData({
-            chainId,
-            filter: true,
-            functionNames: ['runDraw'],
-        });
-
-        const data = {
-            abi: td[0].abi,
-            functionName: td[0].functionName as FunctionName,
-            contractAddress: td[0].contractAddress as Address,
-            args: [],
-            value: undefined
-        }
-
-        return (isConnected && account !== zeroAddress)? [{
-            id: 'run-draw',
-            title: 'Running Draw',
-            description: `Executing the draw to determine winners`,
-            ...data
-        }] : [];
-
-    }, [chainId, isConnected, account]);
-
-    const handleRunDraw = () => {
-        if (trxnSteps.length === 0) {
-            alert('Cannot run draw');
+    const handleRunDraw = async () => {
+        if (!isConnected || !address) {
+            showToast({
+                type: 'error',
+                title: 'Wallet Not Connected',
+                message: 'Please connect your wallet to run the draw.'
+            });
             return;
         }
-        setShowTransactionModal(true);
-    };
-    
-    const handleTransactionSuccess = (txHash: string) => {
-        console.log('Draw executed:', txHash);
-        setShowTransactionModal(false);
-    };
 
-    const handleTransactionError = (error: Error) => {
-        console.error('Failed to run draw:', error);
+        setIsLoading(true);
+        setError('');
+        
+        try {
+            const randoPults = generateRandomHashes(players.length);
+            // Call API to trigger the actual runDraw transaction
+            const response = await fetch('/api/run-draw', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    randoPults: randoPults,
+                    trigger: address,
+                    chainId: chainId
+                }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.message || 'Failed to trigger draw');
+            }
+
+            const result = await response.json();
+            const receipt: TransactionReceipt = result.receipt;
+            console.log('Draw triggered:', receipt.transactionHash);
+            
+            showToast({
+                type: 'success',
+                title: 'Draw Executed Successfully',
+                message: `Transaction hash: ${receipt.transactionHash.slice(0, 10)}...`
+            });
+            
+            setShowRunDrawModal(false);
+        } catch (error) {
+            const errorMessage = error instanceof Error ? error.message : 'Failed to trigger draw';
+            console.error('Failed to trigger draw:', error);
+            setError(errorMessage);
+            showToast({
+                type: 'error',
+                title: 'Draw Failed',
+                message: errorMessage
+            });
+        } finally {
+            setIsLoading(false);
+        }
     };
-    
 
     return (
-        <div>
-            <motion.button
-                onClick={handleRunDraw}
-                className="bg-gradient-to-r from-purple-400 to-pink-500 hover:from-purple-300 hover:to-pink-400 text-white font-bold py-2 px-4 rounded-lg shadow-lg hover:shadow-purple-500/25 transition-all duration-300 glow-purple flex items-center gap-2"
-                disabled={trxnSteps.length === 0}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+        <div className="space-y-4 p-4 border border-stone-600/30 rounded-lg bg-stone-800/50">
+            <h3 className="text-sm font-bold text-yellow-400">Run Draw</h3>
+            <div className="space-y-3">
+                <div className="bg-stone-900/80 border border-stone-600/50 rounded-lg p-3">
+                    <p className="text-stone-200 text-xs">
+                        Players: {players.length} | Status: {isDrawNeeded ? 'Ready' : 'Not Ready'}
+                    </p>
+                </div>
+            </div>
+
+            <Button
+                onClick={() => setShowRunDrawModal(true)}
+                className="w-full bg-violet-600 hover:bg-violet-500 text-white font-bold py-2 px-4 rounded-lg transition-all duration-300"
+                disabled={!isDrawNeeded || players.length === 0}
             >
-                <Shuffle className="w-4 h-4" />
-                🎲 Run Draw
-            </motion.button>
-            <TransactionModal 
-                title="Run Draw"
-                getSteps={() => trxnSteps}
-                isOpen={showTransactionModal}
-                onClose={() => setShowTransactionModal(false)}
-                onSuccess={handleTransactionSuccess}
-                description='Executing the draw'
-                onError={handleTransactionError}
+                <AnimatePresence mode="wait">
+                    <motion.span
+                        key="run-draw"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.8 }}
+                        className="flex items-center gap-2"
+                    >
+                        <Shuffle className="w-4 h-4" />
+                        RUN DRAW
+                    </motion.span>
+                </AnimatePresence>
+            </Button>
+
+            <RunDrawTransactionModal 
+                isOpen={showRunDrawModal}
+                onClose={() => setShowRunDrawModal(false)}
+                onRunDraw={handleRunDraw}
+                isLoading={isLoading}
+                error={error}
             />
         </div>
     );

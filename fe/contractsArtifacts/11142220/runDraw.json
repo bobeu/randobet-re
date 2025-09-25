@@ -1,5 +1,5 @@
 {
-  "contractAddress": "0x152941d858eF9d82308d356f55Dd311Bb2C5c52d",
+  "contractAddress": "0x0d884659F92eEffF161cAea52d1fBAB375F7fEE6",
   "functionName": "runDraw",
   "inputCount": 3,
   "requireArgUpdate": true,
@@ -319,13 +319,18 @@
           "internalType": "uint256",
           "name": "epoch",
           "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "target",
+          "type": "address"
         }
       ],
       "name": "checkBalance",
       "outputs": [
         {
           "internalType": "uint256",
-          "name": "",
+          "name": "bal",
           "type": "uint256"
         }
       ],
@@ -360,12 +365,23 @@
       "inputs": [
         {
           "internalType": "address",
+          "name": "recipient",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
           "name": "target",
           "type": "address"
         }
       ],
-      "name": "disApprove",
-      "outputs": [],
+      "name": "claimTriggerReward",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
       "stateMutability": "nonpayable",
       "type": "function"
     },
@@ -382,6 +398,19 @@
           "internalType": "uint8",
           "name": "other",
           "type": "uint8"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getBalanceFromCurrentEpoch",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
         }
       ],
       "stateMutability": "view",
@@ -600,30 +629,6 @@
       "type": "function"
     },
     {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "recipient",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "target",
-          "type": "address"
-        }
-      ],
-      "name": "getTriggerReward",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
       "inputs": [],
       "name": "isDrawNeeded",
       "outputs": [
@@ -728,6 +733,19 @@
         }
       ],
       "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "target",
+          "type": "address"
+        }
+      ],
+      "name": "removePermission",
+      "outputs": [],
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {

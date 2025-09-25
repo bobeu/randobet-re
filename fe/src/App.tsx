@@ -163,7 +163,7 @@ function App() {
                   <DollarSign className="w-4 h-4 text-yellow-400" />
                   <span className="text-gray-300 text-sm">Total Pool</span>
                 </div>
-                <div className="text-xl font-bold text-yellow-400">{totalPool.toFixed(3)} ETH</div>
+                <div className="text-xl font-bold text-yellow-400">{totalPool.toFixed(3)} CELO</div>
               </div>
 
               {/* Players */}
@@ -181,7 +181,7 @@ function App() {
                   <TrendingUp className="w-4 h-4 text-yellow-400" />
                   <span className="text-gray-300 text-sm">Min Bet</span>
                 </div>
-                <div className="text-xl font-bold text-white">{nextBetAmount} ETH</div>
+                <div className="text-xl font-bold text-white">{nextBetAmount} CELO</div>
               </div>
             </div>
 
@@ -200,7 +200,7 @@ function App() {
                   <div key={i} className="flex justify-between items-center text-sm">
                     <span className="text-gray-400">{bet.address}</span>
                     <div className="text-right">
-                      <div className="text-yellow-400 font-semibold">{bet.amount} ETH</div>
+                      <div className="text-yellow-400 font-semibold">{bet.amount} CELO</div>
                       <div className="text-gray-500 text-xs">{bet.time}</div>
                     </div>
                   </div>
