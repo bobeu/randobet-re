@@ -1,4 +1,3 @@
-/*eslint-disable */
 import React from 'react';
 import { useAccount } from "wagmi";
 import { filterTransactionData } from '../utilities/common';
@@ -9,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '../ui/Toast';
+import TriggerReward from '../read/TriggerRewards';
 
 function ClaimTriggerReward() {
     const { chainId, address, isConnected } = useAccount();
@@ -82,7 +82,10 @@ function ClaimTriggerReward() {
 
     return (
         <div className="space-y-4 p-4 border border-stone-600/30 rounded-lg bg-stone-800/50">
-            <h3 className="text-sm font-bold text-yellow-400">Claim Trigger Reward</h3>
+            <div className='w-full flex justify-between items-center'>
+                <h3 className="text-sm font-bold text-yellow-400">Claim Trigger Reward</h3>
+                <TriggerReward />
+            </div>
             <div className="space-y-3">
                 <div className="space-y-2">
                     <Label htmlFor="targetAddress" className="text-stone-200 text-xs">Target Address (optional)</Label>

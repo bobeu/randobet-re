@@ -1,4 +1,3 @@
-/*eslint-disable */
 import { NextRequest, NextResponse } from 'next/server';
 import { createWalletClient, http, createPublicClient } from 'viem';
 import { celo, celoSepolia } from 'viem/chains';

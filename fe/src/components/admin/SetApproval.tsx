@@ -8,7 +8,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '../ui/Toast';
-import { zeroAddress } from 'viem';
 
 function SetApproval() {
     const { chainId, address, isConnected } = useAccount();
@@ -34,7 +33,7 @@ function SetApproval() {
         const data = {
             abi: td[0].abi,
             functionName: td[0].functionName as FunctionName,
-            contractAddress: td[0].contractAddress as Address,
+            contractAddress: ca.Verifier as Address,
             args: [newAdmin as Address],
             value: undefined
         }

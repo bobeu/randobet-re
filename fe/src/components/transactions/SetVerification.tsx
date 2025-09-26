@@ -1,4 +1,3 @@
-/*eslint-disable */
 import React from 'react';
 import { useAccount } from "wagmi";
 import { filterTransactionData } from '../utilities/common';

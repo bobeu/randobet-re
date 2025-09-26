@@ -20,6 +20,7 @@ import toggleUseWalletVerification42220 from "./contractsArtifacts/42220/toggleU
 
 // Celo Sepolia contract configs
 import placeBet11142220 from "./contractsArtifacts/11142220/placeBet.json";
+import triggereRewards11142220 from "./contractsArtifacts/11142220/triggereRewards.json";
 import setDataStruct11142220 from "./contractsArtifacts/11142220/setDataStruct.json";
 import runDraw11142220 from "./contractsArtifacts/11142220/runDraw.json";
 import checkBalance11142220 from "./contractsArtifacts/11142220/checkBalance.json";
@@ -66,6 +67,7 @@ const functionData = [
         { key: 'checkBalance', value: { ...checkBalance11142220} },
         { key: 'checkEpochBalance', value: { ...checkEpochBalance11142220} },
         { key: 'setDataStruct', value: { ...setDataStruct11142220} },
+        { key: 'triggereRewards', value: { ...triggereRewards11142220} },
     ],
     [
         { key: 'getDataByEpoch', value: { ...getDataByEpoch42220} },

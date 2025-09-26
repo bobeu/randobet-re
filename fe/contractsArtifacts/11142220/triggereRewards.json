@@ -1,0 +1,27 @@
+{
+  "contractAddress": "0x3C9B2A59F5ED44d1e1bD43020d1349C7E21Ff1cf",
+  "functionName": "triggereRewards",
+  "inputCount": 1,
+  "requireArgUpdate": true,
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "triggereRewards",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ]
+}
