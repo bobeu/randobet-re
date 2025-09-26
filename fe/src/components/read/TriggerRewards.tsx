@@ -29,7 +29,7 @@ function TriggerReward() {
         });
 
         return { readTxObject }
-    }, [chainId]);
+    }, [chainId, account]);
 
     // Read data from the CampaignFactory contact 
     const { data, isPending } = useReadContracts({

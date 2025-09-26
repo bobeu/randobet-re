@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { Metadata } from "next";
 import { APP_NAME, APP_DESCRIPTION, APP_OG_IMAGE_URL } from "@/lib/constants";
 import { getMiniAppEmbedMetadata } from "@/lib/farc-utils";

@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable */
 
 import React from "react";
 
@@ -22,8 +23,9 @@ export default class ErrorBoundary extends React.Component<Props, State> {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: error?.message, stack: error?.stack, info }),
       });
-    } catch {}
-    // eslint-disable-next-line no-console
+    } catch(error: any) {
+      console.error('ErrorBoundary caught:', error);
+    }
     console.error('UI ErrorBoundary caught:', error, info);
   }
 

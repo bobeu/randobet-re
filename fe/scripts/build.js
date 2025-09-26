@@ -202,7 +202,7 @@ async function main() {
     await loadEnvLocal();
 
     // Get domain from user
-    const domain = 'learna.vercel.app';
+    const domain = 'randobet-re.vercel.app';
     // const { domain } = await inquirer.prompt([
     //   {
     //     type: 'input',
