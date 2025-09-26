@@ -1,35 +1,31 @@
 {
   "pages": {
-    "/_not-found/page": [
-      "static/chunks/webpack-5223681c801748aa.js",
-      "static/chunks/vendors-1dfb8e4718da511c.js",
-      "static/chunks/main-app-a96af5f05b10bcf5.js",
-      "static/chunks/app/_not-found/page-d865e9b493374090.js"
-    ],
-    "/api/run-draw/route": [
-      "static/chunks/webpack-5223681c801748aa.js",
-      "static/chunks/vendors-1dfb8e4718da511c.js",
-      "static/chunks/main-app-a96af5f05b10bcf5.js",
-      "static/chunks/app/api/run-draw/route-ac464a61dadb0bdb.js"
-    ],
-    "/layout": [
-      "static/chunks/webpack-5223681c801748aa.js",
-      "static/chunks/vendors-1dfb8e4718da511c.js",
-      "static/chunks/main-app-a96af5f05b10bcf5.js",
-      "static/css/6d5cbee384a6db98.css",
-      "static/chunks/rainbowkit-8776348ac39b0ab5.js",
-      "static/css/9ed62642b8f56df1.css",
-      "static/chunks/app/layout-d25a67887f9934f4.js"
-    ],
     "/page": [
-      "static/chunks/webpack-5223681c801748aa.js",
-      "static/chunks/vendors-1dfb8e4718da511c.js",
-      "static/chunks/main-app-a96af5f05b10bcf5.js",
-      "static/css/6d5cbee384a6db98.css",
-      "static/chunks/rainbowkit-8776348ac39b0ab5.js",
-      "static/chunks/wagmi-90e9f87f7360afca.js",
-      "static/chunks/radix-b9c540d5394107f3.js",
-      "static/chunks/app/page-fdbb28bf8941f411.js"
+      "static/chunks/node_modules_next_dist_8db7fb1f._.js",
+      "static/chunks/src_app_favicon_ico_mjs_243aa161._.js",
+      "static/chunks/_7bcd2789._.css",
+      "static/chunks/src_components_context_WagmiProvider_tsx_1b906c83._.js",
+      "static/chunks/node_modules_@neynar_react_dist_bundle_es_517d089c.js",
+      "static/chunks/node_modules_motion-dom_dist_es_da948acf._.js",
+      "static/chunks/node_modules_framer-motion_dist_es_9fef178b._.js",
+      "static/chunks/node_modules_753f8e58._.js",
+      "static/chunks/src_ee510b36._.js",
+      "static/chunks/src_app_layout_tsx_0a548d63._.js",
+      "static/chunks/src_app_error_tsx_627a0d75._.js",
+      "static/chunks/src_app_error_tsx_d2a2f06c._.js",
+      "static/chunks/node_modules_next_dist_client_components_builtin_global-error_d2a2f06c.js",
+      "static/chunks/src_components_BettingInterface_tsx_199728fb._.js",
+      "static/chunks/src_63d0d7b2._.js",
+      "static/chunks/src_app_page_tsx_d2a2f06c._.js",
+      "static/chunks/[turbopack]_browser_dev_hmr-client_hmr-client_ts_57d40746._.js",
+      "static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js",
+      "static/chunks/node_modules_next_dist_compiled_next-devtools_index_a9cb0712.js",
+      "static/chunks/node_modules_next_dist_compiled_5150ccfd._.js",
+      "static/chunks/node_modules_next_dist_client_cf1d9188._.js",
+      "static/chunks/node_modules_next_dist_b0daae9a._.js",
+      "static/chunks/node_modules_@swc_helpers_cjs_b3dc30d6._.js",
+      "static/chunks/_a0ff3932._.js",
+      "static/chunks/turbopack-_cdba956c._.js"
     ]
   }
 }

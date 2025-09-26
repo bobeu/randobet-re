@@ -1,5 +1,5 @@
 {
-  "contractAddress": "0x3C9B2A59F5ED44d1e1bD43020d1349C7E21Ff1cf",
+  "contractAddress": "0xbc541418a88D4658Db67f997145728c271a84237",
   "functionName": "checkBalance",
   "inputCount": 3,
   "requireArgUpdate": true,

@@ -109,8 +109,8 @@ export default function BettingInterface() {
   useEffect(() => {
     const timer = setInterval(() => {
       setTimeLeft(prev => {
-        if (prev <= 1) {
-          return Math.max(1, timeUntilNextDraw)
+        if(prev <= 1) {
+          return Math.max(0, timeUntilNextDraw)
         }
         return prev - 1 
       })
@@ -264,12 +264,12 @@ export default function BettingInterface() {
           <div className="relative w-full max-w-sm md:max-w-md lg:max-w-lg">
             <AnimatedOrb isSpinning={loading} playerCount={playersCount} />
             {activePanel === 'main' && (
-              timeLeft > 0? <PlaceBet 
+              (!isDrawNeeded || playersCount === 0) ? <PlaceBet
                 setIsLoading={setIsLoading} 
                 loading={loading} 
                 playerFee={playerFeeAmount}
                 onPlaceBetClick={() => setShowVerification(true)}
-              /> : <RunDraw />
+              /> : <RunDraw showOnlyButton={true} />
             )}
           </div>
         </div>
@@ -593,7 +593,7 @@ export default function BettingInterface() {
                   </CardHeader>
                   <CardContent className="space-y-3">
                     <Withdraw />
-                    <RunDraw />
+                    <RunDraw showOnlyButton={false} />
                     <ClaimTriggerReward />
                   </CardContent>
                 </Card>
