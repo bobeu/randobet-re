@@ -19,7 +19,8 @@
     "removePermission",
     "isPermitted",
     "getBalanceFromCurrentEpoch",
-    "setDataStruct"
+    "setDataStruct",
+    "triggereRewards"
   ],
   "chainName": {
     "42220": "celo",
@@ -47,8 +48,8 @@
     {
       "stablecoin": "0x765de816845861e75a25fca122bb6898b8b1282a",
       "FeeReceiver": "0x0000000000000000000000000000000000000000",
-      "RandoFutures": "0x0000000000000000000000000000000000000000",
-      "Verifier": "0x0000000000000000000000000000000000000000"
+      "RandoFutures": "0x000000000000000000000000000000000000000",
+      "Verifier": "0x000000000000000000000000000000000000000"
     }
   ]
 }

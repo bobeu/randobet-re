@@ -4,7 +4,7 @@ import { zeroAddress } from "viem";
 import { formatAddr } from "./components/utilities/common";
 
 export type Address = `0x${string}`;
-export type FunctionName = 'placeBet' | 'checkBalance' | 'checkEpochBalance' | 'getData' | 'getDataByEpoch' | 'claimTriggerReward' | 'isDrawNeeded' | 'isVerified' | 'runDraw' | 'setBetListUpfront' | 'setFee' | 'setVerification' | 'setVerificationByOwner' | 'withdraw' | 'getBalanceFromCurrentEpoch' | 'isPermitted' | 'setDataStruct' | 'setPermission';
+export type FunctionName = 'placeBet' | 'checkBalance' | 'checkEpochBalance' | 'triggereRewards' | 'getData' | 'getDataByEpoch' | 'claimTriggerReward' | 'isDrawNeeded' | 'isVerified' | 'runDraw' | 'setBetListUpfront' | 'setFee' | 'setVerification' | 'setVerificationByOwner' | 'withdraw' | 'getBalanceFromCurrentEpoch' | 'isPermitted' | 'setDataStruct' | 'setPermission';
 export const adminFunctions : FunctionName[] = [
     "setBetListUpfront",
     "setFee",

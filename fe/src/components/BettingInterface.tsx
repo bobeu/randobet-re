@@ -24,6 +24,7 @@ import VerificationSection from './VerificationSection';
 import useData from '@/hooks/useData';
 import SetIntervalAndFeeTo from './admin/SetDataStruct'
 import SetApproval from './admin/SetApproval'
+import { formatTime } from './utilities/common'
 
 export default function BettingInterface() {
   const { 
@@ -44,7 +45,7 @@ export default function BettingInterface() {
     isVerified,
     isApproved
   } = useData();
-  // const [timeLeft, setTimeLeft] = useState<number>(0);
+  const [timeLeft, setTimeLeft] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [activePanel, setActivePanel] = useState<'main' | 'admin' | 'betting'>('main');
   const [showDisclaimer, setShowDisclaimer] = useState(false);
@@ -104,19 +105,19 @@ export default function BettingInterface() {
 
   }, [totalBet, currentEpochBet, nextEpochBet, players, lastDraw, drawInterval, playerFee, currentEpoch, deadEpoch]);
 
-  // Countdown timer - using real blockchain data
-  // useEffect(() => {
-  //   const timer = setInterval(() => {
-  //     setTimeLeft(prev => {
-  //       if (prev <= 1) {
-  //         return Math.max(1, timeUntilNextDraw)
-  //       }
-  //       return prev - 1 
-  //     })
-  //   }, 1000)
+  // Countdown timer
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft(prev => {
+        if (prev <= 1) {
+          return Math.max(1, timeUntilNextDraw)
+        }
+        return prev - 1 
+      })
+    }, 1000)
 
-  //   return () => clearInterval(timer)
-  // }, [timeUntilNextDraw]);
+    return () => clearInterval(timer)
+  }, [timeUntilNextDraw]);
 
   // Show disclaimer on page load
   useEffect(() => {
@@ -155,17 +156,6 @@ export default function BettingInterface() {
         onReject={handleDisclaimerReject}
       />
     )
-  }
-
-  const formatTime = (seconds: number) => {
-    const hours = Math.floor(seconds / 3600)
-    const mins = Math.floor((seconds % 3600) / 60)
-    const secs = seconds % 60
-    
-    if (hours > 0) {
-      return `${hours}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
-    }
-    return `${mins}:${secs.toString().padStart(2, '0')}`
   }
 
   return (
@@ -274,12 +264,12 @@ export default function BettingInterface() {
           <div className="relative w-full max-w-sm md:max-w-md lg:max-w-lg">
             <AnimatedOrb isSpinning={loading} playerCount={playersCount} />
             {activePanel === 'main' && (
-              <PlaceBet 
+              timeLeft > 0? <PlaceBet 
                 setIsLoading={setIsLoading} 
                 loading={loading} 
                 playerFee={playerFeeAmount}
                 onPlaceBetClick={() => setShowVerification(true)}
-              />
+              /> : <RunDraw />
             )}
           </div>
         </div>
@@ -332,248 +322,247 @@ export default function BettingInterface() {
               </Card>
             </motion.div>
 
-                {/* Verification Status */}
-                <motion.div
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.2 }}
-                >
-                  <Card className="bg-stone-800/40 border-stone-600/20 backdrop-blur-lg">
-                    <CardContent className="p-4">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <TooltipProvider>
-                            <Tooltip>
-                              <TooltipTrigger asChild>
-                                <div className={`w-12 h-12 border-2 border-stone-600 flex items-center justify-center cursor-help rounded-lg ${
-                                  isVerified 
-                                    ? 'bg-green-600 text-white' 
-                                    : 'bg-yellow-500 text-stone-900'
-                                }`}>
-                                  {isVerified ? (
-                                    <Shield className="w-6 h-6" />
-                                  ) : (
-                                    <AlertTriangle className="w-6 h-6" />
-                                  )}
-                                </div>
-                              </TooltipTrigger>
-                              <TooltipContent side="top" className="max-w-xs bg-stone-800 border border-stone-600 p-4">
-                                <div className="space-y-2">
-                                  <p className="font-bold text-yellow-400 uppercase tracking-wider">
-                                    {isVerified ? 'IDENTITY VERIFIED' : 'IDENTITY NOT VERIFIED'}
-                                  </p>
-                                  <p className="text-sm text-stone-200">
-                                    {isVerified 
-                                      ? 'Your identity has been verified. You can place bets and participate in the betting protocol.'
-                                      : 'You need to verify your identity before placing bets. Use the verify button to complete verification.'
-                                    }
-                                  </p>
-                                </div>
-                              </TooltipContent>
-                            </Tooltip>
-                          </TooltipProvider>
-                          <div>
-                            <h3 className="text-lg font-bold text-stone-200">
-                              {isVerified ? 'Identity Verified' : 'Identity Not Verified'}
-                            </h3>
-                            <p className="text-sm text-stone-400">
-                              {isVerified ? 'You can place bets' : 'Verification required to bet'}
-                            </p>
-                          </div>
-                        </div>
-                        <SetVerification isVerified={isVerified} />
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-
-            {/* Next Draw Timer */}
+            {/* Verification Status */}
             <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
             >
-                  <Card className="bg-yellow-900/40 border-yellow-500/20 backdrop-blur-lg">
-                <CardHeader className="pb-2 md:pb-3">
-                      <CardTitle className="flex items-center gap-2 md:gap-3 text-yellow-400 text-sm md:text-base">
-                    <Timer className="w-4 h-4 md:w-5 md:h-5" />
-                    Next Draw
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-xl md:text-2xl lg:text-3xl font-bold text-white mb-2 md:mb-3">
-                    {formatTime(timeUntilNextDraw)}
-                  </div>
-                  <Progress 
-                    value={progressValue} 
-                        className="h-2 bg-violet-700"
-                  />
-                      <div className="flex justify-between text-xs text-violet-300 mt-2">
-                    <span>Last: {lastDrawDate}</span>
-                    <span>Interval: {drawIntervalHours.toFixed(1)}h</span>
+              <Card className="bg-stone-800/40 border-stone-600/20 backdrop-blur-lg">
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <div className={`w-12 h-12 border-2 border-stone-600 flex items-center justify-center cursor-help rounded-lg ${
+                              isVerified 
+                                ? 'bg-green-600 text-white' 
+                                : 'bg-yellow-500 text-stone-900'
+                            }`}>
+                              {isVerified ? (
+                                <Shield className="w-6 h-6" />
+                              ) : (
+                                <AlertTriangle className="w-6 h-6" />
+                              )}
+                            </div>
+                          </TooltipTrigger>
+                          <TooltipContent side="top" className="max-w-xs bg-stone-800 border border-stone-600 p-4">
+                            <div className="space-y-2">
+                              <p className="font-bold text-yellow-400 uppercase tracking-wider">
+                                {isVerified ? 'IDENTITY VERIFIED' : 'IDENTITY NOT VERIFIED'}
+                              </p>
+                              <p className="text-sm text-stone-200">
+                                {isVerified 
+                                  ? 'Your identity has been verified. You can place bets and participate in the betting protocol.'
+                                  : 'You need to verify your identity before placing bets. Use the verify button to complete verification.'
+                                }
+                              </p>
+                            </div>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                      <div>
+                        <h3 className="text-lg font-bold text-stone-200">
+                          {isVerified ? 'Identity Verified' : 'Identity Not Verified'}
+                        </h3>
+                        <p className="text-sm text-stone-400">
+                          {isVerified ? 'You can place bets' : 'Verification required to bet'}
+                        </p>
+                      </div>
+                    </div>
+                    <SetVerification isVerified={isVerified} />
                   </div>
                 </CardContent>
               </Card>
             </motion.div>
 
-            {/* Draw Ready Status */}
-            {isDrawNeeded && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-              >
-                    <Card className="bg-yellow-900/40 border-yellow-500/20 backdrop-blur-lg">
-                  <CardContent className="p-4 text-center">
-                        <div className="text-2xl md:text-3xl font-bold text-yellow-400 mb-2">
-                      🎯 DRAW READY!
-                    </div>
-                        <p className="text-yellow-200 text-sm">
-                      The draw can be triggered by anyone
-                    </p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            )}
-
-            {/* Dead Epoch Warning */}
-            {isDeadEpochWarning && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-              >
-                    <Card className="bg-red-900/40 border-red-500/20 backdrop-blur-lg">
-                      <CardContent className="text-center">
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <div className="flex items-center justify-center gap-3 mb-4 cursor-help">
-                                <AlertTriangle className="w-8 h-8 text-red-400" />
-                                <span className="text-xl font-bold text-red-400">URGENT: CLAIM WARNING</span>
-                              </div>
-                            </TooltipTrigger>
-                            <TooltipContent side="top" className="max-w-xs bg-stone-800 border border-stone-600 p-4">
-                              <div className="space-y-2">
-                                <p className="font-bold text-yellow-400 uppercase tracking-wider">Dead Epoch Approaching</p>
-                                <p className="text-sm text-stone-200">
-                                  The current epoch is close to the dead epoch (#{deadEpoch.toString()}). 
-                                  If you have unclaimed winnings, you must claim them before the dead epoch 
-                                  or they will be forfeited permanently.
-                                </p>
-                    </div>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                        <p className="text-sm text-red-200">
-                      Epoch #{deadEpoch.toString()} is approaching! Claim your winnings before they're forfeited.
-                    </p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            )}
-
-            {/* Stats Grid */}
-            <div className="grid grid-cols-1 gap-3 md:gap-4">
-              <StatsCard
-                icon={DollarSign}
-                label="Total Pool"
-                value={`${totalPool.toFixed(4)} CELO`}
-                    gradient=""
-                    borderColor=""
-                    textColor=""
-                delay={0.2}
-              />
-
-              <StatsCard
-                icon={Users}
-                label="Active Players"
-                value={playersCount.toString()}
-                    gradient=""
-                    borderColor=""
-                    textColor=""
-                delay={0.3}
-              />
-
-              <StatsCard
-                icon={TrendingUp}
-                label="Current Bet Amount"
-                value={`${currentBetAmount.toFixed(4)} CELO`}
-                    gradient=""
-                    borderColor=""
-                    textColor=""
-                delay={0.4}
-                isBold={true}
-              />
-
-              <StatsCard
-                icon={Clock}
-                label="Next Bet Amount"
-                value={`${nextBetAmount.toFixed(4)} CELO`}
-                    gradient=""
-                    borderColor=""
-                    textColor=""
-                delay={0.5}
-              />
-            </div>
-
-            {/* Recent Activity */}
-            <RecentBets />
-
-            {/* Network Status */}
-            <motion.div 
-              className="text-center text-xs text-violet-400"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.8 }}
-            >
-              <div className="flex items-center justify-center gap-2">
-                <motion.div 
-                  className="w-2 h-2 bg-yellow-400 rounded-full"
-                  animate={{ scale: [1, 1.2, 1] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                />
-                Celo Network Ready
+        {/* Next Draw Timer */}
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+        >
+              <Card className="bg-yellow-900/40 border-yellow-500/20 backdrop-blur-lg">
+            <CardHeader className="pb-2 md:pb-3">
+                  <CardTitle className="flex items-center gap-2 md:gap-3 text-yellow-400 text-sm md:text-base">
+                <Timer className="w-4 h-4 md:w-5 md:h-5" />
+                Next Draw
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-xl md:text-2xl lg:text-3xl font-bold text-white mb-2 md:mb-3">
+                {formatTime(timeLeft)}
               </div>
-            </motion.div>
-              </motion.div>
-            )}
+              <Progress 
+                value={progressValue} 
+                    className="h-2 bg-violet-700"
+              />
+                  <div className="flex justify-between text-xs text-violet-300 mt-2">
+                <span>Last: {lastDrawDate}</span>
+                <span>Interval: {drawIntervalHours.toFixed(1)}h</span>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
 
-            {activePanel === 'admin' && (
-              <motion.div
-                key="admin"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.5 }}
-                className="space-y-4 p-6 md:p-8"
-              >
-                <Card className="bg-stone-900/20 border-none">
-                  <CardHeader className="pb-3">
-                    <CardTitle className="text-violet-400 text-lg flex items-center gap-2">
-                      <Shield className="w-5 h-5" />
-                      Admin Dashboard
-                    </CardTitle>
-                    <p className="text-violet-200 text-sm">
-                      Contract administration functions
-                    </p>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    {/* Fee Information Display */}
-                    <div className="bg-stone-900/20 border border-stone-500/20 rounded-lg p-3 mb-4">
-                      <h4 className="text-stone-300 font-semibold mb-2">Current Fee Settings</h4>
-                      <div className="space-y-1 text-sm">
-                        <div className="flex justify-between">
-                          <span className="text-stone-200">Player Fee:</span>
-                          <span className="text-yellow-400 font-mono">{playerFeeAmount.toFixed(4)} CELO</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-stone-200">Fee Recipient:</span>
-                          <span className="text-violet-400 font-mono text-xs">{feeTo.slice(0, 6)}...{feeTo.slice(-4)}</span>
-                        </div>
+        {/* Draw Ready Status */}
+        {isDrawNeeded && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
+                <Card className="bg-yellow-900/40 border-yellow-500/20 backdrop-blur-lg">
+              <CardContent className="p-4 text-center">
+                    <div className="text-2xl md:text-3xl font-bold text-yellow-400 mb-2">
+                  🎯 DRAW READY!
+                </div>
+                    <p className="text-yellow-200 text-sm">
+                  The draw can be triggered by anyone
+                </p>
+              </CardContent>
+            </Card>
+          </motion.div>
+        )}
+
+        {/* Dead Epoch Warning */}
+        {isDeadEpochWarning && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
+            <Card className="bg-red-900/40 border-red-500/20 backdrop-blur-lg">
+              <CardContent className="text-center">
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div className="flex items-center justify-center gap-3 mb-4 cursor-help">
+                        <AlertTriangle className="w-8 h-8 text-red-400" />
+                        <span className="text-xl font-bold text-red-400">URGENT: CLAIM WARNING</span>
                       </div>
+                    </TooltipTrigger>
+                    <TooltipContent side="top" className="max-w-xs bg-stone-800 border border-stone-600 p-4">
+                      <div className="space-y-2">
+                        <p className="font-bold text-yellow-400 uppercase tracking-wider">Dead Epoch Approaching</p>
+                        <p className="text-sm text-stone-200">
+                          The current epoch is close to the dead epoch (#{deadEpoch.toString()}). 
+                          If you have unclaimed winnings, you must claim them before the dead epoch 
+                          or they will be forfeited permanently.
+                        </p>
+                      </div>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                    <p className="text-sm text-red-200">
+                  Epoch #{deadEpoch.toString()} is approaching! Claim your winnings before they're forfeited.
+                </p>
+              </CardContent>
+            </Card>
+          </motion.div>
+        )}
+
+        {/* Stats Grid */}
+        <div className="grid grid-cols-1 gap-3 md:gap-4">
+          <StatsCard
+            icon={DollarSign}
+            label="Total Pool"
+            value={`${totalPool.toFixed(4)} CELO`}
+                gradient=""
+                borderColor=""
+                textColor=""
+            delay={0.2}
+          />
+
+          <StatsCard
+            icon={Users}
+            label="Active Players"
+            value={playersCount.toString()}
+                gradient=""
+                borderColor=""
+                textColor=""
+            delay={0.3}
+          />
+
+          <StatsCard
+            icon={TrendingUp}
+            label="Current Bet Amount"
+            value={`${currentBetAmount.toFixed(4)} CELO`}
+                gradient=""
+                borderColor=""
+                textColor=""
+            delay={0.4}
+            isBold={true}
+          />
+
+          <StatsCard
+            icon={Clock}
+            label="Next Bet Amount"
+            value={`${nextBetAmount.toFixed(4)} CELO`}
+                gradient=""
+                borderColor=""
+                textColor=""
+            delay={0.5}
+          />
+        </div>
+
+        {/* Recent Activity */}
+        <RecentBets />
+
+        {/* Network Status */}
+        <motion.div 
+          className="text-center text-xs text-violet-400"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.8 }}
+        >
+          <div className="flex items-center justify-center gap-2">
+            <motion.div 
+              className="w-2 h-2 bg-yellow-400 rounded-full"
+              animate={{ scale: [1, 1.2, 1] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            />
+            Celo Network Ready
           </div>
-                    
+        </motion.div>
+          </motion.div>
+        )}
+
+        {activePanel === 'admin' && (
+          <motion.div
+            key="admin"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.5 }}
+            className="space-y-4 p-6 md:p-8"
+          >
+            <Card className="bg-stone-900/20 border-none">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-violet-400 text-lg flex items-center gap-2">
+                  <Shield className="w-5 h-5" />
+                  Admin Dashboard
+                </CardTitle>
+                <p className="text-violet-200 text-sm">
+                  Contract administration functions
+                </p>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {/* Fee Information Display */}
+                <div className="bg-stone-900/20 border border-stone-500/20 rounded-lg p-3 mb-4">
+                  <h4 className="text-stone-300 font-semibold mb-2">Current Fee Settings</h4>
+                  <div className="space-y-1 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-stone-200">Player Fee:</span>
+                      <span className="text-yellow-400 font-mono">{playerFeeAmount.toFixed(4)} CELO</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-stone-200">Fee Recipient:</span>
+                      <span className="text-violet-400 font-mono text-xs">{feeTo.slice(0, 6)}...{feeTo.slice(-4)}</span>
+                    </div>
+                  </div>
+                </div>
                     <SetBetListUpfront />
                     <SetFee currentPlayerFee={playerFeeAmount} />
                     <SetIntervalAndFeeTo />
@@ -613,7 +602,6 @@ export default function BettingInterface() {
           </AnimatePresence>
         </div>
       </div>
-
     </div>
   )
 }
