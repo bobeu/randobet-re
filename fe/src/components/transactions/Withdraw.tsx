@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAccount } from "wagmi";
-import { filterTransactionData } from '../utilities/common';
+import { filterTransactionData, formatAddr } from '../utilities/common';
 import { Address, FunctionName } from '@/types';
 import TransactionModal from '../modals/TransactionModal';
 import useData from '@/hooks/useData';
@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '../ui/Toast';
+import BalanceCheck from '../read/BalanceCheck';
 
 function Withdraw() {
     const { chainId, address, isConnected } = useAccount();
@@ -20,7 +21,7 @@ function Withdraw() {
     const { data: { currentEpochBet, nextEpochBet, deadEpoch, state: { epoches: currentEpoch } } } = useData();
     const { showToast } = useToast();
 
-    const trxnSteps = React.useMemo(() => {
+    const { trxnSteps, selectedBetAmount, selectedEpoch, account } = React.useMemo(() => {
         const { transactionData: td } = filterTransactionData({
             chainId,
             filter: true,
@@ -38,14 +39,24 @@ function Withdraw() {
             value: undefined
         }
 
-        return [{
-            id: 'withdraw-winnings',
-            title: 'Withdrawing Winnings',
-            description: `Withdrawing ${Number(selectedBetAmount) / 1e18} CELO from epoch ${epoch}`,
-            ...data
-        }];
+        return {
+            trxnSteps:  [{
+                id: 'withdraw-winnings',
+                title: 'Withdrawing Winnings',
+                description: `Withdrawing ${Number(selectedBetAmount) / 1e18} CELO from epoch ${epoch}`,
+                ...data
+            }],
+            selectedBetAmount,
+            selectedEpoch,
+            account: formatAddr(address)
+        }
 
     }, [chainId, betAmount, epoch, customBetAmount, address]);
+
+    const handleCustomBet = (e: React.ChangeEvent<HTMLInputElement>) => {
+        e.preventDefault();
+        setCustomBetAmount(e.target.value);
+    }
 
     const handleWithdraw = () => {
         if (!isConnected || !address) {
@@ -88,11 +99,14 @@ function Withdraw() {
     };
 
     // Generate available epochs (excluding dead epoch)
-    const availableEpochs = Array.from({ length: Number(currentEpoch) }, (_, i) => i).filter(ep => ep < Number(deadEpoch));
+    const availableEpochs = Array.from({ length: Number(currentEpoch) }, (_, i) => i).filter(ep => ep === 0? true : ep > Number(deadEpoch));
 
     return (
         <div className="space-y-4 p-4 border border-stone-600/30 rounded-lg bg-stone-800/50">
-            <h3 className="text-sm font-bold text-yellow-400">Withdraw Winnings</h3>
+            <div className='w-full flex justify-between items-center'>
+                <h3 className="text-sm font-bold text-yellow-400">Withdraw Winnings</h3>
+                <BalanceCheck bet={selectedBetAmount} epoch={selectedEpoch} target={account} />
+            </div>
             <div className="space-y-3">
                 <div className="space-y-2">
                     <Label htmlFor="betAmount" className="text-stone-200 text-xs">Bet Amount</Label>
@@ -114,7 +128,7 @@ function Withdraw() {
                         <Input
                             type="number"
                             value={customBetAmount}
-                            onChange={(e) => setCustomBetAmount(e.target.value)}
+                            onChange={(e) => handleCustomBet(e)}
                             className="bg-stone-900/80 border-stone-600/50 text-white"
                             placeholder="Enter custom bet amount in wei"
                         />

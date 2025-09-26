@@ -56,7 +56,7 @@ function TriggerReward() {
     }, [data, isPending]);
 
     return (
-        <div>{balance}</div>
+        <div>{balance} CELO</div>
     );
 }
 

@@ -18,7 +18,7 @@ const generateRandomHashes = (numOfPlayers: number) => {
     return randomNumbers.map(num => keccak256(new Uint8Array([num])));
 };
 
-function RunDraw() {
+function RunDraw({ showOnlyButton }: { showOnlyButton: boolean }) {
     const { chainId, address, isConnected } = useAccount();
     const [showRunDrawModal, setShowRunDrawModal] = React.useState<boolean>(false);
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
@@ -85,14 +85,20 @@ function RunDraw() {
 
     return (
         <div className="space-y-4 p-4 border border-stone-600/30 rounded-lg bg-stone-800/50">
-            <h3 className="text-sm font-bold text-yellow-400">Run Draw</h3>
-            <div className="space-y-3">
-                <div className="bg-stone-900/80 border border-stone-600/50 rounded-lg p-3">
-                    <p className="text-stone-200 text-xs">
-                        Players: {players.length} | Status: {isDrawNeeded ? 'Ready' : 'Not Ready'}
-                    </p>
-                </div>
-            </div>
+            {
+                !showOnlyButton && (
+                    <div className='space-y-4'>
+                        <h3 className="text-sm font-bold text-yellow-400">Run Draw</h3>
+                        <div className="space-y-3">
+                            <div className="bg-stone-900/80 border border-stone-600/50 rounded-lg p-3">
+                                <p className="text-stone-200 text-xs">
+                                    Players: {players.length} | Status: {isDrawNeeded ? 'Ready' : 'Not Ready'}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                )
+            }
 
             <Button
                 onClick={() => setShowRunDrawModal(true)}

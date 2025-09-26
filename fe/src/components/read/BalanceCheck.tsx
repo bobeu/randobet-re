@@ -12,9 +12,9 @@ function BalanceCheck({bet, epoch, target} : BalanceProps) {
         const { transactionData: td, } = filterTransactionData({
             chainId,
             filter: true,
-            functionNames: ['checkBalance'],
+            functionNames: ['checkBalance', 'checkEpochBalance'],
         });
-        const readArgs = [[bet, epoch, target]];
+        const readArgs = [[bet, epoch, target], [bet, epoch]];
         const contractAddresses = [
             td[0].contractAddress as Address,
         ];
@@ -45,17 +45,30 @@ function BalanceCheck({bet, epoch, target} : BalanceProps) {
     });
 
     // Update the state with the result  of the read action
-    const { balance } = React.useMemo(() => {
-        let balance : string = '0';
+    const { playerBalance, balanceLeftInEpoch } = React.useMemo(() => {
+        let playerBalance : string = '0';
+        let balanceLeftInEpoch : string = '0';
 
         if(!isPending && data && data[0].status === 'success' && data[0].result !== undefined) {
-            balance = formatValue(data[0].result as bigint).toStr;
+            playerBalance = formatValue(data[0].result as bigint).toStr;
         }
-        return { balance };
+        if(!isPending && data && data[1].status === 'success' && data[1].result !== undefined) {
+            balanceLeftInEpoch = formatValue(data[1].result as bigint).toStr;
+        }
+        return { playerBalance, balanceLeftInEpoch };
     }, [data, isPending]);
 
     return (
-        <div>{balance}</div>
+        <div>
+            <div>
+                <h3>Player</h3>
+                <h3>{ playerBalance } CELO</h3>
+            </div>
+            <div>
+                <h3>Balance In Epoch</h3>
+                <h3>{ balanceLeftInEpoch } CELO</h3>
+            </div>
+        </div>
     );
 }
 
