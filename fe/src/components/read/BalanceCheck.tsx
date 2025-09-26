@@ -59,14 +59,18 @@ function BalanceCheck({bet, epoch, target} : BalanceProps) {
     }, [data, isPending]);
 
     return (
-        <div>
-            <div>
-                <h3>Player</h3>
-                <h3>{ playerBalance } CELO</h3>
+        <div className="bg-violet-900 backdrop-blur-sm border border-stone-600 rounded-lg p-6 space-y-6">
+            <div className="text-center">
+                <h3 className="text-stone-300 text-sm mb-2">Player Balance</h3>
+                <h3 className="text-2xl font-bold spooky-text">
+                    {playerBalance || '0'} CELO
+                </h3>
             </div>
-            <div>
-                <h3>Balance In Epoch</h3>
-                <h3>{ balanceLeftInEpoch } CELO</h3>
+            <div className="text-center">
+                <h3 className="text-stone-300 text-sm mb-2">Balance In Epoch</h3>
+                <h3 className="text-2xl font-bold spooky-text">
+                    {balanceLeftInEpoch || '0'} CELO
+                </h3>
             </div>
         </div>
     );

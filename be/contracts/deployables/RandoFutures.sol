@@ -198,7 +198,7 @@ contract RandoFutures is DrawData, VRFSetUp, ReentrancyGuard {
 
             }
             if(epoch >= 2 && ((epoch % 2) == 0)) deadEpoch ++;
-            // _setBetListUpfront(_nextBet);
+            _setBetListUpfront(0);
             state.epoches ++;
         }
         return true;
