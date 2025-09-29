@@ -15,6 +15,10 @@ describe("RandoFuturesTest", function () {
     const randoFutures = await RandoFutures.connect(deployer).deploy(BET, 20, 100);
     const randoFuturesAddr = await randoFutures.getAddress();
 
+    const StandingOrder = await ethers.getContractFactory("StandingOrder");
+    const standingOrder = await StandingOrder.deploy();
+    const standingOrderAddr = await standingOrder.getAddress();
+
     const FeeReceiver = await ethers.getContractFactory("FeeReceiver");
     const feeReceiver = await FeeReceiver.deploy(escape.address);
     const feeReceiverAddr = await feeReceiver.getAddress();
@@ -22,7 +26,9 @@ describe("RandoFuturesTest", function () {
     const Verifier = await ethers.getContractFactory("Verifier");
     const verifier = await Verifier.deploy(identityVerifier.address);
     const verifierAddr = await verifier.getAddress();
-
+    console.log("randoFutures.address", randoFutures.address)
+    await standingOrder.connect(deployer).setBetFactory(randoFutures.address);
+    await randoFutures.connect(deployer).setOrderBox(standingOrderAddr);
     await randoFutures.connect(deployer).setDataStruct(0, feeReceiverAddr, PLAYER_FEE);
     await randoFutures.connect(deployer).setVerifier(verifierAddr);
 
@@ -59,8 +65,8 @@ describe("RandoFuturesTest", function () {
       let allBal : bigint = 0n;
       const epochBalance = await randoFutures.checkEpochBalance(bet, epoch);
       const contractBal = await players[0].provider.getBalance(randoFuturesAddr);
-      // console.log("ContractBal: ", contractBal.toString());
-      // console.log("EpochBalance:", epochBalance.toString());
+      console.log("ContractBal: ", contractBal.toString());
+      console.log("EpochBalance:", epochBalance.toString());
       for (let i = 0; i < players.length; i++) {
         const recipient = players[i].address;
         const epochBal = await randoFutures.connect(players[i]).checkBalance(bet, epoch);

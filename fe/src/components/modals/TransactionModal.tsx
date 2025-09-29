@@ -10,6 +10,7 @@ import { motion } from "framer-motion";
 import { useConfig, useWriteContract } from "wagmi";
 import { waitForTransactionReceipt } from "wagmi/actions";
 import { Address, FunctionName } from "@/types";
+import { useToast } from "../ui/Toast";
 
 const CONFIMATION_BLOCK = 2;
 
@@ -39,7 +40,7 @@ export default function TransactionModal({
   isOpen,
   onClose,
   title,
-  // description,
+  description,
   getSteps,
   onSuccess,
   onError,
@@ -51,6 +52,7 @@ export default function TransactionModal({
   const [txHashes, setTxHashes] = useState<Record<string, string>>({});
   const [isProcessing, setIsProcessing] = useState(false);
 
+  const { showToast } = useToast();
   const { writeContractAsync } = useWriteContract();
   const config = useConfig()
 
@@ -68,7 +70,11 @@ export default function TransactionModal({
   const executeStep = async (step: TransactionStep) => {
     try {
       setIsProcessing(true);
-      console.log("Executing step:", step);
+      showToast({
+        message: step.description,
+        title: step.title,
+        type: 'info'
+      });
       let hash = await writeContractAsync({
         address: step.contractAddress,
         abi: step.abi,
@@ -76,20 +82,38 @@ export default function TransactionModal({
         args: step.args,
         value: step.value,
       });
+      showToast({
+        message: "Confirming transaction...",
+        title: 'Confirmation',
+        type: 'info'
+      });
       hash = await waitForConfirmation(hash);
+      showToast({
+        message: "Confirmed!",
+        title: '',
+        type: 'success'
+      });
       setTxHashes(prev => ({ ...prev, [step.id]: hash }));
       setCompletedSteps(prev => new Set([...prev, step.id]));
       
       if (isLastStep) {
         onSuccess?.(hash);
-        setTimeout(() => {
+        const timer = setTimeout(() => {
           onClose();
           resetModal();
         }, 2000);
+        clearTimeout(timer);
       } else {
         setCurrentStepIndex(prev => prev + 1);
       }
-    } catch (error) {
+    } catch (error : any) {
+      let errorMessage = (error?.message || error?.data?.message || 'Transaction Failed') as string;
+      if(errorMessage.length > 100) errorMessage = errorMessage.slice(0, 100);
+      showToast({
+        message: errorMessage ,
+        title: 'Error',
+        type: 'error'
+      });
       setFailedSteps(prev => new Set([...prev, step.id]));
       onError?.(error as Error);
     } finally {
@@ -221,7 +245,7 @@ export default function TransactionModal({
                 
                 {/* Static Blockchain Icon */}
                 <div className="absolute right-0 top-1/2 transform -translate-y-1/2">
-                  <div className="w-20 h-20 bg-violet-600 border-2 border-violet-500 rounded-lg flex items-center justify-center text-white font-bold text-3xl">
+                  <div className="w-16 h-16 bg-violet-600 border-2 border-violet-500 rounded-lg flex items-center justify-center text-white font-bold text-3xl">
                     ⛓️
                   </div>
                 </div>

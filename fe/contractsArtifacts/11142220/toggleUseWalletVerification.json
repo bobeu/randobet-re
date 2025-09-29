@@ -1,5 +1,5 @@
 {
-  "contractAddress": "0x4AEb54c74Befd483B44C5639d6025258fC7e050e",
+  "contractAddress": "0x1aaDa28c4D092bd31b947bb74FacBa49625881A0",
   "functionName": "toggleUseWalletVerification",
   "inputCount": 0,
   "requireArgUpdate": true,

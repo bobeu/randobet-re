@@ -40,6 +40,10 @@ import setPermission11142220 from "./contractsArtifacts/11142220/setPermission.j
 import removePermission11142220 from "./contractsArtifacts/11142220/removePermission.json";
 import isPermitted11142220 from "./contractsArtifacts/11142220/isPermitted.json";
 import toggleUseWalletVerification11142220 from "./contractsArtifacts/11142220/toggleUseWalletVerification.json";
+import openOrder11142220 from "./contractsArtifacts/11142220/openOrder.json";
+import closeOrder11142220 from "./contractsArtifacts/11142220/closeOrder.json";
+import hasSpot11142220 from "./contractsArtifacts/11142220/hasSpot.json";
+import getAllOrders11142220 from "./contractsArtifacts/11142220/getAllOrders.json";
 
 // Global data import
 import globalData from "./contractsArtifacts/global.json";
@@ -68,6 +72,11 @@ const functionData = [
         { key: 'checkEpochBalance', value: { ...checkEpochBalance11142220} },
         { key: 'setDataStruct', value: { ...setDataStruct11142220} },
         { key: 'triggereRewards', value: { ...triggereRewards11142220} },
+        { key: 'openOrder', value: { ...openOrder11142220} },
+        { key: 'closeOrder', value: { ...closeOrder11142220} },
+        { key: 'hasSpot', value: { ...hasSpot11142220} },
+        { key: 'getAllOrders', value: { ...getAllOrders11142220} },
+
     ],
     [
         { key: 'getDataByEpoch', value: { ...getDataByEpoch42220} },

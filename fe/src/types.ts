@@ -4,7 +4,7 @@ import { zeroAddress } from "viem";
 import { formatAddr } from "./components/utilities/common";
 
 export type Address = `0x${string}`;
-export type FunctionName = 'placeBet' | 'checkBalance' | 'checkEpochBalance' | 'triggereRewards' | 'getData' | 'getDataByEpoch' | 'claimTriggerReward' | 'isDrawNeeded' | 'isVerified' | 'runDraw' | 'setBetListUpfront' | 'setFee' | 'setVerification' | 'setVerificationByOwner' | 'withdraw' | 'getBalanceFromCurrentEpoch' | 'isPermitted' | 'setDataStruct' | 'setPermission';
+export type FunctionName = 'placeBet' | 'checkBalance' | 'checkEpochBalance' | 'triggereRewards' | 'getData' | 'getDataByEpoch' | 'claimTriggerReward' | 'isDrawNeeded' | 'isVerified' | 'runDraw' | 'setBetListUpfront' | 'setFee' | 'setVerification' | 'setVerificationByOwner' | 'withdraw' | 'getBalanceFromCurrentEpoch' | 'isPermitted' | 'setDataStruct' | 'setPermission' | 'openOrder' | 'closeOrder' | 'hasSlot' | 'getAllOrders';
 export const adminFunctions : FunctionName[] = [
     "setBetListUpfront",
     "setFee",
@@ -12,6 +12,12 @@ export const adminFunctions : FunctionName[] = [
     "setDataStruct",
     "setPermission"
 ];
+
+export const orders : FunctionName[] = [
+    'openOrder',
+    'closeOrder',
+    'getAllOrders'
+]
 
 export const userFunctions : FunctionName[] = [
     "placeBet",
@@ -31,6 +37,11 @@ export interface Spin {
     unit: bigint;
     pool: bigint;
     players: Player[];
+}
+
+export interface Order {
+    balances: bigint;
+    addr: Address;
 }
 
 export interface DataStruct {
@@ -107,4 +118,9 @@ export const mockBetData : BetData = {
     currentEpochBet: 0n,
     nextEpochBet: 0n,
     deadEpoch: 0n
+}
+
+export const defaultOrder : Order = {
+    addr: zeroAddress,
+    balances: 0n
 }

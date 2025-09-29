@@ -12,7 +12,7 @@ import { useToast } from '../ui/Toast';
 
 // PlaceBet component for placing bets
 function PlaceBet({setIsLoading, loading, playerFee, onPlaceBetClick}: {loading: boolean; setIsLoading: (arg: boolean) => void; playerFee: number; onPlaceBetClick?: () => void}) {
-    const { chainId, address, isConnected } = useAccount();
+    const { chainId, isConnected } = useAccount();
     const[ showTransactionModal, setShowTransactionModal ] = React.useState<boolean>(false);
     const { data: { currentEpochBet, }, isVerified } = useData();
     const { showToast } = useToast();
@@ -36,8 +36,6 @@ function PlaceBet({setIsLoading, loading, playerFee, onPlaceBetClick}: {loading:
           args: [],
           value: totalBetAmount
         }
-        console.log("data", data);
-        
         return[{
             id: 'place-bet',
             title: 'Placing bet',
@@ -48,6 +46,7 @@ function PlaceBet({setIsLoading, loading, playerFee, onPlaceBetClick}: {loading:
     }, [chainId, playerFee, currentEpochBet]);
 
     const handlePlaceBet = () => {
+      // console.log("trxnSteps", trxnSteps);
       if(!isConnected) {
         showToast({
           type: 'error',
@@ -57,6 +56,7 @@ function PlaceBet({setIsLoading, loading, playerFee, onPlaceBetClick}: {loading:
         return;
       }
       // Call the verification check callback if player is not verified
+      
       if(!isVerified) {
           onPlaceBetClick?.();
         } else {
@@ -65,7 +65,7 @@ function PlaceBet({setIsLoading, loading, playerFee, onPlaceBetClick}: {loading:
     };
     
     const handleTransactionSuccess = (txHash: string) => {
-      console.log('Bet placed with hash:', txHash);
+      // console.log('Bet placed with hash:', txHash);
       showToast({
         type: 'success',
         title: 'Bet Placed Successfully',
@@ -77,7 +77,7 @@ function PlaceBet({setIsLoading, loading, playerFee, onPlaceBetClick}: {loading:
 
     const handleTransactionError = (error: Error) => {
       setIsLoading(false);
-      console.error('Failed to place bet:', error);
+      // console.error('Failed to place bet:', error);
       showToast({
         type: 'error',
         title: 'Bet Failed',
@@ -126,14 +126,14 @@ function PlaceBet({setIsLoading, loading, playerFee, onPlaceBetClick}: {loading:
           </Button>
         </motion.div>
         <TransactionModal 
-            title="Placing bet"
-            getSteps={() => trxnSteps}
-            isOpen={showTransactionModal}
-            onClose={() => setShowTransactionModal(false)}
-            onSuccess={handleTransactionSuccess}
-            description='Placing your bet'
-            onError={handleTransactionError}
-            showAnimation={true}
+          title="Placing bet"
+          getSteps={() => trxnSteps}
+          isOpen={showTransactionModal}
+          onClose={() => setShowTransactionModal(false)}
+          onSuccess={handleTransactionSuccess}
+          description='Placing your bet'
+          onError={handleTransactionError}
+          showAnimation={true}
         />
     </div>
   );

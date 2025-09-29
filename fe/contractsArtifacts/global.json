@@ -20,7 +20,12 @@
     "isPermitted",
     "getBalanceFromCurrentEpoch",
     "setDataStruct",
-    "triggereRewards"
+    "triggereRewards",
+    "setBetFactory",
+    "closeOrder",
+    "openOrder",
+    "hasSpot",
+    "getAllOrders"
   ],
   "chainName": {
     "42220": "celo",
@@ -35,6 +40,7 @@
     "11142220": [
       "deployments\\sepolia\\FeeReceiver.json",
       "deployments\\sepolia\\RandoFutures.json",
+      "deployments\\sepolia\\StandingOrder.json",
       "deployments\\sepolia\\Verifier.json"
     ]
   },
@@ -42,14 +48,12 @@
     {
       "stablecoin": "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1",
       "FeeReceiver": "0x002804Be479Fe20c1dFd7C2105197b350EF76958",
-      "RandoFutures": "0xbc541418a88D4658Db67f997145728c271a84237",
-      "Verifier": "0x4AEb54c74Befd483B44C5639d6025258fC7e050e"
+      "RandoFutures": "0xb85D4F4CC731930D1787c90f03e8B50C3B8f4253",
+      "StandingOrder": "0x90351a1531c90Fa2DF544dC165ce3EaD2F87aB46",
+      "Verifier": "0x1aaDa28c4D092bd31b947bb74FacBa49625881A0"
     },
     {
-      "stablecoin": "0x765de816845861e75a25fca122bb6898b8b1282a",
-      "FeeReceiver": "0x002804Be479Fe20c1dFd7C2105197b350EF76958",
-      "RandoFutures": "0xbc541418a88D4658Db67f997145728c271a84237",
-      "Verifier": "0x4AEb54c74Befd483B44C5639d6025258fC7e050e"
+      "stablecoin": "0x765de816845861e75a25fca122bb6898b8b1282a"
     }
   ]
 }

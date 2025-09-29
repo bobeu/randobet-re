@@ -2,12 +2,11 @@
 import React from "react";
 import { useAccount, useChainId } from "wagmi";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Shield, CheckCircle, AlertCircle } from "lucide-react";
 import { SelfQRcodeWrapper, SelfAppBuilder, type SelfApp } from "@selfxyz/qrcode";
 import { APP_ICON_URL, APP_NAME, type Address } from "../types";
-import { VerificationConfig, getUniversalLink } from "@selfxyz/core";
+import { getUniversalLink } from "@selfxyz/core";
 import { filterTransactionData, formatAddr } from "./utilities/common";
 
 export default function SelfQRCodeVerifier({ onVerificationComplete, onClose } : {onVerificationComplete: () => void; onClose: () => void}) {
@@ -35,19 +34,14 @@ export default function SelfQRCodeVerifier({ onVerificationComplete, onClose } :
     const chainId = useChainId();
     const account = formatAddr(useAccount().address);
 
-    const { verificationConfig, claim, scope } = React.useMemo(
+    const { verifier, scope } = React.useMemo(
         () => {
             const { contractAddresses } = filterTransactionData({chainId, filter: false});
-            const claim = contractAddresses.Verifier as Address
+            const verifier = contractAddresses.Verifier as Address
             const scope = process.env.NEXT_PUBLIC_SCOPE as string;
-            const verificationConfig : VerificationConfig = {
-                minimumAge: 18,
-                ofac: true,
-            }
 
             return {
-                verificationConfig,
-                claim,
+                verifier,
                 scope
             }
         },  
@@ -61,15 +55,18 @@ export default function SelfQRCodeVerifier({ onVerificationComplete, onClose } :
                     version: 2,
                     appName: APP_NAME,
                     scope,
-                    endpoint: claim,
+                    endpoint: verifier,
                     logoBase64: APP_ICON_URL,
                     userId: account,
-                    endpointType: chainId === 44787? "staging_celo" : "celo",
+                    endpointType: chainId === 11142220? "staging_celo" : "celo",
                     userIdType: "hex",
-                    userDefinedData: "",
-                    devMode: chainId === 44787? true : false,
+                    userDefinedData: "Welcome to Randobet",
+                    devMode: chainId === 11142220? true : false,
                     disclosures: {
-                        ...verificationConfig,
+                        minimumAge: 18,
+                        nationality: true,
+                        ofac: true,
+                        excludedCountries: ["IRN", "PRK", "RUS", "SYR"]
                     }
                 }
             ).build();
@@ -78,7 +75,7 @@ export default function SelfQRCodeVerifier({ onVerificationComplete, onClose } :
         } catch (error) {
             console.error("Failed to initialize Self app:", error);
         }
-    }, [account, claim, verificationConfig]);
+    }, [account, verifier]);
 
     const copyToClipboard = () => {
         if (universalLink) {
@@ -113,13 +110,13 @@ export default function SelfQRCodeVerifier({ onVerificationComplete, onClose } :
                 <div className="space-y-8">
                     {/* QR Code Section */}
                     <div className="w-full place-items-center">
-                        <div className="flex justify-center items-center w-[300px] h-[300px] bg-stone-800 border-2 border-stone-600 p-6 rounded-lg">
+                        <div className="flex justify-center items-center">
                             <div className="flex flex-col justify-center items-center text-center">
-                                <div className="flex flex-col justify-center items-center">
+                                <div className="flex flex-col justify-center items-center mb-4 sm:mb-6">
                                     {
                                         selfApp ? (
                                             <SelfQRcodeWrapper
-                                                size={180}
+                                                size={250}
                                                 darkMode={true}
                                                 selfApp={selfApp}
                                                 onSuccess={handleSuccessfulVerification}

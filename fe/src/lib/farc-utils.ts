@@ -87,16 +87,15 @@ export async function getMiniAppMetadata(): Promise<MiniAppManifest> {
   if (!secretEnvVars) {
     console.warn('No seed phrase or FID found in environment variables -- generating unsigned metadata');
   }
-
   return {
     accountAssociation:  {
       header: "eyJ0eXBlIjoiY3VzdG9keSIsImtleSI6IjB4M0EwMTA5MDVEY0Q3MkY0YTc4YTc3ZjU2MzYwMTc4MEFGQWU1NjUyRiIsImZpZCI6OTQwOTI5fQ==",
-      payload:"eyJkb21haW4iOiJsZWFybmEudmVyY2VsLmFwcCJ9",
-      signature:"MHhhOTY0ZmVmZWIzMmU3YmU3YTczYWRmNDlhNmVkMzdjM2E2ODRiNzA5ZTc1MWQ4Nzk3YWFjNzhkNzVjZDY4MDM5MzU5YTlhYzM5YzRiZDUxMWJjYjcyYjMwMmI4Yzc5YTgyODQ0ZTE5MmNjOGZiYjVmODY2ZGJhZWU2YWFjMGU1ODFj"
+      payload:"eyJkb21haW4iOiJyYW5kb2JldC1yZS52ZXJjZWwuYXBwIn0",
+      signature:"MHhiZDExNTUxNmE0MzM2YzMyNGI1MzA2YjU2ZTU4YjM0ZWE5ZGUyODk0Mzg5YjQ3MmNiMWMwMzc3MzY2MTg1YTI1NjAxOTk0YTI2ZTk4YTIxYTZjZDUzZjgwN2JiYjcwMjVhYWM4NTQ4OWI0NDEzYTZkYWI4MGQ5OTk4OGM4NTMxODFj"
     },
     frame: {
       version:"1",
-      name:"Learna",
+      name:"Randobet",
       iconUrl:"https://randobet-re.vercel.app/logo.png",
       homeUrl:"https://randobet-re.vercel.app",
       imageUrl:"https://randobet-re.vercel.app/api/opengraph-image",

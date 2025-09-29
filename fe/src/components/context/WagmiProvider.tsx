@@ -8,6 +8,7 @@ import { RainbowKitProvider, getDefaultConfig, lightTheme, } from "@rainbow-me/r
 import { celo, celoSepolia } from "wagmi/chains";
 import { createPublicClient } from "viem";
 import DataProvider from "./DataProvider";
+import { APP_DESCRIPTION, APP_ICON_URL, APP_URL } from "@/lib/constants";
 
 // Your walletconnect project Id
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID as string;
@@ -55,20 +56,6 @@ function CoinbaseWalletAutoConnect({ children }: { children: React.ReactNode }) 
   return <>{children}</>;
 }
 
-/**
- * @dev Get wallet client for signing transactions
- * @param networkName : Connected chain name
- * @param pkey : Private key. Note: Protect your private key at all cost. Use environment variables where necessary
- * @returns : Wallet client for signing transactions
- */
-export function getDefaultPublicClient(networkName: string) {
-  return createPublicClient({
-    chain: networkName === 'sepolia'? celoSepolia : celo,
-    transport: http(),
-    // transport: http('https://celo.drpc.org')
-  });
-}
-
 // Create a single QueryClient instance outside the component
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -88,14 +75,14 @@ const queryClient = new QueryClient({
 const config = getDefaultConfig({
   appName: 'RandoBet',
   projectId,
-  appIcon: '/icon.png',
-  appDescription: '',
-  appUrl: '/favicon.svg',
+  appIcon: '/logo.png',
+  appDescription: APP_DESCRIPTION,
+  appUrl: APP_URL,
   chains: [celoSepolia, celo],
   ssr: true,
   multiInjectedProviderDiscovery: true,
-  // pollingInterval: 10_000,
-  // syncConnectedChain: true,
+  pollingInterval: 10_000,
+  syncConnectedChain: true,
   transports: {
     [celoSepolia.id]: http(),
     [celo.id]: http(),

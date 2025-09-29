@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAccount } from "wagmi";
-import { filterTransactionData, formatAddr } from '../utilities/common';
+import { filterTransactionData, formatAddr, formatValue } from '../utilities/common';
 import { Address, FunctionName } from '@/types';
 import TransactionModal from '../modals/TransactionModal';
 import useData from '@/hooks/useData';
@@ -11,6 +11,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '../ui/Toast';
 import BalanceCheck from '../read/BalanceCheck';
+import { parseUnits } from 'viem';
 
 function Withdraw() {
     const { chainId, address, isConnected } = useAccount();
@@ -20,22 +21,23 @@ function Withdraw() {
     const [customBetAmount, setCustomBetAmount] = React.useState<string>('');
     const { data: { currentEpochBet, nextEpochBet, deadEpoch, state: { epoches: currentEpoch } } } = useData();
     const { showToast } = useToast();
-
-    const { trxnSteps, selectedBetAmount, selectedEpoch, account } = React.useMemo(() => {
+// uint bet, uint epoch, address player, address recipient
+    const { trxnSteps, selectedEpoch, account } = React.useMemo(() => {
         const { transactionData: td } = filterTransactionData({
             chainId,
             filter: true,
             functionNames: ['withdraw'],
         });
 
-        const selectedBetAmount = betAmount === 'custom' ? BigInt(customBetAmount) : BigInt(betAmount);
+        // const selectedBetAmount = betAmount === 'custom' ? parseUnits(customBetAmount, 18) : BigInt(betAmount);
         const selectedEpoch = BigInt(epoch);
+        // console.log(`selectedBetAmount: ${selectedBetAmount}\n, selectedEpoch: ${selectedEpoch}`);
 
         const data = {
             abi: td[0].abi,
             functionName: td[0].functionName as FunctionName,
             contractAddress: td[0].contractAddress as Address,
-            args: [selectedBetAmount, selectedEpoch, address, address],
+            args: [selectedEpoch],
             value: undefined
         }
 
@@ -43,10 +45,9 @@ function Withdraw() {
             trxnSteps:  [{
                 id: 'withdraw-winnings',
                 title: 'Withdrawing Winnings',
-                description: `Withdrawing ${Number(selectedBetAmount) / 1e18} CELO from epoch ${epoch}`,
+                description: `Getting your winnings from epoch ${epoch}`,
                 ...data
             }],
-            selectedBetAmount,
             selectedEpoch,
             account: formatAddr(address)
         }
@@ -68,19 +69,23 @@ function Withdraw() {
             return;
         }
         
-        if (trxnSteps.length === 0) {
-            showToast({
-                type: 'error',
-                title: 'Invalid Input',
-                message: 'Please fill in all required fields.'
-            });
-            return;
-        }
+        // if (trxnSteps.length === 0) {
+        //     showToast({
+        //         type: 'error',
+        //         title: 'Invalid Input',
+        //         message: 'Please fill in all required fields.'
+        //     });
+        //     return
+        // }1000000000000000000 1000000000000000000
+        console.log("SelectedEpoch", selectedEpoch);
+        console.log("CurrentEpochBet", currentEpochBet);
+        console.log("NextEpochBet", nextEpochBet);
+        console.log("DeadEpoch", deadEpoch);
         setShowTransactionModal(true);
     };
 
     const handleTransactionSuccess = (txHash: string) => {
-        console.log('Winnings withdrawn:', txHash);
+        // console.log('Winnings withdrawn:', txHash);
         showToast({
             type: 'success',
             title: 'Withdrawal Successful',
@@ -90,7 +95,7 @@ function Withdraw() {
     };
 
     const handleTransactionError = (error: Error) => {
-        console.error('Failed to withdraw winnings:', error);
+        // console.error('Failed to withdraw winnings:', error);
         showToast({
             type: 'error',
             title: 'Withdrawal Failed',
@@ -105,26 +110,26 @@ function Withdraw() {
         <div className="space-y-4 p-4 border border-stone-600/30 rounded-lg bg-stone-800/50">
             <div className='w-full flex justify-between items-center'>
                 <h3 className="text-sm font-bold text-yellow-400">Withdraw Winnings</h3>
-                <BalanceCheck bet={selectedBetAmount} epoch={selectedEpoch} target={account} />
+                <BalanceCheck epoch={selectedEpoch} target={account} />
             </div>
             <div className="space-y-3">
-                <div className="space-y-2">
-                    <Label htmlFor="betAmount" className="text-stone-200 text-xs">Bet Amount</Label>
+                {/* <div className="space-y-2"> */}
+                    {/* <Label htmlFor="betAmount" className="text-stone-200 text-xs">Bet Amount</Label>
                     <Select value={betAmount} onValueChange={setBetAmount}>
                         <SelectTrigger className="w-full bg-stone-900/80 border-stone-600/50 text-white">
                             <SelectValue placeholder="Select bet amount" />
                         </SelectTrigger>
                         <SelectContent className="bg-stone-900 border-stone-600 text-white">
                             <SelectItem value={currentEpochBet.toString()}>
-                                Current: {(Number(currentEpochBet) / 1e18).toFixed(4)} CELO
+                                Current: {formatValue(currentEpochBet).toStr} CELO
                             </SelectItem>
                             <SelectItem value={nextEpochBet.toString()}>
-                                Next: {(Number(nextEpochBet) / 1e18).toFixed(4)} CELO
+                                Next: {formatValue(nextEpochBet).toStr} CELO
                             </SelectItem>
                             <SelectItem value="custom">Custom Amount</SelectItem>
                         </SelectContent>
-                    </Select>
-                    {betAmount === 'custom' && (
+                    </Select> */}
+                    {/* {betAmount === 'custom' && (
                         <Input
                             type="number"
                             value={customBetAmount}
@@ -132,8 +137,8 @@ function Withdraw() {
                             className="bg-stone-900/80 border-stone-600/50 text-white"
                             placeholder="Enter custom bet amount in wei"
                         />
-                    )}
-                </div>
+                    )} */}
+                {/* </div> */}
 
                 <div className="space-y-2">
                     <Label htmlFor="epoch" className="text-stone-200 text-xs">Epoch</Label>

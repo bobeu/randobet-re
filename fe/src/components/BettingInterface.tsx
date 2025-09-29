@@ -2,7 +2,7 @@
 /* esling-disable */
 import { useState, useMemo, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Timer, Users, DollarSign, TrendingUp, Zap, Clock, AlertTriangle, Shield, Settings } from 'lucide-react'
+import { Timer, Users, DollarSign, TrendingUp, Zap, Clock, AlertTriangle, Shield, Settings, Coins, Menu, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
@@ -15,7 +15,7 @@ import RecentBets from '@/components/RecentBets';
 import PlaceBet from './transactions/PlaceBet';
 import Withdraw from './transactions/Withdraw';
 import RunDraw from './transactions/RunDraw';
-import SetVerification from './transactions/SetVerification';
+// import SetVerification from './transactions/SetVerification';
 import ClaimTriggerReward from './transactions/ClaimTriggerReward';
 import SetBetListUpfront from './admin/SetBetListUpfront';
 import SetFee from './admin/SetFee';
@@ -24,7 +24,13 @@ import VerificationSection from './VerificationSection';
 import useData from '@/hooks/useData';
 import SetIntervalAndFeeTo from './admin/SetDataStruct'
 import SetApproval from './admin/SetApproval'
+import OrdersPanel from './OrdersPanel'
 import { formatTime } from './utilities/common'
+import VerificationStatus from './verification/VerificationStatus'
+import ControlButtonPanel, { Panel } from './utilities/ControlButtonPanel'
+import Header from './utilities/Header'
+import { MysticalElements } from './utilities/MysticalElements'
+import FloatingControlButton from './utilities/FloatingControlButton'
 
 export default function BettingInterface() {
   const { 
@@ -47,10 +53,26 @@ export default function BettingInterface() {
   } = useData();
   const [timeLeft, setTimeLeft] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
-  const [activePanel, setActivePanel] = useState<'main' | 'admin' | 'betting'>('main');
+  const [activePanel, setActivePanel] = useState<Panel>('main-view');
   const [showDisclaimer, setShowDisclaimer] = useState(false);
   const [showVerification, setShowVerification] = useState(false);
   const [disclaimerAccepted, setDisclaimerAccepted] = useState(false);
+  const [showControlButtons, setShowControlButtons] = useState(false);
+
+  // Close control buttons when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (showControlButtons && !target.closest('.control-panel') && !target.closest('.floating-button')) {
+        setShowControlButtons(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showControlButtons]);
 
   // Calculate real-time data from blockchain
   const { 
@@ -164,98 +186,24 @@ export default function BettingInterface() {
       <ParticleField />
       
       {/* Header with Logo and Connect Button */}
-      <div className="absolute top-0 left-0 z-50 md:max-w-2xl lg:max-w-2xl flex justify-between items-center">
-        <motion.div
-          className="w-2/4 flex items-center gap-2"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1, delay: 0.5 }}
-        >
-          {/* Logo */}
-          <div className="w-20 h-20 md:w-28 md:h-28">
-            <img 
-              src="/logo.png" 
-              alt="Randobet Logo" 
-              className="w-full h-full object-contain"
-            />
-          </div>
-          
-          {/* Brand Text */}
-          <div className="text-center">
-            <h2 className="text-2xl md:text-3xl font-bold spooky-text mb-1">
-              RANDOBET
-            </h2>
-              <p className="text-xs md:text-sm text-yellow-400 uppercase tracking-widest">
-              On-Chain Betting Protocol
-            </p>
-          </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1, delay: 0.7 }}
-          className="w-2/4 flex justify-end"
-        >
-          <ConnectButton 
-            chainStatus="none"
-            accountStatus="avatar"
-            showBalance={{
-              smallScreen: true,
-              largeScreen: true,
-            }}
-          />
-        </motion.div>
-      </div>
+      <Header />
 
       {/* Mystical elements - positioned to not interfere */}
-      <div className="absolute top-20 right-20 hidden md:block z-10">
-        <motion.div
-          className="w-16 h-16 border-2 border-purple-400/30 rounded-full"
-          animate={{ rotate: 360 }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-        />
-      </div>
-      <div className="absolute bottom-20 left-20 hidden md:block z-10">
-        <motion.div
-          className="w-12 h-12 border-2 border-orange-400/30 rounded-full"
-          animate={{ rotate: -360 }}
-          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-        />
-      </div>
+      <MysticalElements />
 
-      {/* Control Buttons */}
-      <div className="absolute top-20 md:top-[24px] right-4 z-30 flex flex-col gap-2">
-        {isApproved && (
-          <Button
-            onClick={() => setActivePanel('admin')}
-            className={`btn-primary flex items-center gap-2 ${
-              activePanel === 'admin' ? 'ring-2 ring-yellow-400' : ''
-            }`}
-          >
-            <Shield className="w-4 h-4" />
-            ADMIN PANEL
-          </Button>
-        )}
-        <Button
-          onClick={() => setActivePanel('betting')}
-          className={`btn-secondary flex items-center gap-2 ${
-            activePanel === 'betting' ? 'ring-2 ring-yellow-400' : ''
-          }`}
-        >
-          <Zap className="w-4 h-4" />
-          BETTING ACTIONS
-        </Button>
-        <Button
-          onClick={() => setActivePanel('main')}
-          className={`bg-stone-800 hover:bg-stone-700 text-yellow-400 border-2 border-yellow-400 px-6 py-3 font-bold text-sm uppercase tracking-wider flex items-center gap-2 ${
-            activePanel === 'main' ? 'ring-2 ring-yellow-400' : ''
-          }`}
-        >
-          <Settings className="w-4 h-4" />
-          MAIN VIEW
-        </Button>
-      </div>
+      {/* Floating Control Button */}
+      <FloatingControlButton 
+        setShowControlButtons={(arg: boolean) => setShowControlButtons(arg)} 
+        showControlButtons={showControlButtons} 
+      />
+
+      {/* Control Buttons Panel */}
+      <ControlButtonPanel 
+        activePanel={ activePanel} 
+        setActivePanel={setActivePanel} 
+        setShowControlButtons={(arg: boolean) => setShowControlButtons(arg)}
+        showControlButtons={showControlButtons}
+      />
 
       {/* Main Content Layout with Flip Animation */}
       <div className="relative z-20 h-full flex flex-col md:flex-row">
@@ -263,13 +211,13 @@ export default function BettingInterface() {
         <div className="flex w-full md:w-2/5 items-center justify-center p-4 md:p-8">
           <div className="relative w-full max-w-sm md:max-w-md lg:max-w-lg">
             <AnimatedOrb isSpinning={loading} playerCount={playersCount} />
-            {activePanel === 'main' && (
-              (!isDrawNeeded || playersCount === 0) ? <PlaceBet
+            {activePanel === 'main-view' && (
+              (isDrawNeeded && playersCount > 0) ? <RunDraw showOnlyButton={true} /> : <PlaceBet
                 setIsLoading={setIsLoading} 
                 loading={loading} 
                 playerFee={playerFeeAmount}
                 onPlaceBetClick={() => setShowVerification(true)}
-              /> : <RunDraw showOnlyButton={true} />
+              />
             )}
           </div>
         </div>
@@ -277,7 +225,7 @@ export default function BettingInterface() {
         {/* Content Panel - 100% width on mobile, 60% on desktop */}
         <div className="w-full md:w-3/5 bg-stone-900/80 backdrop-blur-sm border border-stone-600 p-6 overflow-y-auto max-h-screen">
           <AnimatePresence mode="wait">
-            {activePanel === 'main' && showVerification && !isVerified && (
+            {activePanel === 'main-view' && showVerification && !isVerified && (
               <motion.div
                 key="verification"
                 initial={{ opacity: 0, x: 20 }}
@@ -288,14 +236,13 @@ export default function BettingInterface() {
               >
                 <VerificationSection 
                   onVerificationComplete={() => {
-                  setShowVerification(false)
-                  // Refresh the page to update verification status
-                  window.location.reload()
-                }} />
+                    setShowVerification(false)
+                  }} 
+                />
               </motion.div>
             )}
 
-            {activePanel === 'main' && (!showVerification || isVerified) && (
+            {activePanel === 'main-view' && (!showVerification || isVerified) && (
               <motion.div
                 key="main"
                 initial={{ opacity: 0, x: 20 }}
@@ -323,59 +270,7 @@ export default function BettingInterface() {
             </motion.div>
 
             {/* Verification Status */}
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              <Card className="bg-stone-800/40 border-stone-600/20 backdrop-blur-lg">
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <div className={`w-12 h-12 border-2 border-stone-600 flex items-center justify-center cursor-help rounded-lg ${
-                              isVerified 
-                                ? 'bg-green-600 text-white' 
-                                : 'bg-yellow-500 text-stone-900'
-                            }`}>
-                              {isVerified ? (
-                                <Shield className="w-6 h-6" />
-                              ) : (
-                                <AlertTriangle className="w-6 h-6" />
-                              )}
-                            </div>
-                          </TooltipTrigger>
-                          <TooltipContent side="top" className="max-w-xs bg-stone-800 border border-stone-600 p-4">
-                            <div className="space-y-2">
-                              <p className="font-bold text-yellow-400 uppercase tracking-wider">
-                                {isVerified ? 'IDENTITY VERIFIED' : 'IDENTITY NOT VERIFIED'}
-                              </p>
-                              <p className="text-sm text-stone-200">
-                                {isVerified 
-                                  ? 'Your identity has been verified. You can place bets and participate in the betting protocol.'
-                                  : 'You need to verify your identity before placing bets. Use the verify button to complete verification.'
-                                }
-                              </p>
-                            </div>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                      <div>
-                        <h3 className="text-lg font-bold text-stone-200">
-                          {isVerified ? 'Identity Verified' : 'Identity Not Verified'}
-                        </h3>
-                        <p className="text-sm text-stone-400">
-                          {isVerified ? 'You can place bets' : 'Verification required to bet'}
-                        </p>
-                      </div>
-                    </div>
-                    <SetVerification isVerified={isVerified} />
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
+            <VerificationStatus handleShowVerificationPage={() => setShowVerification(true)} />
 
         {/* Next Draw Timer */}
         <motion.div
@@ -572,7 +467,7 @@ export default function BettingInterface() {
               </motion.div>
             )}
 
-            {activePanel === 'betting' && (
+            {activePanel === 'betting-action' && (
               <motion.div
                 key="betting"
                 initial={{ opacity: 0, x: 20 }}
@@ -599,6 +494,8 @@ export default function BettingInterface() {
                 </Card>
               </motion.div>
             )}
+
+            {activePanel === 'standing-order' && <OrdersPanel />}
           </AnimatePresence>
         </div>
       </div>

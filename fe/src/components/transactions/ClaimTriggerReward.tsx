@@ -27,14 +27,14 @@ function ClaimTriggerReward() {
             abi: td[0].abi,
             functionName: td[0].functionName as FunctionName,
             contractAddress: td[0].contractAddress as Address,
-            args: [address, targetAddress || address],
+            args: [],
             value: undefined
         }
 
         return [{
             id: 'claim-trigger-reward',
             title: 'Claiming Trigger Reward',
-            description: `Claiming trigger reward for ${targetAddress || address}`,
+            description: `Getting reward for trigger activity ...`,
             ...data
         }];
 
@@ -62,22 +62,13 @@ function ClaimTriggerReward() {
     };
 
     const handleTransactionSuccess = (txHash: string) => {
-        console.log('Trigger reward claimed:', txHash);
+        // console.log('Trigger reward claimed:', txHash);
         showToast({
             type: 'success',
             title: 'Reward Claimed Successfully',
             message: `Transaction hash: ${txHash.slice(0, 10)}...`
         });
         setShowTransactionModal(false);
-    };
-
-    const handleTransactionError = (error: Error) => {
-        console.error('Failed to claim trigger reward:', error);
-        showToast({
-            type: 'error',
-            title: 'Claim Failed',
-            message: error.message || 'Failed to claim trigger reward. Please try again.'
-        });
     };
 
     return (
@@ -119,7 +110,7 @@ function ClaimTriggerReward() {
                 onClose={() => setShowTransactionModal(false)}
                 onSuccess={handleTransactionSuccess}
                 description='Claiming trigger reward'
-                onError={handleTransactionError}
+                onError={() => setShowTransactionModal(false)}
             />
         </div>
     );

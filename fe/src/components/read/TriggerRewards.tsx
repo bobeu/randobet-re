@@ -56,9 +56,9 @@ function TriggerReward() {
     }, [data, isPending]);
 
     return (
-        <div className="bg-violet-900 backdrop-blur-sm border border-stone-600 rounded-lg p-4 text-center">
-            <div className="text-stone-300 text-sm mb-1">Trigger Reward</div>
-            <div className="text-2xl font-bold spooky-text">
+        <div className="text-center">
+            <div className="text-stone-400 text-xs mb-1">Trigger Reward</div>
+            <div className="text-xl font-bold text-yellow-400">
                 {balance || '0'} CELO
             </div>
         </div>

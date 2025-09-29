@@ -1,4 +1,4 @@
-import type { BetData } from "../../../types";
+import type { BetData, Order } from "../../../types";
 
 export interface DataContextProps {
     data: BetData;
@@ -6,4 +6,6 @@ export interface DataContextProps {
     epochPoolBal: bigint;
     isVerified: boolean;
     isApproved: boolean;
+    orders: Order[];
+    userOrder: Order;
 }

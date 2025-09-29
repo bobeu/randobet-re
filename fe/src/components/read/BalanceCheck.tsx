@@ -3,7 +3,7 @@ import { useAccount, useConfig, useReadContracts } from "wagmi";
 import { filterTransactionData, formatAddr, formatValue } from '../utilities/common';
 import { Address } from '@/types';
 
-function BalanceCheck({bet, epoch, target} : BalanceProps) {
+function BalanceCheck({epoch, target} : BalanceProps) {
     const { chainId, address, isConnected } = useAccount();
     const account = formatAddr(address);
     const config = useConfig();
@@ -14,7 +14,7 @@ function BalanceCheck({bet, epoch, target} : BalanceProps) {
             filter: true,
             functionNames: ['checkBalance', 'checkEpochBalance'],
         });
-        const readArgs = [[bet, epoch, target], [bet, epoch]];
+        const readArgs = [[epoch, target], [epoch]];
         const contractAddresses = [
             td[0].contractAddress as Address,
         ];
@@ -29,7 +29,7 @@ function BalanceCheck({bet, epoch, target} : BalanceProps) {
         });
 
         return { readTxObject }
-    }, [bet, epoch, target, chainId]);
+    }, [epoch, target, chainId]);
 
     // Read data from the CampaignFactory contact 
     const { data, isPending } = useReadContracts({
@@ -59,18 +59,18 @@ function BalanceCheck({bet, epoch, target} : BalanceProps) {
     }, [data, isPending]);
 
     return (
-        <div className="bg-violet-900 backdrop-blur-sm border border-stone-600 rounded-lg p-6 space-y-6">
+        <div className="space-y-4">
             <div className="text-center">
-                <h3 className="text-stone-300 text-sm mb-2">Player Balance</h3>
-                <h3 className="text-2xl font-bold spooky-text">
+                <div className="text-stone-400 text-xs mb-1">Player Balance</div>
+                <div className="text-xl font-bold text-yellow-400">
                     {playerBalance || '0'} CELO
-                </h3>
+                </div>
             </div>
             <div className="text-center">
-                <h3 className="text-stone-300 text-sm mb-2">Balance In Epoch</h3>
-                <h3 className="text-2xl font-bold spooky-text">
+                <div className="text-stone-400 text-xs mb-1">Balance In Epoch</div>
+                <div className="text-xl font-bold text-yellow-400">
                     {balanceLeftInEpoch || '0'} CELO
-                </h3>
+                </div>
             </div>
         </div>
     );
@@ -79,7 +79,6 @@ function BalanceCheck({bet, epoch, target} : BalanceProps) {
 export default BalanceCheck;
 
 interface BalanceProps {
-    bet: bigint;
     epoch: bigint; 
     target: Address; 
 }

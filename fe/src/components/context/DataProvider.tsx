@@ -2,8 +2,8 @@
 import { DataContextProvider } from "./DataContextProvider";
 import React from 'react';
 import { useAccount, useChainId, useConfig, useReadContracts } from "wagmi";
-import { Address, BetData, mockBetData } from "@/types";
-import { filterTransactionData, formatAddr } from "../utilities/common";
+import { Address, BetData, defaultOrder, mockBetData, Order } from "@/types";
+import { filterTransactionData, formatAddr, formatValue } from "../utilities/common";
 
 export default function DataProvider({children} : {children: React.ReactNode}) {
     const [data, setBetData] = React.useState<BetData>(mockBetData);
@@ -11,6 +11,8 @@ export default function DataProvider({children} : {children: React.ReactNode}) {
     const [epochPoolBal, setEpochPoolBal] = React.useState<bigint>(0n);
     const [isVerified, setIsVerified] = React.useState<boolean>(false);
     const [isApproved, setIsApproved] = React.useState<boolean>(false);
+    const [orders, setOrders] = React.useState<Order[]>([]);
+    const [userOrder, setUserOrder] = React.useState<Order>(defaultOrder);
 
     const chainId = useChainId();
     const config = useConfig();
@@ -22,9 +24,9 @@ export default function DataProvider({children} : {children: React.ReactNode}) {
         const { transactionData: td} = filterTransactionData({
             chainId,
             filter: true,
-            functionNames: ['getData', 'isDrawNeeded', 'getBalanceFromCurrentEpoch', 'isPermitted', 'isVerified'],
+            functionNames: ['getData', 'isDrawNeeded', 'getBalanceFromCurrentEpoch', 'isPermitted', 'isVerified', 'getAllOrders'],
         });
-        const readArgs = [[], [], [], [account], [account]];
+        const readArgs = [[], [], [], [account], [account], []];
         const readTxObject = td.map((item, i) => {
             return {
                 abi: item.abi,
@@ -58,6 +60,8 @@ export default function DataProvider({children} : {children: React.ReactNode}) {
         let epochPoolBal_ : bigint = 0n;
         let isVerified_ : boolean = false;
         let isApproved_ : boolean = false;
+        let orders_ : Order[] = [];
+        let userOrder_ : Order = defaultOrder;
 
         if(contractData && contractData[0].status === 'success' && contractData[0].result !== undefined) {
             data_ = contractData[0].result as BetData;
@@ -79,7 +83,16 @@ export default function DataProvider({children} : {children: React.ReactNode}) {
             isVerified_ = contractData[4].result as boolean;
             setIsVerified(isVerified_);
         }
-    }, [contractData]);
+        if(contractData && contractData[5].status === 'success' && contractData[5].result !== undefined) {
+            orders_ = contractData[5].result as Order[];
+            setOrders(orders_);
+            
+            // Find user's order
+            const userOrderFound = orders_.find(order => order.addr.toLowerCase() === account.toLowerCase());
+            userOrder_ = userOrderFound || defaultOrder;
+            setUserOrder(userOrder_);
+        }
+    }, [contractData, account]);
 
     return (
         <DataContextProvider
@@ -88,7 +101,9 @@ export default function DataProvider({children} : {children: React.ReactNode}) {
                 isDrawNeeded,
                 epochPoolBal,
                 isApproved,
-                isVerified
+                isVerified,
+                orders,
+                userOrder
             }}
         >
             { children }

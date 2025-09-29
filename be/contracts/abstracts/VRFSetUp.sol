@@ -32,7 +32,7 @@ abstract contract VRFSetUp {
     return true;
   }
 
-  function _checkPlayerVerificationStatus(address player) internal view {
+  function _validateStatus(address player) internal view {
     require(verifier.isVerified(player), "Player not verified");
   }
 }

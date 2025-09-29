@@ -9,8 +9,8 @@ abstract contract DrawData is IRandoFutures, Approved {
     RandoState internal state;
 
     function  setDataStruct(
-        uint24 drawIntervalInMin, 
-        address feeTo, 
+        uint24 drawIntervalInMin,
+        address feeTo,
         uint playerFee
     ) public onlyApproved {
         if (playerFee != state.data.playerFee && playerFee > 0) {

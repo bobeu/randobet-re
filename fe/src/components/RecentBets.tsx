@@ -54,7 +54,7 @@ export default function RecentBets() {
                 transition={{ duration: 0.4, delay: 0.7 + i * 0.1 }}
                 className="flex justify-between items-center text-sm hover:bg-stone-800/50 p-2 rounded-lg transition-colors border border-stone-700/30"
               >
-                <span className="text-stone-300 font-mono text-xs">{bet.address}</span>
+                <span className="text-stone-300 font-mono text-xs">{bet.address.slice(0, 10)}</span>
                 <div className="text-right">
                   <motion.div 
                     className="text-white font-bold"
