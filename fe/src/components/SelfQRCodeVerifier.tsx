@@ -7,7 +7,7 @@ import { Shield, CheckCircle, AlertCircle } from "lucide-react";
 import { SelfQRcodeWrapper, SelfAppBuilder, type SelfApp } from "@selfxyz/qrcode";
 import { APP_ICON_URL, APP_NAME, type Address } from "../types";
 import { getUniversalLink } from "@selfxyz/core";
-import { filterTransactionData, formatAddr } from "./utilities/common";
+import { filterTransactionData, formatAddr, encodeUserData } from "./utilities/common";
 
 export default function SelfQRCodeVerifier({ onVerificationComplete, onClose } : {onVerificationComplete: () => void; onClose: () => void}) {
     const [selfApp, setSelfApp] = React.useState<SelfApp | null>(null);
@@ -60,7 +60,7 @@ export default function SelfQRCodeVerifier({ onVerificationComplete, onClose } :
                     userId: account,
                     endpointType: chainId === 11142220? "staging_celo" : "celo",
                     userIdType: "hex",
-                    userDefinedData: "Welcome to Randobet",
+                    userDefinedData: encodeUserData(1), // Example encoding function
                     devMode: chainId === 11142220? true : false,
                     disclosures: {
                         minimumAge: 18,

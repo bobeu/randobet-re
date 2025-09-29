@@ -1,4 +1,3 @@
-/*eslint-disable */
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { motion } from 'framer-motion';
 import React from 'react'

@@ -1,4 +1,3 @@
-/*eslint-disable */
 import React, { useState } from 'react';
 import { useAccount } from "wagmi";
 import { Button } from '@/components/ui/button';

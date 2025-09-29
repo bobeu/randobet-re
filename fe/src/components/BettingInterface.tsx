@@ -1,5 +1,5 @@
 'use client'
-/* esling-disable */
+/* eslint-disable */
 import { useState, useMemo, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Timer, Users, DollarSign, TrendingUp, Zap, Clock, AlertTriangle, Shield, Settings, Coins, Menu, X } from 'lucide-react'

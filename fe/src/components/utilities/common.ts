@@ -140,3 +140,11 @@ export function filterTransactionData({chainId, filter, functionNames = []}: Fil
     contractAddresses: contractAddresses[0],
   }
 }
+
+// Encode multiple values in binary format
+export function encodeUserData(arg: number): string {
+  const buffer = Buffer.alloc(64);
+  buffer.writeUInt8(arg, 0);        // 1 byte for action
+  // console.log("'0x' + buffer.toString('hex')", "0x" + buffer.toString('hex'));
+  return "0x" + buffer.toString('hex');
+}
