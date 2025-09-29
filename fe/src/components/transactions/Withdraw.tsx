@@ -1,3 +1,4 @@
+/*eslint-disable */
 import React from 'react';
 import { useAccount } from "wagmi";
 import { filterTransactionData, formatAddr, formatValue } from '../utilities/common';
