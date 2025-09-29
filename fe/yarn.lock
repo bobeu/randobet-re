@@ -1101,6 +1101,17 @@
     neverthrow "^6.0.0"
     viem "^2.17.4"
 
+"@farcaster/frame-sdk@^0.1.0":
+  version "0.1.10"
+  resolved "https://registry.yarnpkg.com/@farcaster/frame-sdk/-/frame-sdk-0.1.10.tgz#3610476c675238170246815599e8b883ee9c03d4"
+  integrity sha512-4CtBkzHIGg7NVUbVZfgy6UiIeSqn0rx7vmwvOJ4pNRQoLG5guPkHKv9vc3D515aCVSATvrZXRT97xjss5kuN+Q==
+  dependencies:
+    "@farcaster/miniapp-sdk" "0.1.10"
+    "@farcaster/quick-auth" "^0.0.6"
+    comlink "^4.4.2"
+    eventemitter3 "^5.0.1"
+    ox "^0.4.4"
+
 "@farcaster/frame-wagmi-connector@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@farcaster/frame-wagmi-connector/-/frame-wagmi-connector-1.0.0.tgz#59d6b3bf685de2d6a87157de306a3cef1b10adc9"
@@ -1135,7 +1146,7 @@
     ox "^0.4.4"
     zod "^3.24.1"
 
-"@farcaster/miniapp-sdk@^0.1.10":
+"@farcaster/miniapp-sdk@0.1.10", "@farcaster/miniapp-sdk@^0.1.10":
   version "0.1.10"
   resolved "https://registry.yarnpkg.com/@farcaster/miniapp-sdk/-/miniapp-sdk-0.1.10.tgz#71186b5a70777f60c63abf009307b26ded74fbbd"
   integrity sha512-ueoEAH3N7hIrV+L9pXdLJZpOY1GsOuwKN7MckouSEWY98H5A7KVajyGmGSDDVzjRWpu7Vndu4NZUHoOhF4nTOA==

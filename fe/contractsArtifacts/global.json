@@ -53,7 +53,11 @@
       "Verifier": "0x1aaDa28c4D092bd31b947bb74FacBa49625881A0"
     },
     {
-      "stablecoin": "0x765de816845861e75a25fca122bb6898b8b1282a"
+      "stablecoin": "0x765de816845861e75a25fca122bb6898b8b1282a",
+      "FeeReceiver": "0x002804Be479Fe20c1dFd7C2105197b350EF76958",
+      "RandoFutures": "0xb85D4F4CC731930D1787c90f03e8B50C3B8f4253",
+      "StandingOrder": "0x90351a1531c90Fa2DF544dC165ce3EaD2F87aB46",
+      "Verifier": "0x1aaDa28c4D092bd31b947bb74FacBa49625881A0"
     }
   ]
 }

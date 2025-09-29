@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@divvi/referral-sdk": "^2.3.0",
+    "@farcaster/frame-sdk": "^0.1.0",
     "@farcaster/frame-wagmi-connector": "^1.0.0",
     "@farcaster/hub-nodejs": "^0.15.7",
     "@farcaster/miniapp-node": "^0.1.9",
@@ -38,6 +39,7 @@
     "clsx": "^2.0.0",
     "dotenv": "^16.4.5",
     "framer-motion": "^12.23.12",
+    "lottie-react": "^2.4.0",
     "lucide-react": "^0.395.0",
     "next": "^15.5.2",
     "react": "^18.3.1",
