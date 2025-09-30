@@ -145,12 +145,6 @@ contract Verifier is IVerifier, SelfVerificationRoot, Ownable {
     ) internal override {
         address user = address(uint160(output.userIdentifier));
         require(output.userIdentifier > 0, "InvalidUserIdentifier");
-        require(output.olderThan >= 16, "You should be at least 16 yrs");
-        bool[3] memory ofacs = output.ofac;
-        for(uint8 i = 0; i < ofacs.length; i++) {
-            require(ofacs[i], "Sanction individual");
-        }
- 
         _setVerification(user);
 
         emit UserIdentifierVerified(user);

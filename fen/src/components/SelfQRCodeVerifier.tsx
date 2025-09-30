@@ -34,15 +34,16 @@ export default function SelfQRCodeVerifier({ onVerificationComplete, onClose } :
     const chainId = useChainId();
     const account = formatAddr(useAccount().address);
 
-    const { verifier, scope } = React.useMemo(
+    const { verifier, scope, isSepolia } = React.useMemo(
         () => {
             const { contractAddresses } = filterTransactionData({chainId, filter: false});
             const verifier = contractAddresses.Verifier as Address
+            const isSepolia = chainId === 11142220;
             const scope = process.env.NEXT_PUBLIC_SCOPE as string;
-
             return {
                 verifier,
-                scope
+                scope,
+                isSepolia
             }
         },  
         [chainId]
@@ -54,21 +55,23 @@ export default function SelfQRCodeVerifier({ onVerificationComplete, onClose } :
             const app = new SelfAppBuilder({
                     version: 2,
                     appName: APP_NAME,
-                    scope,
-                    endpoint: verifier,
-                    logoBase64: APP_ICON_URL,
+                    scope: scope,
+                    endpoint: verifier.toLowerCase() as Address,
+                    logoBase64: `${APP_ICON_URL}/icon.png`,
                     userId: account,
-                    endpointType: chainId === 11142220? "staging_celo" : "celo",
+                    endpointType: isSepolia? "staging_celo" : "celo",
                     userIdType: "hex",
-                    userDefinedData: encodeUserData(1), // Example encoding function
-                    devMode: chainId === 11142220? true : false,
+                    userDefinedData: encodeUserData(1),
+                    devMode: isSepolia? true : false,
                     disclosures: {
                         minimumAge: 18,
                         ofac: true,
-                        excludedCountries: ["IRN", "PRK", "RUS", "SYR"]
+                        excludedCountries: ["IRN", "PRK", "RUS", "SYR"],
+
                     }
                 }
             ).build();
+            
             setSelfApp(app);
             setUniversalLink(getUniversalLink(app));
         } catch (error) {

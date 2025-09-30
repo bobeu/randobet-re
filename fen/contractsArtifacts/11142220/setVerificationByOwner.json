@@ -1,5 +1,5 @@
 {
-  "contractAddress": "0x5f93b00ded640E82E71410f55BdFAF830b89298e",
+  "contractAddress": "0x371e6A61283Ccc06aaE4CA5aE1DF947d4c4DB0a9",
   "functionName": "setVerificationByOwner",
   "inputCount": 1,
   "requireArgUpdate": true,

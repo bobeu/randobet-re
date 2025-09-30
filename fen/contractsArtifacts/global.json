@@ -50,14 +50,14 @@
       "FeeReceiver": "0xb5617899e8fbc41527200BB3910234779dB5e906",
       "RandoFutures": "0x0fCc020600cE0b0b4568E0391a03714Ab62A5c34",
       "StandingOrder": "0x4b3dE9f495A06152a962A84CA39f8a1f0f460C08",
-      "Verifier": "0x5f93b00ded640E82E71410f55BdFAF830b89298e"
+      "Verifier": "0x371e6A61283Ccc06aaE4CA5aE1DF947d4c4DB0a9"
     },
     {
       "stablecoin": "0x765de816845861e75a25fca122bb6898b8b1282a",
-       "FeeReceiver": "0xb5617899e8fbc41527200BB3910234779dB5e906",
+      "FeeReceiver": "0xb5617899e8fbc41527200BB3910234779dB5e906",
       "RandoFutures": "0x0fCc020600cE0b0b4568E0391a03714Ab62A5c34",
       "StandingOrder": "0x4b3dE9f495A06152a962A84CA39f8a1f0f460C08",
-      "Verifier": "0x5f93b00ded640E82E71410f55BdFAF830b89298e"
+      "Verifier": "0x371e6A61283Ccc06aaE4CA5aE1DF947d4c4DB0a9"
     }
   ]
 }
