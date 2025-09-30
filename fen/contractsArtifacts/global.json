@@ -47,17 +47,17 @@
   "contractAddresses": [
     {
       "stablecoin": "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1",
-      "FeeReceiver": "0x002804Be479Fe20c1dFd7C2105197b350EF76958",
-      "RandoFutures": "0xb85D4F4CC731930D1787c90f03e8B50C3B8f4253",
-      "StandingOrder": "0x90351a1531c90Fa2DF544dC165ce3EaD2F87aB46",
-      "Verifier": "0x66753b243fa12BDCC4a2ce70A9b9d71BDE21Ed50"
+      "FeeReceiver": "0xb5617899e8fbc41527200BB3910234779dB5e906",
+      "RandoFutures": "0x0fCc020600cE0b0b4568E0391a03714Ab62A5c34",
+      "StandingOrder": "0x4b3dE9f495A06152a962A84CA39f8a1f0f460C08",
+      "Verifier": "0x5f93b00ded640E82E71410f55BdFAF830b89298e"
     },
     {
       "stablecoin": "0x765de816845861e75a25fca122bb6898b8b1282a",
-      "FeeReceiver": "0x002804Be479Fe20c1dFd7C2105197b350EF76958",
-      "RandoFutures": "0xb85D4F4CC731930D1787c90f03e8B50C3B8f4253",
-      "StandingOrder": "0x90351a1531c90Fa2DF544dC165ce3EaD2F87aB46",
-      "Verifier": "0x66753b243fa12BDCC4a2ce70A9b9d71BDE21Ed50"
+       "FeeReceiver": "0xb5617899e8fbc41527200BB3910234779dB5e906",
+      "RandoFutures": "0x0fCc020600cE0b0b4568E0391a03714Ab62A5c34",
+      "StandingOrder": "0x4b3dE9f495A06152a962A84CA39f8a1f0f460C08",
+      "Verifier": "0x5f93b00ded640E82E71410f55BdFAF830b89298e"
     }
   ]
 }

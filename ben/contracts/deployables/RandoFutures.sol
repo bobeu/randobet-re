@@ -7,12 +7,29 @@ import { VRFSetUp } from "../abstracts/VRFSetUp.sol";
 import { DrawData } from "../abstracts/DrawData.sol";
 import { ReentrancyGuard } from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import { IDeadBalance } from "./FeeReceiver.sol";
+import { IStandingOrder } from "./StandingOrder.sol";
 
 contract RandoFutures is DrawData, VRFSetUp, ReentrancyGuard {
+
+    error NothingToClaim();
+    error EpochBalanceIsLow();
+    error NoRewardFound();
+    error TransferFailed();
+    error NotAPlayer();
+    error InsufficientValue();
+    error MaxPlayersReached();
+    error PlayerAlreadyInRound();
+    error DrawNotReady();
+    error InsufficientPults();
+    error PoolMisMatch();
 
     Fee public fee;
 
     uint internal deadEpoch;
+
+    uint public maxPlayer;
+
+    IStandingOrder internal orderBox;
 
     mapping(uint epochId => uint) public betList;
 
@@ -23,9 +40,10 @@ contract RandoFutures is DrawData, VRFSetUp, ReentrancyGuard {
     mapping(address => uint256) public triggereRewards;
 
     constructor(uint bet, uint8 flatFee, uint8 otherFee) {
-        require(bet > 0, "Invalid bet in detected");
-        betList[0] = bet;
+        require(bet > 0, "Invalid bet detected");
+        betList[state.epoches] = bet;
         state.data.lastDraw = uint64(_now());
+        _setMaxPlayer(50);
         _setFee(Fee({other: otherFee, flat: flatFee}));
     }
 
@@ -33,6 +51,17 @@ contract RandoFutures is DrawData, VRFSetUp, ReentrancyGuard {
 
     function _now() internal view returns (uint _timeStamp) {
         _timeStamp = block.timestamp;
+    }
+
+    function _sendValue(address to, uint amount) internal {
+        if(amount > 0) {
+            (bool sent, ) = to.call{value: amount}("");
+            if(!sent) revert TransferFailed();
+        }
+    }
+
+    function _setMaxPlayer(uint24 _maxPlayer) internal {
+        maxPlayer = _maxPlayer;
     }
 
     function _setFee(Fee memory _fee) internal {
@@ -47,73 +76,48 @@ contract RandoFutures is DrawData, VRFSetUp, ReentrancyGuard {
 
     function _transfer(address to, uint256 amount) private {
         if(address(this).balance >= amount){
-            (bool s,) = to.call{value:amount}('');
-            require(s,"Transfer failed");
+            _sendValue(to, amount);
         }
     }
 
-    function withdraw(uint bet, uint epoch, address player, address recipient) 
+    function setMaxPlayer(uint24 newMaxPlayer) public onlyApproved() returns(bool) {
+        _setMaxPlayer(newMaxPlayer);
+        return true;
+    }
+
+    function withdraw(uint epoch) 
         public 
-        onlyApproved
         nonReentrant
         returns(bool) 
     {
-        require(isPlayer[player][epoch][bet], "Not a player");
-        require(bet == betList[epoch], "Invalid bet");
-        require(player != address(0), "Player address is invalid");
-        require(recipient != address(0), "Recipient address is invalid");
-        uint spot = _getSpotId(player, bet, epoch);
+        address sender = _msgSender();
+        uint256 bet = betList[epoch];
+        if(!isPlayer[sender][epoch][bet]) revert NotAPlayer();
+        uint spot = _getSpotId(sender, bet, epoch);
         uint epochBalance = spinBoard[epoch][bet].pool;
         uint claim = spinBoard[epoch][bet].players[spot].bal;
-        // require(epochBalance >= claim, "Epoch balance is low");
+        if(claim == 0) revert NothingToClaim();
+        spinBoard[epoch][bet].players[spot].bal = 0;
+        if(epochBalance < claim) revert EpochBalanceIsLow();
         unchecked {
             spinBoard[epoch][bet].pool = epochBalance - claim;
         }
-        spinBoard[epoch][bet].players[spot].bal = 0;
-        _checkPlayerVerificationStatus(player);
-        (bool s,) = recipient.call{value:claim}("");
-        require(s, "Transfer failed");
+        _validateStatus(sender);
+        _sendValue(sender, claim);
 
-        emit RewardClaimed(player, bet, epoch, claim, epochBalance - claim);
+        emit RewardClaimed(sender, bet, epoch, claim, epochBalance - claim);
         return true;
     }
 
-    function claimTriggerReward(address recipient, address target) 
-        public 
-        onlyApproved
-        nonReentrant
-        returns(bool) 
-    {
-        _checkPlayerVerificationStatus(target);
-        uint _triggerReward = triggereRewards[target];
-        require(_triggerReward > 0, "No reward found");
-        require(recipient != address(0), "Invalid recipient");
-        triggereRewards[target] = 0;
-        (bool s,) = recipient.call{value:_triggerReward}("");
-        require(s, "Transfer failed");
-        return true;
-    }
-
-    function placeBet() external payable whenNotPaused returns (bool) {
-        DataStruct memory _ds = state.data;
-        uint epoch = _getEpoch();
-        uint bet = betList[epoch];
-        require(msg.value >= bet, "Invalid bet");
-        Spin memory sp = spinBoard[epoch][bet];
-        require(sp.players.length <= 50, "Max players reached");
-        address player = _msgSender();
-        _checkPlayerVerificationStatus(player);
-        require(!isPlayer[player][epoch][bet], "Already a player");
+    /**@dev Complete bet placing step
+        @param bet : Bet amount
+        @param epoch: Epoch Id
+        @param player : Target player account
+     */
+    function _completePlaceBet(uint bet, uint epoch, address player) internal {
         isPlayer[player][epoch][bet] = true;
         unchecked {
-            require(msg.value >= (_ds.playerFee + bet), "Value too low");
-        }
-        if(_ds.playerFee > 0) {
-            (bool z, ) = _ds.feeTo.call{value: _ds.playerFee}("");
-            require(z, "Fee sending failed");
-        }
-        unchecked {
-            spinBoard[epoch][bet].pool = sp.pool + bet;
+            spinBoard[epoch][bet].pool += bet;
         }
         spinBoard[epoch][bet].unit = bet;
         uint spotId = spinBoard[epoch][bet].players.length;
@@ -126,6 +130,38 @@ contract RandoFutures is DrawData, VRFSetUp, ReentrancyGuard {
         ));
 
         emit BetPlaced(player, bet, epoch, spinBoard[epoch][bet]);
+    }
+
+    function claimTriggerReward() 
+        public 
+        nonReentrant
+        returns(bool) 
+    {
+        address sender = _msgSender();
+        _validateStatus(sender);
+        uint reward = triggereRewards[sender];
+        if(reward == 0) revert NoRewardFound();
+        triggereRewards[sender] = 0;
+        _sendValue(sender, reward);
+
+        return true;
+    }
+
+    function placeBet() external payable whenNotPaused returns (bool) {
+        DataStruct memory _ds = state.data;
+        uint epoch = _getEpoch();
+        uint bet = betList[epoch];
+        unchecked {
+            if(msg.value < (bet + _ds.playerFee)) revert InsufficientValue();
+        }
+        Spin memory sp = spinBoard[epoch][bet];
+        if(sp.players.length == maxPlayer) revert MaxPlayersReached();
+        address player = _msgSender();
+        _validateStatus(player);
+        if(isPlayer[player][epoch][bet]) revert PlayerAlreadyInRound();
+        isPlayer[player][epoch][bet] = true;
+        _sendValue(_ds.feeTo, _ds.playerFee);
+        _completePlaceBet(bet, epoch,  player);
 
         return true;
     }
@@ -136,58 +172,52 @@ contract RandoFutures is DrawData, VRFSetUp, ReentrancyGuard {
         onlyApproved
         returns (bool)
     { 
-        require(_currentDate() >= (state.data.lastDraw + state.data.drawInterval), "Draw date in future");
+        if(_currentDate() < (state.data.lastDraw + state.data.drawInterval)) revert DrawNotReady();
         state.data.lastDraw = _currentDate();
         uint epoch = _getEpoch();
         uint bet = betList[epoch];
         Player[] memory players = spinBoard[epoch][bet].players;
         uint found;
         SpinData memory _md = _getSpinData(bet, epoch);
-        require(randomPults.length == players.length, "Invalid pults size for players");
+        if(randomPults.length < players.length) revert InsufficientPults();
         unchecked {
             if(players.length > 0){
-                require(_md.pool >= (bet * players.length), "Pool bal not match");
+                if(_md.pool < (bet * players.length)) revert PoolMisMatch();
                 if(epoch >= 2 && ((epoch % 2) == 0)){
                     IDeadBalance(state.data.feeTo).burn{value:spinBoard[deadEpoch][bet].pool}(deadEpoch);
                     spinBoard[deadEpoch][bet].pool = 0;
                 }
+                uint spot;
                 if(players.length == 1) {
                     found = _md.pool;
-                    spinBoard[epoch][bet].pool = 0;
+                    _md.pool = 0;
+                    spot = _getSpotId(players[0].addr, bet, epoch);
+                    spinBoard[epoch][bet].players[spot].bal += found;
                 } else {
                     for(uint i = 0; i < players.length; i++) {
                         uint256 pult = _fulfillRandomPults(randomPults[i]);
+                        spot = _getSpotId(players[i].addr, bet, epoch);
                         if(pult > 0) {
-                            found = pult % _md.pool;
-                            if(found == _md.pool) { // If player is lucky to find all the pool amt
-                                // spinBoard[epoch][bet].pool = 0;
-                                found = _md.pool - (found / _md.fee.flat);
-                                _md.boardFee += _md.pool - found;
-                                _md.pool = 0;
-                                break;
-                            } else {
-                                if(found >= _md.pool) {
-                                    found = _md.pool;
-                                    // spinBoard[epoch][bet].pool = 0;
+                            if(_md.pool > 0) {
+                                found = pult % _md.pool;
+                                if(found >= _md.pool) { // If player is lucky to find all the pool amt
+                                    found = _md.pool - (found / _md.fee.flat);
                                     _md.boardFee += _md.pool - found;
                                     _md.pool = 0;
                                     break;
                                 } else {
-                                    // spinBoard[epoch][bet].pool = _md.pool - found;
+                                    uint _fee = found / _md.fee.other; 
                                     _md.pool -= found;
-                                    _md.boardFee += found / _md.fee.other;
-                                    found = found - (found / _md.fee.other); 
+                                    found = found - _fee; 
+                                    _md.boardFee += _fee;
                                 }
-                                
                             }
                         }
-
                         if(found > 0) {
-                            uint spot = _getSpotId(players[i].addr, bet, epoch);
                             spinBoard[epoch][bet].players[spot].bal += found;
                         }
                     }
-                }
+                } 
                 if(_md.boardFee > 0) {
                     spinBoard[epoch][bet].pool -= _md.boardFee;
                     found = _md.boardFee / 5;
@@ -195,11 +225,19 @@ contract RandoFutures is DrawData, VRFSetUp, ReentrancyGuard {
                     _transfer(state.data.feeTo, _md.boardFee - found);
                 }
                 emit Drawn(trigger, epoch, spinBoard[epoch][bet]);
-
             }
             if(epoch >= 2 && ((epoch % 2) == 0)) deadEpoch ++;
-            _setBetListUpfront(0);
             state.epoches ++;
+            uint newBet = _updateBetList(0, false, bet) + state.data.playerFee;
+            IStandingOrder.Order[] memory ords = orderBox.getOrders(newBet + state.data.playerFee);
+            if(ords.length > 0) {
+                for(uint i = 0; i < ords.length; i++) {
+                    if(verifier.isVerified(ords[i].addr)) {
+                        _sendValue(state.data.feeTo, state.data.playerFee);
+                        _completePlaceBet(newBet, state.epoches, ords[i].addr);
+                    }
+                }
+            }
         }
         return true;
     }
@@ -240,7 +278,8 @@ contract RandoFutures is DrawData, VRFSetUp, ReentrancyGuard {
 
     /**@dev Get the balance of target address in a pool from a specific epoch
      */
-    function checkBalance(uint bet, uint epoch, address target) external view returns(uint256 bal) {
+    function checkBalance(uint epoch, address target) external view returns(uint256 bal) {
+        uint bet = betList[epoch];
         if(isPlayer[target][epoch][bet]){
             uint spot = _getSpotId(_msgSender(), bet, epoch);
             bal = spinBoard[epoch][bet].players[spot].bal;
@@ -249,12 +288,11 @@ contract RandoFutures is DrawData, VRFSetUp, ReentrancyGuard {
     }
 
     function _checkEpochBalance(uint bet, uint epoch) internal view returns(uint256 bal) {
-        if(bet >= betList[epoch]) bal = spinBoard[epoch][bet].pool;
-        return bal;
+        bal = spinBoard[epoch][bet].pool;
     }
-
-    function checkEpochBalance(uint bet, uint epoch) external view returns(uint256) {
-        return _checkEpochBalance(bet, epoch);
+ 
+    function checkEpochBalance(uint epoch) external view returns(uint256) {
+        return _checkEpochBalance(betList[epoch], epoch);
     }
 
     // Return total bet balances in the pool at current epoch
@@ -264,21 +302,27 @@ contract RandoFutures is DrawData, VRFSetUp, ReentrancyGuard {
         return  _checkEpochBalance(bet, epoch);
     }
 
-    function _setBetListUpfront(uint bet) internal {
-        uint nextEpoch = state.epoches + 1;
+    function _updateBetList(uint bet, bool isUpfront, uint prevBet) internal returns(uint newBet) {
+        uint epoch = isUpfront ? state.epoches + 1 : state.epoches;
         if(bet > 0) {
-            betList[nextEpoch] = bet;
+            betList[epoch] = bet;
         } else {
-            uint _bet = betList[state.epoches];
+            uint _bet = betList[epoch];
             if(_bet > 0){
-                betList[nextEpoch] = _bet;
+                betList[epoch] = _bet;
             } else {
-                betList[nextEpoch] = 1 ether;
+                betList[epoch] = prevBet;
             }
         }
+        newBet =  betList[epoch];
     }
 
     function setBetListUpfront(uint bet) public onlyApproved {
-        _setBetListUpfront(bet);
+        _updateBetList(bet, true, 0);
+    }
+
+    function setOrderBox(IStandingOrder _orderBox) public onlyApproved() returns(bool) {
+        if(_orderBox != orderBox) orderBox = _orderBox;
+        return true;
     }
 }

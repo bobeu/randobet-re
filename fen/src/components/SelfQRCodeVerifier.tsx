@@ -64,7 +64,6 @@ export default function SelfQRCodeVerifier({ onVerificationComplete, onClose } :
                     devMode: chainId === 11142220? true : false,
                     disclosures: {
                         minimumAge: 18,
-                        nationality: true,
                         ofac: true,
                         excludedCountries: ["IRN", "PRK", "RUS", "SYR"]
                     }

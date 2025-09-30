@@ -7,12 +7,12 @@ const path = require('path');
 const HARDHAT_ARTIFACTS_PATH = './deployments/';
 const REACT_DATA_PATH = '../fen/contractsArtifacts';
 const GLOBAL_OUTPUT_PATH = '../fen/contractsArtifacts/global.json';
-const approvedFunctions = ['setBetListUpfront', 'checkEpochBalance', 'checkBalance', 'isDrawNeeded', 'getDataByEpoch', 'getData', 'runDraw', 'placeBet', 'claimTriggerReward','withdraw', 'setFee','setVerification', 'setVerificationByOwner', 'toggleUseWalletVerification', 'isVerified', 'setPermission', 'removePermission', 'isPermitted', 'getBalanceFromCurrentEpoch', 'setDataStruct', 'triggereRewards'];
-const readFunctions = ['checkBalance', 'checkEpochBalance', 'isDrawNeeded', 'getDataByEpoch', 'getData', 'claimTriggerReward', 'isVerified', 'isPermitted', 'getBalanceFromCurrentEpoch', 'triggereRewards'];
+const approvedFunctions = ['setBetListUpfront', 'checkEpochBalance', 'checkBalance', 'isDrawNeeded', 'getDataByEpoch', 'getData', 'runDraw', 'placeBet', 'claimTriggerReward','withdraw', 'setFee','setVerification', 'setVerificationByOwner', 'toggleUseWalletVerification', 'isVerified', 'setPermission', 'removePermission', 'isPermitted', 'getBalanceFromCurrentEpoch', 'setDataStruct', 'triggereRewards', 'setBetFactory', 'closeOrder', 'openOrder', 'hasSpot', 'getAllOrders'];
+const readFunctions = ['checkBalance', 'checkEpochBalance', 'isDrawNeeded', 'getDataByEpoch', 'getData', 'claimTriggerReward', 'isVerified', 'isPermitted', 'getBalanceFromCurrentEpoch', 'triggereRewards', 'hasSpot', 'getAllOrders'];
 const functionsRequireArgUpdate = approvedFunctions;
 const chainName = {11142220: 'sepolia', 42220: 'celo'};
 const chainIds = [11142220, 42220]
-let workBuild = {
+let workBuild = { 
     11142220: [],
     42220: [],
 };
