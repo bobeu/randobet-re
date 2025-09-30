@@ -1,6 +1,6 @@
 {
-  "contractAddress": "0x2a12279502aE8350ADc442debF0452C360870f62",
-  "functionName": "isVerified",
+  "contractAddress": "0x47bAc4255380b66996972367C0a1857B6497d69b",
+  "functionName": "isPermitted",
   "inputCount": 1,
   "requireArgUpdate": true,
   "abi": [
@@ -8,11 +8,11 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "user",
+          "name": "target",
           "type": "address"
         }
       ],
-      "name": "isVerified",
+      "name": "isPermitted",
       "outputs": [
         {
           "internalType": "bool",

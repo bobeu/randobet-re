@@ -84,53 +84,37 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   	console.error("Error executing setVerifier:", errorMessage?.stack || errorMessage?.slice(0, 100));
   }
 
-  // try {
-  // 	await execute("RandoFutures", {from: deployer}, "setDataStruct", DRAW_INTERVAL_IN_MIN, feeReceiver.address, PLAYER_FEE);
-  //   console.log("setDataStruct executed");
-  // } catch (error) {
-  // 	const errorMessage = error?.message || error?.reason || error?.data?.message || error?.data?.reason;
-  // 	console.error("Error executing setDataStruct:", errorMessage?.stack || errorMessage?.slice(0, 100));
-  // }
+  try {
+  	await execute("RandoFutures", {from: deployer}, "setDataStruct", DRAW_INTERVAL_IN_MIN, feeReceiver.address, PLAYER_FEE);
+    console.log("setDataStruct executed");
+  } catch (error) {
+  	const errorMessage = error?.message || error?.reason || error?.data?.message || error?.data?.reason;
+  	console.error("Error executing setDataStruct:", errorMessage?.stack || errorMessage?.slice(0, 100));
+  }
   
-  // try {
-  // 	await execute('StandingOrder', {from: deployer}, 'setBetFactory', randoFutures.address);
-  //   console.log("setBetFactory executed");
-  // } catch (error) {
-  // 	const errorMessage = error?.message || error?.reason || error?.data?.message || error?.data?.reason;
-  // 	console.error("Error executing setBetFactory:", errorMessage?.stack || errorMessage?.slice(0, 100));
-  // }
+  try {
+  	await execute('StandingOrder', {from: deployer}, 'setBetFactory', randoFutures.address);
+    console.log("setBetFactory executed");
+  } catch (error) {
+  	const errorMessage = error?.message || error?.reason || error?.data?.message || error?.data?.reason;
+  	console.error("Error executing setBetFactory:", errorMessage?.stack || errorMessage?.slice(0, 100));
+  }
 
-  // try {
-  // 	await execute('RandoFutures', {from: deployer}, 'setOrderBox', standingOrder.address);
-  //   console.log("setOrderBox executed");
-  // } catch (error) {
-  // 	const errorMessage = error?.message || error?.reason || error?.data?.message || error?.data?.reason;
-  // 	console.error("Error executing setOrderBox:", errorMessage?.stack || errorMessage?.slice(0, 100));
-  // }
+  try {
+  	await execute('RandoFutures', {from: deployer}, 'setOrderBox', standingOrder.address);
+    console.log("setOrderBox executed");
+  } catch (error) {
+  	const errorMessage = error?.message || error?.reason || error?.data?.message || error?.data?.reason;
+  	console.error("Error executing setOrderBox:", errorMessage?.stack || errorMessage?.slice(0, 100));
+  }
 
-  // try {
-  //   await execute('Verifier', {from: deployer}, 'setConfigId', verificationConfig);
-  //   console.log("setConfigId executed");
-  // } catch (error) {
-  //   const errorMessage = error?.message || error?.reason || error?.data?.message || error?.data?.reason;
-  //   console.error("Error executing setConfigId:", errorMessage?.stack || errorMessage?.slice(0, 100));
-  // }
-
-  // try {
-  //   await execute('Verifier', {from: deployer}, 'setScope', scopeValue);
-  //   console.log("Scope set successfully");
-  // } catch (error) {
-  //   const errorMessage = error?.message || error?.reason || error?.data?.message || error?.data?.reason;
-  //   console.error("Error executing setScope:", errorMessage?.stack || errorMessage?.slice(0, 100));
-  // }
- 
-  // try {
-  // 	await execute('RandoFutures', {from: deployer}, 'setPermission', admin2);
-  //   console.log(`Admin2 address ${admin2} added to RandoFutures`);
-  // } catch (error) {
-  // 	const errorMessage = error?.message || error?.reason || error?.data?.message || error?.data?.reason;
-  // 	console.error("Error executing setPermission:", errorMessage?.stack || errorMessage?.slice(0, 100));
-  // }
+  try {
+  	await execute('RandoFutures', {from: deployer}, 'setPermission', admin2);
+    console.log(`Admin2 address ${admin2} added to RandoFutures`);
+  } catch (error) {
+  	const errorMessage = error?.message || error?.reason || error?.data?.message || error?.data?.reason;
+  	console.error("Error executing setPermission:", errorMessage?.stack || errorMessage?.slice(0, 100));
+  }
 
 };
 

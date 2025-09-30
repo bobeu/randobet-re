@@ -1,5 +1,5 @@
 {
-  "contractAddress": "0xEB0E03e5B23a94cEC5Db7cb595C936a9E76529F6",
+  "contractAddress": "0x47bAc4255380b66996972367C0a1857B6497d69b",
   "functionName": "getBalanceFromCurrentEpoch",
   "inputCount": 0,
   "requireArgUpdate": true,

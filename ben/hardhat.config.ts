@@ -47,7 +47,7 @@ const config: HardhatUserConfig = {
       default: 1,
       44787: "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1",
       11142220: "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1",
-      42220: "0x765de816845861e75a25fca122bb6898b8b1282a ",
+      42220: "0x765de816845861e75a25fca122bb6898b8b1282a",
     },
      identityVerificationHub: {
       default: 2,

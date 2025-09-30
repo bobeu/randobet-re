@@ -1,5 +1,5 @@
 {
-  "contractAddress": "0x4AEb54c74Befd483B44C5639d6025258fC7e050e",
+  "contractAddress": "0x2a12279502aE8350ADc442debF0452C360870f62",
   "functionName": "setVerification",
   "inputCount": 0,
   "requireArgUpdate": true,
@@ -8,8 +8,28 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "identityVerificationHubAddress",
+          "name": "hubV2",
           "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "scopeSeed",
+          "type": "string"
+        },
+        {
+          "internalType": "bool",
+          "name": "ofacEnabled",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint8",
+          "name": "olderThan",
+          "type": "uint8"
+        },
+        {
+          "internalType": "string[]",
+          "name": "forbiddenCountries",
+          "type": "string[]"
         }
       ],
       "stateMutability": "nonpayable",
@@ -71,19 +91,6 @@
       "inputs": [
         {
           "indexed": true,
-          "internalType": "uint256",
-          "name": "newScope",
-          "type": "uint256"
-        }
-      ],
-      "name": "ScopeUpdated",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
           "internalType": "address",
           "name": "registeredUserIdentifier",
           "type": "address"
@@ -91,19 +98,6 @@
       ],
       "name": "UserIdentifierVerified",
       "type": "event"
-    },
-    {
-      "inputs": [],
-      "name": "configId",
-      "outputs": [
-        {
-          "internalType": "bytes32",
-          "name": "",
-          "type": "bytes32"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
     },
     {
       "inputs": [
@@ -127,7 +121,7 @@
       "outputs": [
         {
           "internalType": "bytes32",
-          "name": "_return",
+          "name": "",
           "type": "bytes32"
         }
       ],
@@ -218,32 +212,6 @@
       "type": "function"
     },
     {
-      "inputs": [
-        {
-          "internalType": "bytes32",
-          "name": "_configId",
-          "type": "bytes32"
-        }
-      ],
-      "name": "setConfigId",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "newScope",
-          "type": "uint256"
-        }
-      ],
-      "name": "setScope",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
       "inputs": [],
       "name": "setVerification",
       "outputs": [
@@ -293,6 +261,42 @@
       "name": "transferOwnership",
       "outputs": [],
       "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "verificationConfig",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "olderThanEnabled",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint256",
+          "name": "olderThan",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "forbiddenCountriesEnabled",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "verificationConfigId",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
       "type": "function"
     },
     {

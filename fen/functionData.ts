@@ -1,22 +1,29 @@
 // Mainnet contract configs
 import placeBet42220 from "./contractsArtifacts/42220/placeBet.json";
+import triggereRewards42220 from "./contractsArtifacts/42220/triggereRewards.json";
+import setDataStruct42220 from "./contractsArtifacts/42220/setDataStruct.json";
 import runDraw42220 from "./contractsArtifacts/42220/runDraw.json";
 import checkBalance42220 from "./contractsArtifacts/42220/checkBalance.json";
 import checkEpochBalance42220 from "./contractsArtifacts/42220/checkEpochBalance.json";
 import getDataByEpoch42220 from "./contractsArtifacts/42220/getDataByEpoch.json";
 import getData42220 from "./contractsArtifacts/42220/getData.json";
 import isVerified42220 from "./contractsArtifacts/42220/isVerified.json";
-// import claimTriggerReward42220 from "./contractsArtifacts/42220/claimTriggerReward.json";
+import claimTriggerReward42220 from "./contractsArtifacts/42220/claimTriggerReward.json";
 import isDrawNeeded42220 from "./contractsArtifacts/42220/isDrawNeeded.json";
 import setBetListUpfront42220 from "./contractsArtifacts/42220/setBetListUpfront.json";
 import setFee42220 from "./contractsArtifacts/42220/setFee.json";
 import setVerification42220 from "./contractsArtifacts/42220/setVerification.json";
+import setVerificationByOwner42220 from "./contractsArtifacts/42220/setVerificationByOwner.json";
 import withdraw42220 from "./contractsArtifacts/42220/withdraw.json";
-// import getBalanceFromCurrentEpoch42220 from "./contractsArtifacts/42220/getBalanceFromCurrentEpoch.json";
-// import setPermission42220 from "./contractsArtifacts/42220/setPermission.json";
-// import removePermission42220 from "./contractsArtifacts/42220/removePermission.json";
-// import isPermitted42220 from "./contractsArtifacts/42220/isPermitted.json";
+import getBalanceFromCurrentEpoch42220 from "./contractsArtifacts/42220/getBalanceFromCurrentEpoch.json";
+import setPermission42220 from "./contractsArtifacts/42220/setPermission.json";
+import removePermission42220 from "./contractsArtifacts/42220/removePermission.json";
+import isPermitted42220 from "./contractsArtifacts/42220/isPermitted.json";
 import toggleUseWalletVerification42220 from "./contractsArtifacts/42220/toggleUseWalletVerification.json";
+import openOrder42220 from "./contractsArtifacts/42220/openOrder.json";
+import closeOrder42220 from "./contractsArtifacts/42220/closeOrder.json";
+import hasSpot42220 from "./contractsArtifacts/42220/hasSpot.json";
+import getAllOrders42220 from "./contractsArtifacts/42220/getAllOrders.json";
 
 // Celo Sepolia contract configs
 import placeBet11142220 from "./contractsArtifacts/11142220/placeBet.json";
@@ -82,22 +89,28 @@ const functionData = [
         { key: 'getDataByEpoch', value: { ...getDataByEpoch42220} },
         { key: 'getData', value: { ...getData42220} },
         { key: 'isVerified', value: { ...isVerified42220} },
-        // { key: 'claimTriggerReward', value: { ...claimTriggerReward42220} },
+        { key: 'claimTriggerReward', value: { ...claimTriggerReward42220} },
         { key: 'isDrawNeeded', value: { ...isDrawNeeded42220} },
         { key: 'setBetListUpfront', value: { ...setBetListUpfront42220} },
         { key: 'setVerification', value: { ...setVerification42220} },
+        { key: 'setVerificationByOwner', value: { ...setVerificationByOwner42220} },
         { key: 'withdraw', value: { ...withdraw42220} },
-        { key: 'getData', value: { ...getData42220} },
-        // { key: 'setPermission', value: { ...setPermission42220} },
-        // { key: 'removePermission', value: { ...removePermission42220} },
-        // { key: 'isPermitted', value: { ...isPermitted42220} },
-        // { key: 'getBalanceFromCurrentEpoch', value: { ...getBalanceFromCurrentEpoch42220} },
+        { key: 'setPermission', value: { ...setPermission42220} },
+        { key: 'removePermission', value: { ...removePermission42220} },
+        { key: 'isPermitted', value: { ...isPermitted42220} },
+        { key: 'getBalanceFromCurrentEpoch', value: { ...getBalanceFromCurrentEpoch42220} },
         { key: 'placeBet', value: { ...placeBet42220} },
         { key: 'runDraw', value: { ...runDraw42220} },
         { key: 'toggleUseWalletVerification', value: { ...toggleUseWalletVerification42220} },
         { key: 'setFee', value: { ...setFee42220} },
         { key: 'checkBalance', value: { ...checkBalance42220} },
         { key: 'checkEpochBalance', value: { ...checkEpochBalance42220} },
+        { key: 'setDataStruct', value: { ...setDataStruct42220} },
+        { key: 'triggereRewards', value: { ...triggereRewards42220} },
+        { key: 'openOrder', value: { ...openOrder42220} },
+        { key: 'closeOrder', value: { ...closeOrder42220} },
+        { key: 'hasSpot', value: { ...hasSpot42220} },
+        { key: 'getAllOrders', value: { ...getAllOrders42220} },
     ],
 ];
 

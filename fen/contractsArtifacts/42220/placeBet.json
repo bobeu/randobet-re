@@ -1,5 +1,5 @@
 {
-  "contractAddress": "0x152941d858eF9d82308d356f55Dd311Bb2C5c52d",
+  "contractAddress": "0x47bAc4255380b66996972367C0a1857B6497d69b",
   "functionName": "placeBet",
   "inputCount": 0,
   "requireArgUpdate": true,
@@ -32,12 +32,52 @@
     },
     {
       "inputs": [],
+      "name": "DrawNotReady",
+      "type": "error"
+    },
+    {
+      "inputs": [],
       "name": "EnforcedPause",
       "type": "error"
     },
     {
       "inputs": [],
+      "name": "EpochBalanceIsLow",
+      "type": "error"
+    },
+    {
+      "inputs": [],
       "name": "ExpectedPause",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InsufficientPults",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InsufficientValue",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "MaxPlayersReached",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "NoRewardFound",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "NotAPlayer",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "NothingToClaim",
       "type": "error"
     },
     {
@@ -64,7 +104,22 @@
     },
     {
       "inputs": [],
+      "name": "PlayerAlreadyInRound",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "PoolMisMatch",
+      "type": "error"
+    },
+    {
+      "inputs": [],
       "name": "ReentrancyGuardReentrantCall",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "TransferFailed",
       "type": "error"
     },
     {
@@ -124,6 +179,16 @@
                   "internalType": "uint256",
                   "name": "bal",
                   "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "bet",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "timePlaced",
+                  "type": "uint256"
                 }
               ],
               "internalType": "struct IRandoFutures.Player[]",
@@ -177,6 +242,16 @@
                 {
                   "internalType": "uint256",
                   "name": "bal",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "bet",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "timePlaced",
                   "type": "uint256"
                 }
               ],
@@ -312,20 +387,20 @@
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "bet",
+          "name": "epoch",
           "type": "uint256"
         },
         {
-          "internalType": "uint256",
-          "name": "epoch",
-          "type": "uint256"
+          "internalType": "address",
+          "name": "target",
+          "type": "address"
         }
       ],
       "name": "checkBalance",
       "outputs": [
         {
           "internalType": "uint256",
-          "name": "",
+          "name": "bal",
           "type": "uint256"
         }
       ],
@@ -334,11 +409,6 @@
     },
     {
       "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "bet",
-          "type": "uint256"
-        },
         {
           "internalType": "uint256",
           "name": "epoch",
@@ -357,15 +427,15 @@
       "type": "function"
     },
     {
-      "inputs": [
+      "inputs": [],
+      "name": "claimTriggerReward",
+      "outputs": [
         {
-          "internalType": "address",
-          "name": "target",
-          "type": "address"
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
         }
       ],
-      "name": "disApprove",
-      "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
     },
@@ -382,6 +452,19 @@
           "internalType": "uint8",
           "name": "other",
           "type": "uint8"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getBalanceFromCurrentEpoch",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
         }
       ],
       "stateMutability": "view",
@@ -415,6 +498,16 @@
                     {
                       "internalType": "uint256",
                       "name": "bal",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "bet",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "timePlaced",
                       "type": "uint256"
                     }
                   ],
@@ -525,6 +618,16 @@
                       "internalType": "uint256",
                       "name": "bal",
                       "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "bet",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "timePlaced",
+                      "type": "uint256"
                     }
                   ],
                   "internalType": "struct IRandoFutures.Player[]",
@@ -600,30 +703,6 @@
       "type": "function"
     },
     {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "recipient",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "target",
-          "type": "address"
-        }
-      ],
-      "name": "getTriggerReward",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
       "inputs": [],
       "name": "isDrawNeeded",
       "outputs": [
@@ -686,6 +765,19 @@
     },
     {
       "inputs": [],
+      "name": "maxPlayer",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
       "name": "owner",
       "outputs": [
         {
@@ -731,6 +823,19 @@
       "type": "function"
     },
     {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "target",
+          "type": "address"
+        }
+      ],
+      "name": "removePermission",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
       "inputs": [],
       "name": "renounceOwnership",
       "outputs": [],
@@ -740,14 +845,9 @@
     {
       "inputs": [
         {
-          "internalType": "uint256[]",
+          "internalType": "bytes32[]",
           "name": "randomPults",
-          "type": "uint256[]"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_nextBet",
-          "type": "uint256"
+          "type": "bytes32[]"
         },
         {
           "internalType": "address",
@@ -816,6 +916,44 @@
         }
       ],
       "name": "setFee",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint24",
+          "name": "newMaxPlayer",
+          "type": "uint24"
+        }
+      ],
+      "name": "setMaxPlayer",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "contract IStandingOrder",
+          "name": "_orderBox",
+          "type": "address"
+        }
+      ],
+      "name": "setOrderBox",
       "outputs": [
         {
           "internalType": "bool",
@@ -928,6 +1066,19 @@
     },
     {
       "inputs": [],
+      "name": "updateRoundWithOrders",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
       "name": "verifier",
       "outputs": [
         {
@@ -943,23 +1094,8 @@
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "bet",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
           "name": "epoch",
           "type": "uint256"
-        },
-        {
-          "internalType": "address",
-          "name": "player",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "recipient",
-          "type": "address"
         }
       ],
       "name": "withdraw",

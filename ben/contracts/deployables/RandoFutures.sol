@@ -228,17 +228,29 @@ contract RandoFutures is DrawData, VRFSetUp, ReentrancyGuard {
             }
             if(epoch >= 2 && ((epoch % 2) == 0)) deadEpoch ++;
             state.epoches ++;
-            uint newBet = _updateBetList(0, false, bet) + state.data.playerFee;
-            IStandingOrder.Order[] memory ords = orderBox.getOrders(newBet + state.data.playerFee);
-            if(ords.length > 0) {
-                for(uint i = 0; i < ords.length; i++) {
-                    if(verifier.isVerified(ords[i].addr)) {
-                        _sendValue(state.data.feeTo, state.data.playerFee);
-                        _completePlaceBet(newBet, state.epoches, ords[i].addr);
+            _updateRoundWithOrders(_updateBetList(0, false, bet) + state.data.playerFee);
+        }
+        return true;
+    }
+
+    function _updateRoundWithOrders(uint bet) internal {
+        RandoState memory st = state;
+        IStandingOrder.Order[] memory ords = orderBox.getOrders(bet + st.data.playerFee);
+        if(ords.length > 0) {
+            for(uint i = 0; i < ords.length; i++) {
+                if(verifier.isVerified(ords[i].addr)) {
+                    if(!isPlayer[ords[i].addr][st.epoches][bet]){
+                        _sendValue(st.data.feeTo, st.data.playerFee);
+                        _completePlaceBet(bet, st.epoches, ords[i].addr);
                     }
                 }
             }
         }
+    }
+
+    function updateRoundWithOrders() public whenNotPaused returns(bool) {
+        uint bet = betList[state.epoches];
+        _updateRoundWithOrders(bet);
         return true;
     }
 
