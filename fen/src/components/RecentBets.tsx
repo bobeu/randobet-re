@@ -13,13 +13,6 @@ function getRecentBets(players: Player[]) {
   })
 }
 
-// const defaultRecentBets = [
-//   { address: '0x1a2b...3c4d', amount: 0.25, time: '2s ago' },
-//   { address: '0x5e6f...7g8h', amount: 0.15, time: '5s ago' },
-//   { address: '0x9i0j...1k2l', amount: 0.30, time: '8s ago' },
-//   { address: '0xm3n4...5o6p', amount: 0.12, time: '12s ago' },
-// ]
-
 export default function RecentBets() {
   const { data : { spin : { players }}} = useData();
 

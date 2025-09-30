@@ -6,11 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Zap } from 'lucide-react'
 import PlaceBet from './transactions/PlaceBet'
-<<<<<<< HEAD
 import Withdraw from './transactions/Withdraw'
-=======
-import Withdraw from './transactions/Withdraw.tsx'
->>>>>>> b0834868ef79d049acd38997737ae5694a9371e5
 import RunDraw from './transactions/RunDraw'
 import SetVerification from './transactions/SetVerification'
 import ClaimTriggerReward from './transactions/ClaimTriggerReward'
@@ -56,11 +52,7 @@ export default function UserFunctions({ setIsLoading, loading, playerFee }: User
               <CardContent className="space-y-3">
                 <PlaceBet setIsLoading={setIsLoading} loading={loading} playerFee={playerFee} />
                 <Withdraw />
-<<<<<<< HEAD
                 <RunDraw showOnlyButton={true} />
-=======
-                <RunDraw />
->>>>>>> b0834868ef79d049acd38997737ae5694a9371e5
                 <SetVerification />
                 <ClaimTriggerReward />
               </CardContent>

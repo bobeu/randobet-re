@@ -2,7 +2,6 @@ import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@radix
 import { motion } from 'framer-motion'
 import { Shield, AlertTriangle } from 'lucide-react'
 import React from 'react'
-// import SetVerification from '../transactions/SetVerification'
 import { Card, CardContent } from '../ui/card'
 import useData from '@/hooks/useData'
 
