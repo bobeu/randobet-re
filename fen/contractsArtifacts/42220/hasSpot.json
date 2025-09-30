@@ -1,6 +1,6 @@
 {
-  "contractAddress": "0x2a12279502aE8350ADc442debF0452C360870f62",
-  "functionName": "isVerified",
+  "contractAddress": "0x8d03f13000Ad14b181D507Cd980782386F02CdD1",
+  "functionName": "hasSpot",
   "inputCount": 1,
   "requireArgUpdate": true,
   "abi": [
@@ -12,7 +12,7 @@
           "type": "address"
         }
       ],
-      "name": "isVerified",
+      "name": "hasSpot",
       "outputs": [
         {
           "internalType": "bool",

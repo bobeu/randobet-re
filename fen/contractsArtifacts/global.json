@@ -36,7 +36,12 @@
     42220
   ],
   "paths": {
-    "42220": [],
+    "42220": [
+      "deployments\\celo\\FeeReceiver.json",
+      "deployments\\celo\\RandoFutures.json",
+      "deployments\\celo\\StandingOrder.json",
+      "deployments\\celo\\Verifier.json"
+    ],
     "11142220": [
       "deployments\\sepolia\\FeeReceiver.json",
       "deployments\\sepolia\\RandoFutures.json",
@@ -48,16 +53,16 @@
     {
       "stablecoin": "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1",
       "FeeReceiver": "0xb5617899e8fbc41527200BB3910234779dB5e906",
-      "RandoFutures": "0x0fCc020600cE0b0b4568E0391a03714Ab62A5c34",
+      "RandoFutures": "0xEB0E03e5B23a94cEC5Db7cb595C936a9E76529F6",
       "StandingOrder": "0x4b3dE9f495A06152a962A84CA39f8a1f0f460C08",
       "Verifier": "0x371e6A61283Ccc06aaE4CA5aE1DF947d4c4DB0a9"
     },
     {
       "stablecoin": "0x765de816845861e75a25fca122bb6898b8b1282a",
-      "FeeReceiver": "0xb5617899e8fbc41527200BB3910234779dB5e906",
-      "RandoFutures": "0x0fCc020600cE0b0b4568E0391a03714Ab62A5c34",
-      "StandingOrder": "0x4b3dE9f495A06152a962A84CA39f8a1f0f460C08",
-      "Verifier": "0x371e6A61283Ccc06aaE4CA5aE1DF947d4c4DB0a9"
+      "FeeReceiver": "0x1699061BD5446A8Ae944Ea890Ea9158CF5A42326",
+      "RandoFutures": "0x47bAc4255380b66996972367C0a1857B6497d69b",
+      "StandingOrder": "0x8d03f13000Ad14b181D507Cd980782386F02CdD1",
+      "Verifier": "0x2a12279502aE8350ADc442debF0452C360870f62"
     }
   ]
 }

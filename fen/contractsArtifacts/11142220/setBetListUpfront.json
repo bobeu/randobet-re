@@ -1,5 +1,5 @@
 {
-  "contractAddress": "0x0fCc020600cE0b0b4568E0391a03714Ab62A5c34",
+  "contractAddress": "0xEB0E03e5B23a94cEC5Db7cb595C936a9E76529F6",
   "functionName": "setBetListUpfront",
   "inputCount": 1,
   "requireArgUpdate": true,
@@ -1061,6 +1061,19 @@
       "inputs": [],
       "name": "unpause",
       "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "updateRoundWithOrders",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
       "stateMutability": "nonpayable",
       "type": "function"
     },

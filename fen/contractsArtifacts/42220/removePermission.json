@@ -1,6 +1,6 @@
 {
   "contractAddress": "0x47bAc4255380b66996972367C0a1857B6497d69b",
-  "functionName": "withdraw",
+  "functionName": "removePermission",
   "inputCount": 1,
   "requireArgUpdate": true,
   "abi": [

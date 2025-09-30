@@ -1,5 +1,5 @@
 {
-  "contractAddress": "0x152941d858eF9d82308d356f55Dd311Bb2C5c52d",
+  "contractAddress": "0x47bAc4255380b66996972367C0a1857B6497d69b",
   "functionName": "checkBalance",
   "inputCount": 2,
   "requireArgUpdate": true,
@@ -8,20 +8,20 @@
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "bet",
+          "name": "epoch",
           "type": "uint256"
         },
         {
-          "internalType": "uint256",
-          "name": "epoch",
-          "type": "uint256"
+          "internalType": "address",
+          "name": "target",
+          "type": "address"
         }
       ],
       "name": "checkBalance",
       "outputs": [
         {
           "internalType": "uint256",
-          "name": "",
+          "name": "bal",
           "type": "uint256"
         }
       ],
