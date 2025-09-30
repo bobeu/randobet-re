@@ -1,0 +1,21 @@
+{
+  "contractAddress": "0xb85D4F4CC731930D1787c90f03e8B50C3B8f4253",
+  "functionName": "isDrawNeeded",
+  "inputCount": 0,
+  "requireArgUpdate": true,
+  "abi": [
+    {
+      "inputs": [],
+      "name": "isDrawNeeded",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "drawNeeded",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ]
+}

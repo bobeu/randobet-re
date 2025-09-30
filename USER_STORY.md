@@ -13,10 +13,10 @@
 As you enter Randobet, you're immediately struck by the sophisticated interface that whispers of high-stakes gaming and blockchain elegance. The gradient background shifts from deep violet to warm gold, creating an atmosphere that's both mysterious and inviting.
 
 **What you see:**
-- 🎲 **The Animated Orb**: A mesmerizing centerpiece that pulses with life, showing real-time betting activity
-- ⏰ **Live Countdown**: A dramatic timer counting down to the next draw, building anticipation
-- 💰 **Pool Statistics**: Current pool size, number of participants, and potential winnings
-- 🔗 **Connect Button**: Prominently displayed, ready to unlock your betting journey
+- **The Animated Orb**: A mesmerizing centerpiece that pulses with life, showing real-time betting activity
+- **Live Countdown**: A dramatic timer counting down to the next draw, building anticipation
+- **Pool Statistics**: Current pool size, number of participants, and potential winnings
+- **Connect Button**: Prominently displayed, ready to unlock your betting journey
 
 ---
 

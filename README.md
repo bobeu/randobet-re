@@ -2,7 +2,7 @@
 
 > **Where curiosity meets blockchain, and every bet tells a story.**
 
-Randobet is a revolutionary decentralized betting platform that transforms the traditional gambling experience into an engaging, transparent, and community-driven ecosystem. Built on the Celo blockchain, Randobet introduces a unique "bet against yourself" mechanism where users deposit funds into time-based pools, with winners determined through provably fair, automated draws.
+Randobet is an innovative betting platform that leverages user curiosity to create a unique betting experience. Users bet against themselves by depositing funds into a pool, with winners selected through a transparent, time-based draw mechanism. We're set to revolutionalize decentralized betting platform and transforms the traditional gambling experience into an engaging, transparent, and community-driven ecosystem. Built on the Celo blockchain, Randobet introduces a unique "bet against others" mechanism where users deposit funds into time-based pools, with winners determined through provably fair, draws-rewarding system.
 
 ## 🌟 What Makes Randobet Special?
 

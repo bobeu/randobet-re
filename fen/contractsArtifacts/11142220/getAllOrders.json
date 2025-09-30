@@ -1,0 +1,33 @@
+{
+  "contractAddress": "0x90351a1531c90Fa2DF544dC165ce3EaD2F87aB46",
+  "functionName": "getAllOrders",
+  "inputCount": 0,
+  "requireArgUpdate": true,
+  "abi": [
+    {
+      "inputs": [],
+      "name": "getAllOrders",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "balances",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "addr",
+              "type": "address"
+            }
+          ],
+          "internalType": "struct IStandingOrder.Order[]",
+          "name": "_orders",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ]
+}

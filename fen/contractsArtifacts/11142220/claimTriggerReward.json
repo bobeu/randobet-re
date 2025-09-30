@@ -1,0 +1,21 @@
+{
+  "contractAddress": "0xb85D4F4CC731930D1787c90f03e8B50C3B8f4253",
+  "functionName": "claimTriggerReward",
+  "inputCount": 0,
+  "requireArgUpdate": true,
+  "abi": [
+    {
+      "inputs": [],
+      "name": "claimTriggerReward",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ]
+}
